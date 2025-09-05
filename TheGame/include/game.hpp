@@ -12,5 +12,9 @@ private:
     void render();          // affichage
 
     sf::RenderWindow mWindow;
-    sf::CircleShape mPlayer; // élément test (un cercle)
+
+    //Défini le joueur avec un sprite plutôt qu'une forme
+    sf::Texture mPlayerTexture;
+    sf::Sprite mPlayer;
+
 };

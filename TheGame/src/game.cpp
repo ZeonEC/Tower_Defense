@@ -1,13 +1,23 @@
 #include "game.hpp"
+#include <iostream>
 
 Game::Game() // Constructeur de la classe game
-: mWindow(sf::VideoMode(800, 600), "Tower Defense"), // Initialise la fenêtre
-
-mPlayer(20.f) // rayon du cercle
+: mWindow(sf::VideoMode(800, 600), "Tower Defense") // Initialise la fenêtre
 {
-    mPlayer.setFillColor(sf::Color::Green);
+    // Chargement de l’image (par ex. "player.png")
+    if (!mPlayerTexture.loadFromFile("../TheGame/assets/h1.png")) {
+        // Erreur si le fichier est introuvable
+        std::cerr << "Erreur: impossible de charger h1.png\n";
+    }
+
+    // Associer la texture au sprite
+    mPlayer.setTexture(mPlayerTexture);
+    mPlayer.setScale(0.01f, 0.01f); // reduction du sprite car trop grand pour la fenêtre
+
+    // Position initiale du joueur
     mPlayer.setPosition(200.f, 200.f);
 }
+
 
 void Game::run() {
     while (mWindow.isOpen()) {
