@@ -131,6 +131,7 @@ TheGame/CMakeFiles/TowerDefense.dir/src/game.cpp.o: /home/enzoec/Documents/GitHu
   /usr/include/c++/13/bits/range_access.h \
   /usr/include/c++/13/bits/refwrap.h \
   /usr/include/c++/13/bits/requires_hosted.h \
+  /usr/include/c++/13/bits/specfun.h \
   /usr/include/c++/13/bits/std_abs.h \
   /usr/include/c++/13/bits/stl_algo.h \
   /usr/include/c++/13/bits/stl_algobase.h \
@@ -161,6 +162,7 @@ TheGame/CMakeFiles/TowerDefense.dir/src/game.cpp.o: /home/enzoec/Documents/GitHu
   /usr/include/c++/13/cctype \
   /usr/include/c++/13/cerrno \
   /usr/include/c++/13/clocale \
+  /usr/include/c++/13/cmath \
   /usr/include/c++/13/cstddef \
   /usr/include/c++/13/cstdio \
   /usr/include/c++/13/cstdlib \
@@ -182,6 +184,7 @@ TheGame/CMakeFiles/TowerDefense.dir/src/game.cpp.o: /home/enzoec/Documents/GitHu
   /usr/include/c++/13/iostream \
   /usr/include/c++/13/istream \
   /usr/include/c++/13/iterator \
+  /usr/include/c++/13/limits \
   /usr/include/c++/13/locale \
   /usr/include/c++/13/map \
   /usr/include/c++/13/new \
@@ -194,6 +197,18 @@ TheGame/CMakeFiles/TowerDefense.dir/src/game.cpp.o: /home/enzoec/Documents/GitHu
   /usr/include/c++/13/string \
   /usr/include/c++/13/string_view \
   /usr/include/c++/13/system_error \
+  /usr/include/c++/13/tr1/bessel_function.tcc \
+  /usr/include/c++/13/tr1/beta_function.tcc \
+  /usr/include/c++/13/tr1/ell_integral.tcc \
+  /usr/include/c++/13/tr1/exp_integral.tcc \
+  /usr/include/c++/13/tr1/gamma.tcc \
+  /usr/include/c++/13/tr1/hypergeometric.tcc \
+  /usr/include/c++/13/tr1/legendre_function.tcc \
+  /usr/include/c++/13/tr1/modified_bessel_func.tcc \
+  /usr/include/c++/13/tr1/poly_hermite.tcc \
+  /usr/include/c++/13/tr1/poly_laguerre.tcc \
+  /usr/include/c++/13/tr1/riemann_zeta.tcc \
+  /usr/include/c++/13/tr1/special_function_util.h \
   /usr/include/c++/13/tuple \
   /usr/include/c++/13/type_traits \
   /usr/include/c++/13/typeinfo \
@@ -206,6 +221,7 @@ TheGame/CMakeFiles/TowerDefense.dir/src/game.cpp.o: /home/enzoec/Documents/GitHu
   /usr/include/libintl.h \
   /usr/include/linux/errno.h \
   /usr/include/locale.h \
+  /usr/include/math.h \
   /usr/include/pthread.h \
   /usr/include/sched.h \
   /usr/include/stdc-predef.h \
@@ -224,9 +240,18 @@ TheGame/CMakeFiles/TowerDefense.dir/src/game.cpp.o: /home/enzoec/Documents/GitHu
   /usr/include/x86_64-linux-gnu/bits/errno.h \
   /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
   /usr/include/x86_64-linux-gnu/bits/floatn.h \
+  /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
+  /usr/include/x86_64-linux-gnu/bits/fp-fast.h \
+  /usr/include/x86_64-linux-gnu/bits/fp-logb.h \
+  /usr/include/x86_64-linux-gnu/bits/iscanonical.h \
   /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
+  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
   /usr/include/x86_64-linux-gnu/bits/locale.h \
   /usr/include/x86_64-linux-gnu/bits/long-double.h \
+  /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h \
+  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
   /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h \
   /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h \
   /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
@@ -600,8 +625,6 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h
 
 
-/home/enzoec/Documents/GitHub/TowerDefense/TheGame/src/main.cpp:
-
 /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h:
@@ -642,8 +665,6 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/x86_64-linux-gnu/bits/typesizes.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/wint_t.h:
-
 /usr/include/x86_64-linux-gnu/bits/types/timer_t.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/time_t.h:
@@ -653,6 +674,38 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/error_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/clockid_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/FILE.h:
+
+/usr/include/x86_64-linux-gnu/bits/types.h:
+
+/usr/include/x86_64-linux-gnu/bits/time64.h:
+
+/usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
+
+/usr/include/x86_64-linux-gnu/bits/timex.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdint-least.h:
 
 /usr/include/c++/13/bits/predefined_ops.h:
 
@@ -668,9 +721,17 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/c++/13/bits/uses_allocator.h:
 
+/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h:
+
 /usr/include/c++/13/bits/locale_facets_nonio.h:
 
 /usr/include/c++/13/bits/locale_facets.tcc:
+
+/usr/include/x86_64-linux-gnu/bits/timesize.h:
+
+/usr/include/c++/13/bits/locale_classes.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
 
 /usr/include/SFML/Graphics/RenderStates.hpp:
 
@@ -700,21 +761,25 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/c++/13/bits/istream.tcc:
 
+/usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
+
+/usr/include/c++/13/bits/stl_multimap.h:
+
 /usr/include/c++/13/bits/exception.h:
 
 /usr/include/c++/13/bits/memory_resource.h:
 
 /usr/include/c++/13/streambuf:
 
-/usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
-
 /usr/include/c++/13/bits/cxxabi_init_exception.h:
+
+/usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
+
+/usr/include/SFML/Window/Export.hpp:
 
 /usr/include/c++/13/typeinfo:
 
 /usr/include/c++/13/bits/cpp_type_traits.h:
-
-/usr/include/x86_64-linux-gnu/bits/types.h:
 
 /usr/include/c++/13/bits/concept_check.h:
 
@@ -724,6 +789,8 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/SFML/System/Vector3.inl:
 
+/usr/include/c++/13/tr1/poly_laguerre.tcc:
+
 /usr/include/x86_64-linux-gnu/bits/endianness.h:
 
 /usr/include/c++/13/bits/basic_ios.tcc:
@@ -732,8 +799,6 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/c++/13/bits/basic_ios.h:
 
-/usr/include/x86_64-linux-gnu/bits/time64.h:
-
 /usr/include/c++/13/bits/allocator.h:
 
 /usr/include/c++/13/bits/stl_bvector.h:
@@ -741,6 +806,8 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 /usr/include/c++/13/backward/binders.h:
 
 /usr/include/c++/13/bits/hash_bytes.h:
+
+/usr/include/x86_64-linux-gnu/bits/math-vector.h:
 
 /usr/include/c++/13/bits/basic_string.tcc:
 
@@ -767,10 +834,6 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 /usr/include/x86_64-linux-gnu/sys/types.h:
 
 /usr/include/SFML/Window/Mouse.hpp:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/clockid_t.h:
 
 /usr/include/SFML/Window/Joystick.hpp:
 
@@ -828,17 +891,17 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/SFML/Graphics/Rect.inl:
 
+/usr/include/c++/13/cmath:
+
 /usr/include/x86_64-linux-gnu/bits/floatn.h:
-
-/usr/include/SFML/Graphics/Glyph.hpp:
-
-/usr/include/c++/13/bits/range_access.h:
 
 /usr/include/c++/13/system_error:
 
 /usr/include/x86_64-linux-gnu/bits/long-double.h:
 
 /usr/include/c++/13/bits/algorithmfwd.h:
+
+/usr/include/x86_64-linux-gnu/bits/fp-logb.h:
 
 /usr/include/SFML/Window/Keyboard.hpp:
 
@@ -854,15 +917,27 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/SFML/Window/Vulkan.hpp:
 
+/usr/include/x86_64-linux-gnu/c++/13/bits/gthr-default.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
+
+/usr/include/SFML/Graphics/RectangleShape.hpp:
+
+/usr/include/c++/13/tr1/poly_hermite.tcc:
+
 /usr/include/SFML/Window/VideoMode.hpp:
 
 /usr/include/SFML/Graphics/Font.hpp:
 
-/usr/include/c++/13/bits/streambuf.tcc:
-
 /usr/include/SFML/Graphics/Shape.hpp:
 
 /usr/include/SFML/Graphics/Drawable.hpp:
+
+/usr/include/SFML/Graphics/Glyph.hpp:
+
+/usr/include/x86_64-linux-gnu/bits/fp-fast.h:
 
 /usr/include/c++/13/bits/vector.tcc:
 
@@ -872,8 +947,6 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/c++/13/cerrno:
 
-/usr/include/x86_64-linux-gnu/bits/stdint-least.h:
-
 /usr/include/SFML/Graphics/CircleShape.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/cpu-set.h:
@@ -882,11 +955,21 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/SFML/System/Thread.hpp:
 
+/usr/include/x86_64-linux-gnu/bits/types/wint_t.h:
+
+/usr/include/c++/13/limits:
+
 /usr/include/SFML/Graphics/ConvexShape.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/waitstatus.h:
 
 /usr/include/c++/13/bits/exception_defines.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__FILE.h:
+
+/usr/include/SFML/Graphics/Transform.hpp:
+
+/usr/include/math.h:
 
 /usr/include/c++/13/bits/locale_facets_nonio.tcc:
 
@@ -901,8 +984,6 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 /usr/include/x86_64-linux-gnu/c++/13/bits/ctype_inline.h:
 
 /usr/include/c++/13/bits/char_traits.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
 
 /usr/include/SFML/Window/Cursor.hpp:
 
@@ -922,9 +1003,9 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/SFML/System/Utf.inl:
 
-/usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
+/usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h:
 
-/usr/include/SFML/Graphics/PrimitiveType.hpp:
+/usr/include/SFML/Graphics/VertexArray.hpp:
 
 /usr/include/SFML/System/Sleep.hpp:
 
@@ -935,8 +1016,6 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 /usr/include/SFML/Graphics/Transformable.hpp:
 
 /usr/include/SFML/Graphics/View.hpp:
-
-/usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
 
@@ -950,15 +1029,13 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/SFML/System.hpp:
 
-/usr/include/c++/13/bits/streambuf_iterator.h:
-
 /usr/include/c++/13/ostream:
+
+/usr/include/c++/13/tr1/riemann_zeta.tcc:
 
 /usr/include/SFML/Graphics/Image.hpp:
 
 /usr/include/SFML/Window/WindowBase.hpp:
-
-/usr/include/x86_64-linux-gnu/bits/types/__mbstate_t.h:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/ctype_base.h:
 
@@ -974,9 +1051,19 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/c++/13/istream:
 
+/usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
+
+/usr/include/SFML/Graphics/PrimitiveType.hpp:
+
+/usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
+
 /usr/include/SFML/Graphics.hpp:
 
 /usr/include/c++/13/bits/localefwd.h:
+
+/usr/include/c++/13/bits/streambuf_iterator.h:
+
+/usr/include/x86_64-linux-gnu/bits/flt-eval-method.h:
 
 /usr/include/SFML/System/ThreadLocal.hpp:
 
@@ -986,6 +1073,10 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/SFML/System/Time.hpp:
 
+/usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
+
+/usr/include/c++/13/bits/charconv.h:
+
 /usr/include/c++/13/cstdio:
 
 /usr/include/SFML/System/Vector2.hpp:
@@ -994,7 +1085,9 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/c++/13/bits/refwrap.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
+/usr/include/c++/13/bits/streambuf.tcc:
+
+/usr/include/c++/13/bits/specfun.h:
 
 /usr/include/c++/13/bits/stl_algo.h:
 
@@ -1009,6 +1102,10 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
 
 /usr/include/c++/13/bits/utility.h:
+
+/home/enzoec/Documents/GitHub/TowerDefense/TheGame/src/main.cpp:
+
+/usr/include/c++/13/tr1/beta_function.tcc:
 
 /usr/include/c++/13/bits/stl_heap.h:
 
@@ -1037,6 +1134,8 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 
 /usr/include/c++/13/ext/atomicity.h:
+
+/usr/include/c++/13/tr1/gamma.tcc:
 
 /usr/include/c++/13/cstdlib:
 
@@ -1076,8 +1175,6 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/c++/13/ext/type_traits.h:
 
-/usr/include/c++/13/initializer_list:
-
 /usr/include/c++/13/ios:
 
 /usr/include/SFML/System/Err.hpp:
@@ -1094,11 +1191,31 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/c++/13/string:
 
-/usr/include/c++/13/map:
-
-/usr/include/c++/13/string_view:
-
 /usr/include/features-time64.h:
+
+/usr/include/c++/13/initializer_list:
+
+/usr/include/c++/13/tr1/bessel_function.tcc:
+
+/usr/include/c++/13/tr1/ell_integral.tcc:
+
+/usr/include/c++/13/tr1/exp_integral.tcc:
+
+/usr/include/c++/13/bits/range_access.h:
+
+/usr/include/c++/13/tr1/hypergeometric.tcc:
+
+/usr/include/SFML/Window/GlResource.hpp:
+
+/usr/include/c++/13/type_traits:
+
+/usr/include/c++/13/tr1/legendre_function.tcc:
+
+/usr/include/c++/13/tr1/modified_bessel_func.tcc:
+
+/usr/include/c++/13/tr1/special_function_util.h:
+
+/usr/include/stdc-predef.h:
 
 /usr/include/c++/13/bits/nested_exception.h:
 
@@ -1108,10 +1225,6 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/c++/13/tuple:
 
-/usr/include/SFML/Window/GlResource.hpp:
-
-/usr/include/c++/13/type_traits:
-
 /usr/include/ctype.h:
 
 /usr/include/pthread.h:
@@ -1119,8 +1232,6 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 /usr/include/wctype.h:
 
 /usr/include/sched.h:
-
-/usr/include/stdc-predef.h:
 
 /usr/include/endian.h:
 
@@ -1144,56 +1255,20 @@ TheGame/CMakeFiles/TowerDefense.dir/src/main.cpp.o: /home/enzoec/Documents/GitHu
 
 /usr/include/x86_64-linux-gnu/bits/floatn-common.h:
 
+/usr/include/c++/13/map:
+
+/usr/include/c++/13/string_view:
+
+/usr/include/x86_64-linux-gnu/bits/iscanonical.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h:
+
 /usr/include/x86_64-linux-gnu/bits/sched.h:
+
+/usr/include/x86_64-linux-gnu/bits/time.h:
+
+/usr/include/x86_64-linux-gnu/bits/select.h:
 
 /usr/include/time.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/gthr-default.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
-
-/usr/include/SFML/Graphics/RectangleShape.hpp:
-
-/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/FILE.h:
-
-/usr/include/SFML/Window/Export.hpp:
-
-/usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
-
-/usr/include/x86_64-linux-gnu/bits/select.h:
-
-/usr/include/x86_64-linux-gnu/bits/time.h:
-
-/usr/include/c++/13/bits/locale_classes.h:
-
-/usr/include/x86_64-linux-gnu/bits/timesize.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
-
-/usr/include/x86_64-linux-gnu/bits/timex.h:
-
-/usr/include/SFML/Graphics/Transform.hpp:
-
-/usr/include/x86_64-linux-gnu/bits/types/__FILE.h:
-
-/usr/include/c++/13/bits/stl_multimap.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
-
-/usr/include/c++/13/bits/charconv.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
-
-/usr/include/SFML/Graphics/VertexArray.hpp:
-
-/usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/error_t.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/locale_t.h:

@@ -18,7 +18,7 @@ Game::Game()
     mBase.setRadius(18.f);
     mBase.setFillColor(sf::Color(100, 180, 255));
     mBase.setOrigin(mBase.getRadius(), mBase.getRadius());
-    mBase.setPosition(560.f, 560.f);
+    mBase.setPosition(520.f, 560.f);
 
     // Chemin: une suite de waypoints (tu peux modifier)
     mPath = {
@@ -27,7 +27,7 @@ Game::Game()
         { 280.f, 100.f},
         { 520.f, 100.f},
         { 520.f, 500.f},
-        { 560.f, 560.f} // arrive sur la base
+        { 520.f, 560.f} // arrive sur la base
     };
 
     // Police pour HUD (optionnel) — on tente une police système (pas requis)
