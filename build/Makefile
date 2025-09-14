@@ -117,17 +117,137 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named TowerDefense
+# Target rules for targets named main
 
 # Build rule for target.
-TowerDefense: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 TowerDefense
-.PHONY : TowerDefense
+main: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 main
+.PHONY : main
 
 # fast build rule for target.
-TowerDefense/fast:
-	$(MAKE) $(MAKESILENT) -f TheGame/CMakeFiles/TowerDefense.dir/build.make TheGame/CMakeFiles/TowerDefense.dir/build
-.PHONY : TowerDefense/fast
+main/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
+.PHONY : main/fast
+
+src/ennemie1.o: src/ennemie1.cpp.o
+.PHONY : src/ennemie1.o
+
+# target to build an object file
+src/ennemie1.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ennemie1.cpp.o
+.PHONY : src/ennemie1.cpp.o
+
+src/ennemie1.i: src/ennemie1.cpp.i
+.PHONY : src/ennemie1.i
+
+# target to preprocess a source file
+src/ennemie1.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ennemie1.cpp.i
+.PHONY : src/ennemie1.cpp.i
+
+src/ennemie1.s: src/ennemie1.cpp.s
+.PHONY : src/ennemie1.s
+
+# target to generate assembly for a file
+src/ennemie1.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ennemie1.cpp.s
+.PHONY : src/ennemie1.cpp.s
+
+src/main.o: src/main.cpp.o
+.PHONY : src/main.o
+
+# target to build an object file
+src/main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/main.cpp.o
+.PHONY : src/main.cpp.o
+
+src/main.i: src/main.cpp.i
+.PHONY : src/main.i
+
+# target to preprocess a source file
+src/main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
+
+src/main.s: src/main.cpp.s
+.PHONY : src/main.s
+
+# target to generate assembly for a file
+src/main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
+
+src/projectile.o: src/projectile.cpp.o
+.PHONY : src/projectile.o
+
+# target to build an object file
+src/projectile.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/projectile.cpp.o
+.PHONY : src/projectile.cpp.o
+
+src/projectile.i: src/projectile.cpp.i
+.PHONY : src/projectile.i
+
+# target to preprocess a source file
+src/projectile.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/projectile.cpp.i
+.PHONY : src/projectile.cpp.i
+
+src/projectile.s: src/projectile.cpp.s
+.PHONY : src/projectile.s
+
+# target to generate assembly for a file
+src/projectile.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/projectile.cpp.s
+.PHONY : src/projectile.cpp.s
+
+src/render.o: src/render.cpp.o
+.PHONY : src/render.o
+
+# target to build an object file
+src/render.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/render.cpp.o
+.PHONY : src/render.cpp.o
+
+src/render.i: src/render.cpp.i
+.PHONY : src/render.i
+
+# target to preprocess a source file
+src/render.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/render.cpp.i
+.PHONY : src/render.cpp.i
+
+src/render.s: src/render.cpp.s
+.PHONY : src/render.s
+
+# target to generate assembly for a file
+src/render.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/render.cpp.s
+.PHONY : src/render.cpp.s
+
+src/tower.o: src/tower.cpp.o
+.PHONY : src/tower.o
+
+# target to build an object file
+src/tower.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/tower.cpp.o
+.PHONY : src/tower.cpp.o
+
+src/tower.i: src/tower.cpp.i
+.PHONY : src/tower.i
+
+# target to preprocess a source file
+src/tower.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/tower.cpp.i
+.PHONY : src/tower.cpp.i
+
+src/tower.s: src/tower.cpp.s
+.PHONY : src/tower.s
+
+# target to generate assembly for a file
+src/tower.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/tower.cpp.s
+.PHONY : src/tower.cpp.s
 
 # Help Target
 help:
@@ -137,7 +257,22 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... TowerDefense"
+	@echo "... main"
+	@echo "... src/ennemie1.o"
+	@echo "... src/ennemie1.i"
+	@echo "... src/ennemie1.s"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
+	@echo "... src/projectile.o"
+	@echo "... src/projectile.i"
+	@echo "... src/projectile.s"
+	@echo "... src/render.o"
+	@echo "... src/render.i"
+	@echo "... src/render.s"
+	@echo "... src/tower.o"
+	@echo "... src/tower.i"
+	@echo "... src/tower.s"
 .PHONY : help
 
 

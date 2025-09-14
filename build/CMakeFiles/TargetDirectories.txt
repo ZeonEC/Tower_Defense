@@ -1,5 +1,3 @@
+/home/enzoec/Documents/GitHub/TowerDefense/build/CMakeFiles/main.dir
 /home/enzoec/Documents/GitHub/TowerDefense/build/CMakeFiles/edit_cache.dir
 /home/enzoec/Documents/GitHub/TowerDefense/build/CMakeFiles/rebuild_cache.dir
-/home/enzoec/Documents/GitHub/TowerDefense/build/TheGame/CMakeFiles/TowerDefense.dir
-/home/enzoec/Documents/GitHub/TowerDefense/build/TheGame/CMakeFiles/edit_cache.dir
-/home/enzoec/Documents/GitHub/TowerDefense/build/TheGame/CMakeFiles/rebuild_cache.dir
