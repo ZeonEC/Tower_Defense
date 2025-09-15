@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/main.dir/src/ennemie1.cpp.o"
-  "CMakeFiles/main.dir/src/ennemie1.cpp.o.d"
+  "CMakeFiles/main.dir/src/enemy.cpp.o"
+  "CMakeFiles/main.dir/src/enemy.cpp.o.d"
   "CMakeFiles/main.dir/src/main.cpp.o"
   "CMakeFiles/main.dir/src/main.cpp.o.d"
   "CMakeFiles/main.dir/src/projectile.cpp.o"

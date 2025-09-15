@@ -129,29 +129,29 @@ main/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
-src/ennemie1.o: src/ennemie1.cpp.o
-.PHONY : src/ennemie1.o
+src/enemy.o: src/enemy.cpp.o
+.PHONY : src/enemy.o
 
 # target to build an object file
-src/ennemie1.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ennemie1.cpp.o
-.PHONY : src/ennemie1.cpp.o
+src/enemy.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/enemy.cpp.o
+.PHONY : src/enemy.cpp.o
 
-src/ennemie1.i: src/ennemie1.cpp.i
-.PHONY : src/ennemie1.i
+src/enemy.i: src/enemy.cpp.i
+.PHONY : src/enemy.i
 
 # target to preprocess a source file
-src/ennemie1.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ennemie1.cpp.i
-.PHONY : src/ennemie1.cpp.i
+src/enemy.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/enemy.cpp.i
+.PHONY : src/enemy.cpp.i
 
-src/ennemie1.s: src/ennemie1.cpp.s
-.PHONY : src/ennemie1.s
+src/enemy.s: src/enemy.cpp.s
+.PHONY : src/enemy.s
 
 # target to generate assembly for a file
-src/ennemie1.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/ennemie1.cpp.s
-.PHONY : src/ennemie1.cpp.s
+src/enemy.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/enemy.cpp.s
+.PHONY : src/enemy.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -258,9 +258,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... main"
-	@echo "... src/ennemie1.o"
-	@echo "... src/ennemie1.i"
-	@echo "... src/ennemie1.s"
+	@echo "... src/enemy.o"
+	@echo "... src/enemy.i"
+	@echo "... src/enemy.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
