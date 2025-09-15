@@ -1,6 +1,8 @@
 #ifndef ENNEMY_HPP
 #define ENEMY_HPP
 
+#include <SFML/Graphics.hpp>
+
 class Enemy // Déclaration de la classe Ennemy
 {
     //private:
@@ -13,10 +15,14 @@ class Enemy // Déclaration de la classe Ennemy
     bool dead; // Variable d'état de l'ennemie (vivant/mort)
     bool eat; // Variable d'objetif atteint 
 
-    Enemy(int hp, float spd); // Constructeur générique d'un ennemi, utile pour les type d'ennemis dérivés
-    virtual ~Enemy() = default; // Destructeur virtuel par défaut
+    //Définition de la forme de l'ennemie
+    sf::CircleShape shape;
+
+    Enemy(int hp, float spd,float radius, sf::Color color); // Constructeur générique d'un ennemi, utile pour les type d'ennemis dérivés
+    
 
     public:
+    virtual ~Enemy() = default; // Destructeur virtuel par défaut
 
     //Gestion des points de vie
     void hit(int amount); // L'ennemie subit des dégats
@@ -26,6 +32,24 @@ class Enemy // Déclaration de la classe Ennemy
     int getHp() const;
     float getSpeed() const;
     bool hasEaten() const;
+
+
+//--- Intégration des ennemies dans SFML --//
+
+  // SFML helpers
+    void setPosition(float x, float y) { shape.setPosition(x, y); }
+
+    sf::Vector2f getPosition() const   { return shape.getPosition(); }
+
+    // Boucle de jeu
+    virtual void update(float dt);                 // déplacement basique
+    
+    virtual void draw(sf::RenderWindow& win) const // rendu
+    {
+        if (!dead) win.draw(shape);
+    }
+};
+
 
 //----------------------------------------------------------
     //Accessors (lecture)
@@ -41,7 +65,7 @@ class Enemy // Déclaration de la classe Ennemy
     //void hit(int amount);
 
 //----------------------------------------------------------
-};
+
 
 
 //----------------------------------------------------------
@@ -50,7 +74,7 @@ class Enemy // Déclaration de la classe Ennemy
 class BasicEnemy : public Enemy
 {
 public:
-    BasicEnemy() : Enemy(100, 0.3) {} 
+    BasicEnemy() : Enemy(100, 0.3, 16.f, sf::Color(255,0,0)) {} 
 };
 
 //----------------------------------------------------------
@@ -59,7 +83,7 @@ public:
 class FastEnemy : public Enemy
 {
 public:
-    FastEnemy() : Enemy(75, 0.6) {} 
+    FastEnemy() : Enemy(75, 0.6, 12.f, sf::Color(0,255,0)) {} 
 };
 
 //----------------------------------------------------------
@@ -68,7 +92,7 @@ public:
 class TankEnemy : public Enemy
 {
 public:
-    TankEnemy() : Enemy(300, 0.15) {} 
+    TankEnemy() : Enemy(300, 0.15, 10.f, sf::Color(0,0,255)) {} 
 };
 
 //----------------------------------------------------------
@@ -78,7 +102,7 @@ public:
 class TargetEnemy : public Enemy
 {
 public:
-    TargetEnemy() : Enemy(150, 0.3) {}
+    TargetEnemy() : Enemy(150, 0.3, 4.f, sf::Color(100,100,100)) {}
 };
 
 //----------------------------------------------------------
@@ -87,7 +111,7 @@ public:
 class FlyEnemy : public Enemy
 {
 public:
-    FlyEnemy() : Enemy(100, 0.4) {}
+    FlyEnemy() : Enemy(100, 0.4, 20.f, sf::Color(200,0,150)) {}
 };
 
 

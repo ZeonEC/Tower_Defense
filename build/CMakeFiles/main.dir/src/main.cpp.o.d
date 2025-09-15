@@ -149,7 +149,29 @@ CMakeFiles/main.dir/src/main.cpp.o: \
  /usr/include/c++/13/bits/locale_facets.tcc \
  /usr/include/c++/13/bits/basic_ios.tcc \
  /usr/include/c++/13/bits/ostream.tcc /usr/include/c++/13/istream \
- /usr/include/c++/13/bits/istream.tcc /usr/include/SFML/Graphics.hpp \
+ /usr/include/c++/13/bits/istream.tcc /usr/include/c++/13/memory \
+ /usr/include/c++/13/bits/stl_tempbuf.h \
+ /usr/include/c++/13/bits/stl_uninitialized.h \
+ /usr/include/c++/13/bits/stl_raw_storage_iter.h \
+ /usr/include/c++/13/bits/align.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h /usr/include/stdint.h \
+ /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
+ /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
+ /usr/include/c++/13/bits/unique_ptr.h \
+ /usr/include/c++/13/bits/shared_ptr.h \
+ /usr/include/c++/13/bits/shared_ptr_base.h \
+ /usr/include/c++/13/bits/allocated_ptr.h \
+ /usr/include/c++/13/ext/aligned_buffer.h \
+ /usr/include/c++/13/ext/concurrence.h \
+ /usr/include/c++/13/bits/shared_ptr_atomic.h \
+ /usr/include/c++/13/bits/atomic_base.h \
+ /usr/include/c++/13/bits/atomic_lockfree_defines.h \
+ /usr/include/c++/13/backward/auto_ptr.h \
+ /usr/include/c++/13/pstl/glue_memory_defs.h \
+ /usr/include/c++/13/pstl/execution_defs.h /usr/include/c++/13/vector \
+ /usr/include/c++/13/bits/stl_vector.h \
+ /usr/include/c++/13/bits/stl_bvector.h \
+ /usr/include/c++/13/bits/vector.tcc /usr/include/SFML/Graphics.hpp \
  /usr/include/SFML/Window.hpp /usr/include/SFML/System.hpp \
  /usr/include/SFML/Config.hpp /usr/include/SFML/System/Clock.hpp \
  /usr/include/SFML/System/Export.hpp /usr/include/SFML/System/Time.hpp \
@@ -165,9 +187,8 @@ CMakeFiles/main.dir/src/main.cpp.o: \
  /usr/include/c++/13/bits/algorithmfwd.h \
  /usr/include/c++/13/bits/stl_heap.h \
  /usr/include/c++/13/bits/uniform_int_dist.h \
- /usr/include/c++/13/bits/stl_tempbuf.h \
  /usr/include/c++/13/pstl/glue_algorithm_defs.h \
- /usr/include/c++/13/pstl/execution_defs.h /usr/include/c++/13/locale \
+ /usr/include/c++/13/locale \
  /usr/include/c++/13/bits/locale_facets_nonio.h /usr/include/c++/13/ctime \
  /usr/include/x86_64-linux-gnu/c++/13/bits/time_members.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/messages_members.h \
@@ -192,17 +213,11 @@ CMakeFiles/main.dir/src/main.cpp.o: \
  /usr/include/SFML/Window/Joystick.hpp \
  /usr/include/SFML/Window/Keyboard.hpp /usr/include/SFML/Window/Mouse.hpp \
  /usr/include/SFML/Window/Sensor.hpp /usr/include/SFML/Window/Touch.hpp \
- /usr/include/SFML/Window/VideoMode.hpp /usr/include/c++/13/vector \
- /usr/include/c++/13/bits/stl_uninitialized.h \
- /usr/include/c++/13/bits/stl_vector.h \
- /usr/include/c++/13/bits/stl_bvector.h \
- /usr/include/c++/13/bits/vector.tcc /usr/include/SFML/Window/Window.hpp \
+ /usr/include/SFML/Window/VideoMode.hpp \
+ /usr/include/SFML/Window/Window.hpp \
  /usr/include/SFML/Window/WindowBase.hpp \
  /usr/include/SFML/Window/Vulkan.hpp \
  /usr/include/SFML/Window/WindowHandle.hpp \
- /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h /usr/include/stdint.h \
- /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
- /usr/include/x86_64-linux-gnu/bits/stdint-least.h \
  /usr/include/SFML/Window/WindowStyle.hpp \
  /usr/include/SFML/Graphics/BlendMode.hpp \
  /usr/include/SFML/Graphics/Export.hpp \
@@ -222,7 +237,6 @@ CMakeFiles/main.dir/src/main.cpp.o: \
  /usr/include/SFML/Graphics/Texture.hpp \
  /usr/include/SFML/Graphics/Image.hpp /usr/include/c++/13/map \
  /usr/include/c++/13/bits/stl_tree.h \
- /usr/include/c++/13/ext/aligned_buffer.h \
  /usr/include/c++/13/bits/node_handle.h \
  /usr/include/c++/13/bits/stl_map.h \
  /usr/include/c++/13/bits/stl_multimap.h \
