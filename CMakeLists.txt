@@ -28,6 +28,7 @@ add_executable(main
   src/projectile.cpp
   src/enemy.cpp
   src/tower.cpp
+  src/game.cpp
 )
 
 #--- Lier les librairies au bon target ---# 
