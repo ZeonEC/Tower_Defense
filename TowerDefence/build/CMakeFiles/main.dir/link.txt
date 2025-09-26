@@ -1,0 +1,1 @@
+/usr/bin/c++ -Wall -Wextra -g -O0 CMakeFiles/main.dir/Cpp/Astar.cpp.o CMakeFiles/main.dir/Cpp/main.cpp.o CMakeFiles/main.dir/Cpp/tower.cpp.o CMakeFiles/main.dir/Cpp/ennemy.cpp.o CMakeFiles/main.dir/Cpp/perso.cpp.o -o main  -lsfml-graphics -lsfml-window -lsfml-system 

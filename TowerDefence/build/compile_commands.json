@@ -1,0 +1,32 @@
+[
+{
+  "directory": "/home/ubuntu/4A/TowerDefence/build",
+  "command": "/usr/bin/c++  -I/home/ubuntu/4A/TowerDefence/Hpp -Wall -Wextra -g -O0 -o CMakeFiles/main.dir/Cpp/Astar.cpp.o -c /home/ubuntu/4A/TowerDefence/Cpp/Astar.cpp",
+  "file": "/home/ubuntu/4A/TowerDefence/Cpp/Astar.cpp",
+  "output": "CMakeFiles/main.dir/Cpp/Astar.cpp.o"
+},
+{
+  "directory": "/home/ubuntu/4A/TowerDefence/build",
+  "command": "/usr/bin/c++  -I/home/ubuntu/4A/TowerDefence/Hpp -Wall -Wextra -g -O0 -o CMakeFiles/main.dir/Cpp/main.cpp.o -c /home/ubuntu/4A/TowerDefence/Cpp/main.cpp",
+  "file": "/home/ubuntu/4A/TowerDefence/Cpp/main.cpp",
+  "output": "CMakeFiles/main.dir/Cpp/main.cpp.o"
+},
+{
+  "directory": "/home/ubuntu/4A/TowerDefence/build",
+  "command": "/usr/bin/c++  -I/home/ubuntu/4A/TowerDefence/Hpp -Wall -Wextra -g -O0 -o CMakeFiles/main.dir/Cpp/tower.cpp.o -c /home/ubuntu/4A/TowerDefence/Cpp/tower.cpp",
+  "file": "/home/ubuntu/4A/TowerDefence/Cpp/tower.cpp",
+  "output": "CMakeFiles/main.dir/Cpp/tower.cpp.o"
+},
+{
+  "directory": "/home/ubuntu/4A/TowerDefence/build",
+  "command": "/usr/bin/c++  -I/home/ubuntu/4A/TowerDefence/Hpp -Wall -Wextra -g -O0 -o CMakeFiles/main.dir/Cpp/ennemy.cpp.o -c /home/ubuntu/4A/TowerDefence/Cpp/ennemy.cpp",
+  "file": "/home/ubuntu/4A/TowerDefence/Cpp/ennemy.cpp",
+  "output": "CMakeFiles/main.dir/Cpp/ennemy.cpp.o"
+},
+{
+  "directory": "/home/ubuntu/4A/TowerDefence/build",
+  "command": "/usr/bin/c++  -I/home/ubuntu/4A/TowerDefence/Hpp -Wall -Wextra -g -O0 -o CMakeFiles/main.dir/Cpp/perso.cpp.o -c /home/ubuntu/4A/TowerDefence/Cpp/perso.cpp",
+  "file": "/home/ubuntu/4A/TowerDefence/Cpp/perso.cpp",
+  "output": "CMakeFiles/main.dir/Cpp/perso.cpp.o"
+}
+]

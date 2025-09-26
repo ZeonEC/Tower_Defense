@@ -1,0 +1,3 @@
+/home/ubuntu/4A/TowerDefence/build/CMakeFiles/main.dir
+/home/ubuntu/4A/TowerDefence/build/CMakeFiles/edit_cache.dir
+/home/ubuntu/4A/TowerDefence/build/CMakeFiles/rebuild_cache.dir
