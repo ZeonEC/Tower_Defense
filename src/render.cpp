@@ -56,7 +56,7 @@ std::vector<Render::Cell> Render::buildCells(sf::RenderTarget& window)
             // On implémente les paramètre de la nouvelle cellule dans notre structure Cell
             Cell c;
             c.id = id;
-            c.col = col;
+            c.col = col; 
             c.row = row;
 
             c.bounds = sf::FloatRect(x, y, cellSize, cellSize); // On défini le rectangle de la cellule qui part de (x,y) et fait cellSize en largeur et hauteur

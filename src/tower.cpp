@@ -21,7 +21,7 @@ Tourelle::Tourelle(int hp, float spd, float radius, sf::Color color) : dead(fals
     shape.setRotation(45.f); // On tourne le carré de 45° parce que ça spawn en losange plutôt qu'en carré
     shape.setFillColor(color);
     shape.setOrigin(radius, radius); // origine au centre pour faciliter la position
-    counter++; // Incrémente le compteur d'Tourelle à chaque création
+    counter++; // Incrémente le eur d'Tourelle à chaque création
 }
 
 // ----------------------------------------------------------

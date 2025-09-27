@@ -7,11 +7,26 @@
 % Set page size and margins
 % Replace `letterpaper' with `a4paper' for UK/EU standard size
 \usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
-
+\usepackage{xcolor}
 % Useful packages
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{listings}
+
+
+
+
+\lstset{
+    language=C++,             % langage du code
+    basicstyle=\ttfamily\small, % police du code
+    keywordstyle=\color{blue},  % couleur des mots-clés
+    stringstyle=\color{red},    % couleur des chaînes
+    commentstyle=\color{gray},  % couleur des commentaires
+    numbers=left,               % numéros de ligne à gauche
+    numberstyle=\tiny\color{gray},
+    breaklines=true             % retour à la ligne automatique
+}
 
 \title{Journal de bord - TowerDefense}
 \author{CHADEVILLE - TECHER}
@@ -130,5 +145,7 @@ Semaines 49-52 :
 \item Création d’un menu de jeu complet.
 \item Démo jouable du Tower Defense.
 \end{itemize}
+
+\include{semaines_38-39}
 
 \end{document}

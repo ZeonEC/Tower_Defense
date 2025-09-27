@@ -66,7 +66,7 @@ void Game::generateTourelle(std::vector<Tourelle*>& tourelles, std::vector<Rende
     if (it->turreted == false) {
         // la cellule est libre
         switch (r) {
-            case 0: tourelles.push_back(new BasicTourelle((cs/2)));  break;
+            case 0: tourelles.push_back(new BasicTourelle((cs)));  break;
             case 1: tourelles.push_back(new PoisonTourelle((cs/2)));   break;
             case 2: tourelles.push_back(new shotgunTourelle((cs/2)));   break;
             case 3: tourelles.push_back(new TargetTourelle((cs/2)));    break;

@@ -103,6 +103,7 @@ int main() {
         game_window.display();
     }
 
+   
     // Libérer la mémoire avant de quitter
     game.destroyEnemy(enemies);
     game.destroyTourelles(tourelles);
@@ -286,3 +287,8 @@ sf::RenderWindow game_window(sf::VideoMode(800, 600), "Enemies + SFML");
         enemies.push_back(new FlyEnemy());
     }
     */
+
+    /* // Ici il faut libérer la mémoire à la main
+        for (bool EN : enemies) {
+            delete e;  // appelle le destructeur
+        }*/

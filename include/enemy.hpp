@@ -72,6 +72,7 @@ public:
 static int counter; // Compteur d'ennemis de type BasicEnemy
     BasicEnemy() : Enemy(100, 3, 16.f, sf::Color(255,0,0)) {++counter;}
     ~BasicEnemy() { --BasicEnemy::counter; } 
+
 };
 
 //----------------------------------------------------------
@@ -117,6 +118,7 @@ public:
     static int counter; // Compteur d'ennemis de type FlyEnemy
     FlyEnemy() : Enemy(100, 4, 20.f, sf::Color(200,0,150)) {++counter;}
     ~FlyEnemy() { --FlyEnemy::counter; }
+
 };
 
 
