@@ -6,7 +6,8 @@
 
 % Set page size and margins
 % Replace `letterpaper' with `a4paper' for UK/EU standard size
-\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage[a4paper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
 \usepackage{xcolor}
 % Useful packages
 \usepackage{amsmath}
@@ -14,7 +15,14 @@
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \usepackage{listings}
 
+\usepackage{pgfgantt}
+\usepackage{pdflscape} % ou lscape
+%\usepackage{tikz-uml}
 
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
 
 
 \lstset{
@@ -106,45 +114,77 @@ Ainsi, plus le joueur place judicieusement ses tours, plus le chemin des ennemis
 Pour notre Tower Defense, nous allons nous inspiré (au niveau du gameplay et une partie de l'HUD) de Tower Wars: StarCraft 2, un mode personnalisé créé dans l’éditeur de cartes de Starcraft 2. 
 
 Nous nous inspirons également de Age Of empire pour son HUD des ressources.
+\begin{landscape}
 
-\section{Planning prévisionnel}
+    \begin{center}
 
-Semaines 36-37 :
-\begin{itemize}
-\item Mise en commun des idées et accord sur le résultat souhaité.
-\item Rédaction d’un cahier des charges.
-\item Apprentissage de GitHub, \LaTeX{} et découverte de SFML.
-\item Mise en place d’une ébauche du squelette du programme.
-\item Début de la création du jeu.
-\end{itemize}
 
-Semaines 38-41 :
-\begin{itemize}
-\item Mise en place des différents outils de travail (GitHub, \LaTeX).
-\item Affichage d’une fenêtre SFML et début d’un premier prototype de jeu.
-\end{itemize}
+\section{Diagramme de classes}
 
-Semaines 42-45 :
-\begin{itemize}
-\item Finalisation d’une version minimaliste du jeu.
-\item Début de la création des menus et de la gestion des ressources.
-\end{itemize}
 
-Semaines 46-48 :
-\begin{itemize}
-\item Finalisation de la gestion des ressources et menus fonctionnels.
-\item Début de la mise en place de la direction artistique (sprites).
-\item Consolidation de l’équilibrage du jeu.
-\end{itemize}
+\begin{figure}[!h]
+\centering
+    \includegraphics[width=1\textwidth]{figs/UML class.png}
+    \caption{Diagramme de classes du projet.}
+\end{figure}
 
-Semaines 49-52 :
-\begin{itemize}
-\item Finalisation de la direction artistique.
-\item Équilibrage conforme à nos attentes.
-\item Optimisation du programme.
-\item Création d’un menu de jeu complet.
-\item Démo jouable du Tower Defense.
-\end{itemize}
+\end{center}
+
+\end{landscape}
+
+
+\newpage
+\begin{landscape} % tout ce qui est entre begin/end sera en paysage
+
+
+\begin{center}
+{\Large \textbf{Planning prévisionnel (semaines 36 à 52)}} % titre au-dessus
+\vspace{1cm}
+
+\scalebox{0.7}{%
+\begin{ganttchart}[
+    hgrid,
+    vgrid,
+    time slot format=isodate,
+    compress calendar,
+    x unit=0.25cm,
+    y unit chart=0.5cm,
+    bar height=0.4,
+    group/.append style={fill=gray!40},
+    bar/.append style={fill=blue!30},
+    bar label font=\small,
+    milestone/.append style={fill=red!60}
+]{2025-09-01}{2025-12-28}
+
+\gantttitlecalendar{month=name, week} \\
+
+\ganttgroup{Phase 1 : Préparation}{2025-09-01}{2025-09-28} \\
+\ganttbar{Mise en commun des idées}{2025-09-01}{2025-09-14} \\
+\ganttbar{Cahier des charges}{2025-09-01}{2025-09-14} \\
+\ganttbar{Apprentissage outils}{2025-09-01}{2025-09-21} \\
+
+\ganttgroup{Phase 2 : Développement}{2025-09-01}{2025-11-30} \\
+\ganttbar{Squelette du programme}{2025-09-08}{2025-09-28} \\
+\ganttbar{Début création du jeu}{2025-09-01}{2025-09-28} \\
+\ganttbar{Prototype SFML}{2025-09-15}{2025-10-12} \\
+\ganttbar{Version minimaliste}{2025-10-13}{2025-11-09} \\
+\ganttbar{Menus et ressources}{2025-10-20}{2025-11-30} \\
+\ganttbar{Equilibrage du jeu}{2025-11-03}{2025-11-30} \\
+
+\ganttgroup{Phase 3 : Finalisation}{2025-11-10}{2025-12-28} \\
+\ganttbar{Direction artistique}{2025-11-10}{2025-12-14} \\
+\ganttbar{Optimisation du programme}{2025-12-01}{2025-12-14} \\
+\ganttbar{Menu complet}{2025-12-01}{2025-12-14} \\
+\ganttmilestone{Démo jouable}{2025-12-28} \\
+
+\end{ganttchart}
+} % fin scalebox
+
+\end{center}
+
+\end{landscape}
+\newpage
+
 
 \include{semaines_38-39}
 
