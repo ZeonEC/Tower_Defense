@@ -5,30 +5,33 @@
 #include <vector>
 #include <random>
 #include <cstdlib>
-#include <SFML/System/Vector2.hpp> // pour sf::Vector2f
+#include <SFML/System/Vector2.hpp>
 
 #include "render.hpp"
 #include "enemy.hpp"
 #include "tower.hpp"
-
-//cette fonction permet de gérer l'initialisatoin et le comportement des différents acteurs du jeux (Tourelles, ennemies, projectiles, etc...)
+#include "projectile.hpp"          // ⬅️ AJOUT
 
 class Game {
 public:
     Game() = default;
     ~Game() = default;
 
-    // Génère un ennemi aléatoire et l'ajoute au vecteur
-    //void generateEnemy(std::vector<Enemy*>& enemies, std::vector<Render::Cell> cells);
-    void generateEnemy(std::vector<Enemy*>& enemies,std::vector<Render::Cell> cells);
-
-    // Détruit tous les ennemis et vide le vecteur
+    void generateEnemy(std::vector<Enemy*>& enemies, std::vector<Render::Cell> cells);
     void destroyEnemy(std::vector<Enemy*>& enemies);
-
-
-    void generateTourelle(std::vector<Tourelle*>& tourelles,std::vector<Render::Cell>& cells,float x,float y);
-    // Détruit tous les tourelles et vide le vecteur
+    void generateTourelle(std::vector<Tourelle*>& tourelles, std::vector<Render::Cell>& cells, float x, float y);
     void destroyTourelles(std::vector<Tourelle*>& tourelles);
+
+    // ⬅️ AJOUT : logique projectiles / tirs / collisions
+    void update(float dt, std::vector<Enemy*>& enemies, std::vector<Tourelle*>& tourelles);
+
+    // ⬅️ AJOUT : accès lecture/écriture aux projectiles (pour dessin)
+    const std::vector<Projectile>& getProjectiles() const { return projectiles; }
+    std::vector<Projectile>&       getProjectiles()       { return projectiles; }
+
+private:
+    // ⬅️ AJOUT
+    std::vector<Projectile> projectiles;
 };
 
 #endif

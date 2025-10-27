@@ -1,121 +1,133 @@
-#ifndef TOWER_HPP
-#define TOWER_HPP
+    #ifndef TOWER_HPP
+    #define TOWER_HPP
 
-#include <SFML/Graphics.hpp>
-#include <random>
-#include <cstdlib>  // pour rand() et srand()
-#include <ctime>    // pour time()
+    #include <SFML/Graphics.hpp>
+    #include <vector>
+    #include "enemy.hpp" 
 
-//#include "render.hpp"
+    // Déclarations anticipées (évite les inclusions circulaires dans le .hpp)
+    class Enemy;
+    class Projectile;
+    class FlyEnemy; 
 
+    /**
+     * Classe de base d'une tourelle.
+     * - range         : portée en pixels
+     * - fireRate      : tirs par seconde
+     * - cooldown      : temps restant avant prochain tir (s)
+     * - damage        : dégâts par projectile
+     * - projectileSpeed : vitesse (px/s) des projectiles tirés
+     * - shape         : représentation cercle dans SFML
+     */
 
-class Tourelle // Déclaration de la classe Tourelle
-{
-    //private:
-
-    protected : //Protégé = accessible aux classes dérivées (les différents types de tourelles)
-
-    //Paramètres de base de l'ennemi
-    int   health;
-    float speed;
-    bool dead; // Variable d'état de l'tourelle (vivant/mort)
-
-
-    // Tableau de pointeurs vers des tourelles, comprennant la classe Tourelle, il porte le nom de "tourelle"
-    std::vector<Tourelle*> tourelle;
-
-    //Définition de la forme des tourelles
-    sf::CircleShape shape;
-
-    //On défini a la construction de l'ennemi sa vie,vitesse, sa taille et sa couleur (pour l'instant c'est des forme ronde de couleur)
-    Tourelle(int hp, float spd,float radius, sf::Color color); // Constructeur générique d'un ennemi, utile pour les type de tourelle dérivés
-    
-
+    class Tourelle {
     public:
-    virtual ~Tourelle() = default; // Destructeur virtuel par défaut -- apparement obligatoire
+        Tourelle(int damage,
+                float range,
+                float fireRate,
+                float projectileSpeed,
+                float radius,
+                sf::Color color);
+        virtual ~Tourelle();
 
-    static int counter; // Compteur de tourelle total
+        // Position / rendu
+        void setPosition(float x, float y);
+        sf::Vector2f getPosition() const;
+        float        getRadius()   const { return shape.getRadius(); }
+        virtual void draw(sf::RenderWindow& win) const;
 
-    //Gestion des points de vie
-    void hit(int amount); // La tourelle subit des dégats
-    bool isDead() const; // La tourelle est morte ?
+        // Paramètres gameplay
+        int   getDamage() const { return damage; }
+        void  setDamage(int d)  { damage = d;   }
 
-    //Etat de la tourelle -- De simple getter pas forcément utile
-    int getHp() const;
-    float getSpeed() const;
-    bool hasEaten() const;
+        float getRange()   const { return range; }
+        void  setRange(float r)  { range = r;    }
 
-//--- SFML --//
+        float getFireRate() const { return fireRate; }
+        void  setFireRate(float rps) { fireRate = rps; }
 
-    void setPosition(float x, float y) { shape.setPosition(x, y); }
+        float getProjectileSpeed() const { return projectileSpeed; }
+        void  setProjectileSpeed(float s) { projectileSpeed = s; }
 
-    sf::Vector2f getPosition() const   { return shape.getPosition(); }
+        // Mise à jour (diminue le cooldown)
+        virtual void update(float dt);
 
-    // Boucle de jeu
-    virtual void update(float dt);                 // déplacement basique
-    
-    virtual void draw(sf::RenderWindow& win) const // rendu
-    {
-        if (!dead) win.draw(shape);
-    }
+        /**
+         * Essaie de tirer sur une cible dans la portée.
+         * @return true si un projectile a été créé.
+         */
+        virtual bool tryShoot(float dt,
+                    const std::vector<Enemy*>& enemies,
+                    std::vector<Projectile>& outProjectiles);
+
+    protected:
+        // Accès pour les classes dérivées
+        sf::CircleShape shape;
+
+        int   damage;
+        float range;
+        float fireRate;
+        float cooldown;
+        float projectileSpeed;
+
+        // Sélectionne l'ennemi le plus proche dans la portée (nullptr si aucun)
+        virtual Enemy* acquireTarget(const std::vector<Enemy*>& enemies) const;
+
+        using EnemyMask = unsigned int;
+
+        static constexpr EnemyMask kindBit(EnemyKind k) {
+            return 1u << static_cast<unsigned int>(k);
+        }
+
+        EnemyMask allowedMask = ~0u;  // par défaut : autorise tout
+
+        // Helpers pour configurer le masque
+        void allowOnly(EnemyMask m)         { allowedMask = m; }
+        void allowAlso(EnemyKind k)         { allowedMask |= kindBit(k); }
+        void forbid(EnemyKind k)            { allowedMask &= ~kindBit(k); }
+
+        // Test d'acceptation
+        bool accepts(const Enemy* e) const {
+            EnemyKind k = e->getKind();
+            return (allowedMask & kindBit(k)) != 0;
+        }
+
 };
+    // --------------------- Exemples de variantes ---------------------
+
+    class BasicTourelle : public Tourelle {
+    public:
+        // portée moyenne, cadence standard, dégâts moyens
+        explicit BasicTourelle(float radius = 14.f);
+    };
 
 
-//----------------------------------------------------------
-//Ennemi de base 
+    class PoisonTourelle : public Tourelle {
+    public:
+        explicit PoisonTourelle(float radius = 12.f);
+    };
 
-class BasicTourelle : public Tourelle
-{
-public:
-static int counter; // Compteur de tourelles de type BasicTourelle
-    BasicTourelle(float cellsize) : Tourelle(100, 3, cellsize, sf::Color(255,255,255)) {++counter;} //Oblige de demander cellsize pour que la tourelle prenne la taille d'une cellule
-    ~BasicTourelle() { --BasicTourelle::counter; } 
-};
+    class shotgunTourelle : public Tourelle {
+    public:
+        explicit shotgunTourelle(float radius = 14.f);
+        bool tryShoot(float dt,
+                    const std::vector<Enemy*>& enemies,
+                    std::vector<Projectile>& outProjectiles) override;
+    };
 
-//----------------------------------------------------------
-//Ennemi rapide (comportement identique au tourelle de base, hp et vitesse change)
+    class TargetTourelle : public Tourelle {
+    public:
+        explicit TargetTourelle(float radius = 14.f);
+    };
 
-class PoisonTourelle : public Tourelle
-{
-public:
-    static int counter; // Compteur d'ennemis de type FastTourelle
-    PoisonTourelle(float cellsize) : Tourelle(75, 6, cellsize, sf::Color(0,255,0)) {++counter;}
-    ~PoisonTourelle() { --PoisonTourelle::counter; } 
-};
+    class FlyTourelle : public Tourelle {
+    public:
+        static int counter;
+        explicit FlyTourelle(float radius = 12.f);
+        ~FlyTourelle();
 
-//----------------------------------------------------------
-//Ennemi tank (comportement identique au tourelle de base, hp et vitesse change) 
+        Enemy* acquireTarget(const std::vector<Enemy*>& enemies) const override;
 
-class shotgunTourelle : public Tourelle
-{
-public:
-    static int counter; // Compteur d'ennemis de type TankTourelle
-    shotgunTourelle(float cellsize) : Tourelle(300, 1, cellsize, sf::Color(0,0,255)) {++counter;}
-    ~shotgunTourelle() { --shotgunTourelle::counter; } 
-};
+    };
 
-//----------------------------------------------------------
-//Ennemi target (leur objectif est de détruire les tourelles sur leur passage (chemin le plus cours en ignorant les tourelles)
-//hp et vitesse change) 
-
-class TargetTourelle : public Tourelle
-{
-public:
-    static int counter; // Compteur d'ennemis de type TargetTourelle
-    TargetTourelle(float cellsize) : Tourelle(150, 3, cellsize, sf::Color(100,100,100)) {++counter;}
-    ~TargetTourelle() { --TargetTourelle::counter; }
-};
-
-//----------------------------------------------------------
-//Ennemi volatile (ils ignorent les tourelles, vole par dessus, hp et vitesse change) 
-
-class FlyTourelle : public Tourelle
-{
-public:
-    static int counter; // Compteur d'ennemis de type FlyTourelle
-    FlyTourelle(float cellsize) : Tourelle(100, 4, cellsize, sf::Color(200,0,150)) {++counter;}
-    ~FlyTourelle() { --FlyTourelle::counter; }
-};
-
-
-#endif
+    #endif // TOWER_HPP

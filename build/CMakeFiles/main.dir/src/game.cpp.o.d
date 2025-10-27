@@ -270,4 +270,8 @@ CMakeFiles/main.dir/src/game.cpp.o: \
  /usr/include/SFML/Graphics/Text.hpp \
  /usr/include/SFML/Graphics/VertexBuffer.hpp \
  /home/enzoec/Documents/GitHub/TowerDefense/include/enemy.hpp \
- /home/enzoec/Documents/GitHub/TowerDefense/include/tower.hpp
+ /home/enzoec/Documents/GitHub/TowerDefense/include/tower.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/projectile.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/enemy.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/tower.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/projectile.hpp

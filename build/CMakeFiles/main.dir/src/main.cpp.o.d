@@ -271,4 +271,5 @@ CMakeFiles/main.dir/src/main.cpp.o: \
  /home/enzoec/Documents/GitHub/TowerDefense/include/game.hpp \
  /home/enzoec/Documents/GitHub/TowerDefense/include/render.hpp \
  /home/enzoec/Documents/GitHub/TowerDefense/include/tower.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/projectile.hpp \
  /home/enzoec/Documents/GitHub/TowerDefense/include/enemy.hpp

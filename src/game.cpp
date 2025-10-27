@@ -1,4 +1,9 @@
 #include "game.hpp"
+#include "enemy.hpp"
+#include "tower.hpp"
+#include "projectile.hpp"  // ⬅️ AJOUT
+
+#include <algorithm>
 #include <random>
 
 // ------------ FONCTIONS DES ENNEMIES ------------ //
@@ -66,7 +71,7 @@ void Game::generateTourelle(std::vector<Tourelle*>& tourelles, std::vector<Rende
     if (it->turreted == false) {
         // la cellule est libre
         switch (r) {
-            case 0: tourelles.push_back(new BasicTourelle((cs)));  break;
+            case 0: tourelles.push_back(new BasicTourelle((cs/2)));  break;
             case 1: tourelles.push_back(new PoisonTourelle((cs/2)));   break;
             case 2: tourelles.push_back(new shotgunTourelle((cs/2)));   break;
             case 3: tourelles.push_back(new TargetTourelle((cs/2)));    break;
@@ -91,8 +96,43 @@ void Game::destroyTourelles(std::vector<Tourelle*>& tourelles) {
 }
 
 
+    void Game::update(float dt, std::vector<Enemy*>& enemies, std::vector<Tourelle*>& tourelles)
+    {
+        // 1) les tourelles tentent de tirer (création éventuelle de projectiles)
+        for (auto t : tourelles) {
+            if (!t) continue;
+            t->tryShoot(dt, enemies, projectiles);
+        }
 
+        // 2) avancer les projectiles
+        for (auto& p : projectiles) p.update(dt);
 
+        // 3) collisions projectile/ennemi
+        for (auto& p : projectiles) {
+            if (!p.isAlive()) continue;
+            for (auto e : enemies) {
+                if (!e || e->isDead()) continue;
+                const float enemyRadius = 20.f; // adapte si tu as un vrai rayon
+                if (p.collidesWith(e->getPosition(), enemyRadius)) 
+                {
+                    std::cout << "Hit " << typeid(*e).name() 
+                            << " HP avant=" << e->getHp();
+                    e->takeDamage(p.getDamage());
+                    std::cout << " HP apres=" << e->getHp() 
+                            << " dead=" << e->isDead() << "\n";
+                    p.kill();
+                    break;
+                }
+            }
+        }
+
+        // 4) nettoyage
+        projectiles.erase(
+            std::remove_if(projectiles.begin(), projectiles.end(),
+                        [](const Projectile& pr){ return !pr.isAlive(); }),
+            projectiles.end()
+        );
+    }
 
 /*float Game::spawn(float x, float y) {  //Fonction qui marche pas
     static std::random_device rd;

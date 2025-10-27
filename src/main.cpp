@@ -88,8 +88,10 @@ int main() {
 
         //------- UPDATE DES ENTITES -------// 
 
-        for (auto& e : enemies) e->update(dt);
-        for (auto& t : tourelles) t->update(dt);
+        //for (auto& e : enemies) e->update(dt);
+        //for (auto& t : tourelles) t->update(dt);
+
+        game.update(dt, enemies, tourelles);
 
         //------- DESSIN DANS LA FENETRE SFML -------// 
 
@@ -100,6 +102,9 @@ int main() {
         // Mise à jour et dessin des ennemis
         for (auto& e : enemies) e->draw(game_window);
         for (auto& t : tourelles) t->draw(game_window);
+        for (const auto& p : game.getProjectiles())
+        p.draw(game_window);
+
         game_window.display();
     }
 

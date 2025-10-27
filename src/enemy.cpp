@@ -34,6 +34,12 @@ Enemy::Enemy(int hp, float spd, float radius, sf::Color color) : dead(false), ea
         shape.setFillColor(sf::Color(c.r/2, c.g/2, c.b/2, 120));
     }
 
+    void Enemy::draw(sf::RenderWindow& win) const {
+    if (!dead)
+        win.draw(shape);
+}
+
+
     void Enemy::update(float dt)
     {
     if (dead) return;
@@ -56,7 +62,17 @@ Enemy::Enemy(int hp, float spd, float radius, sf::Color color) : dead(false), ea
         return speed;
     }
 
- 
+    void Enemy::takeDamage(int amount) {
+    if (dead) return;
+    health -= amount;
+    if (health <= 0) {
+        health = 0;
+        dead = true;
+        shape.setFillColor(sf::Color(60, 60, 60, 100)); // effet visuel
+    }
+}
+
+
 
   /*  void Enemy::generateEnemy ()
     {
