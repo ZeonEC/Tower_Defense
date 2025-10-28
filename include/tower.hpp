@@ -3,6 +3,7 @@
 
     #include <SFML/Graphics.hpp>
     #include <vector>
+
     #include "enemy.hpp" 
 
     // Déclarations anticipées (évite les inclusions circulaires dans le .hpp)
@@ -12,12 +13,12 @@
 
     /**
      * Classe de base d'une tourelle.
+     * - damage        : dégâts par projectile
      * - range         : portée en pixels
      * - fireRate      : tirs par seconde
      * - cooldown      : temps restant avant prochain tir (s)
-     * - damage        : dégâts par projectile
      * - projectileSpeed : vitesse (px/s) des projectiles tirés
-     * - shape         : représentation cercle dans SFML
+     * - shape         : représentation dans SFML (des rectangles pour l'instant)
      */
 
     class Tourelle {
@@ -93,7 +94,10 @@
         }
 
 };
-    // --------------------- Exemples de variantes ---------------------
+
+
+
+// --------------------- Exemples de variantes ---------------------
 
     class BasicTourelle : public Tourelle {
     public:

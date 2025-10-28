@@ -6,7 +6,8 @@
 #include <cmath>
 
 // --------- Utilitaires internes ---------
-namespace {
+namespace 
+{
     inline float sqr(float x) { return x * x; }
 
     inline float dist2(const sf::Vector2f& a, const sf::Vector2f& b) {
@@ -14,7 +15,12 @@ namespace {
     }
 }
 
-// ===================== Tourelle (base) =====================
+// ========================================================================== //
+
+//                         FONCTIONS STANDARDS TOURELLES                      // 
+
+// ========================================================================== //
+
 
 Tourelle::Tourelle(int damage,
                    float range,
