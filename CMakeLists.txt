@@ -16,7 +16,7 @@ file(GLOB SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 #--- Configuration des libraires annexes ---#
 
 # Trouve SFML (paquet libsfml-dev)
-find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
+find_package(SFML 2.5 COMPONENTS graphics window system audio REQUIRED)
 
 #-------------------------------------------#
 
@@ -33,7 +33,7 @@ add_executable(main
 
 #--- Lier les librairies au bon target ---# 
 
-target_link_libraries(main PRIVATE sfml-graphics sfml-window sfml-system)
+target_link_libraries(main PRIVATE sfml-graphics sfml-window sfml-system sfml-audio)
 
 #-------------------------------------------#
 

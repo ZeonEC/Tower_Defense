@@ -10,6 +10,7 @@
 //#include <memory> //Librairie utile pour les unique_ptr (pointeur intelligent, plus avancé que les pointeur de base)
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp> // DELTATUNE DEMAIN
 
 //--------Inclusion des autres programmes--------//
 
@@ -28,6 +29,7 @@ bool loadBackground(const std::string& path) {
     return true;
 }
 
+sf::Music backgroundMusic;
 
 //using namespace std;
 
@@ -45,7 +47,16 @@ int main() {
     if (!loadBackground("../src/assets/maps/map_forest_800x600_grid.png")) {
         std::cerr << "Erreur : impossible de charger le fond de carte !" << std::endl;
     }
-    //float cellSize = 20.f;
+
+    //---------------------------- MUSIQUE ------------------------------//
+    if (!backgroundMusic.openFromFile("../src/assets/musics/WELCOME_TO_THE_CITY.ogg")) {
+    std::cerr << "Erreur chargement musique !" << std::endl;
+    }
+    // volume et boucle
+    backgroundMusic.setVolume(10.f);  // entre 0 et 100
+    backgroundMusic.setLoop(true);
+    backgroundMusic.play();
+
 
     // Initialisation des acteurs
     std::vector<Enemy*> enemies;      // PAS de new ici pas besoin grace à l'instance de Game

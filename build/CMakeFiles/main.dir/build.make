@@ -174,6 +174,7 @@ main: CMakeFiles/main.dir/src/game.cpp.o
 main: CMakeFiles/main.dir/build.make
 main: /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.6.1
 main: /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.6.1
+main: /usr/lib/x86_64-linux-gnu/libsfml-audio.so.2.6.1
 main: /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.6.1
 main: CMakeFiles/main.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/enzoec/Documents/GitHub/TowerDefense/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable main"
