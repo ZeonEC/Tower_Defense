@@ -62,6 +62,12 @@ Enemy::Enemy(int hp, float spd, float radius, sf::Color color) : dead(false), ea
         return speed;
     }
 
+    float Enemy::getRadius() const 
+    {
+        const float r = Render::Cell::cellSize * 0.5f;
+        return r;
+    }
+
     void Enemy::takeDamage(int amount) {
     if (dead) return;
     health -= amount;

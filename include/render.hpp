@@ -38,7 +38,8 @@ public:
 //                  SURBRILLANCE D'UNE CELLULE
 // ------------------------------------------------------------------------------//
 
-/* // Met en surbrillance un intervalle d’ids (inclusif) si tu veux visualiser
+/* // Met en surbrillance un intervalle d’ids (inclusif) 
+
     static void highlightCellRange(sf::RenderTarget& window,
                                    const std::vector<Cell>& cells,
                                    int idStart, int idEnd,

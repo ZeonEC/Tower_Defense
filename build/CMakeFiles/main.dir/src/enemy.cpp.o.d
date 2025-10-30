@@ -264,5 +264,7 @@ CMakeFiles/main.dir/src/enemy.cpp.o: \
  /usr/include/c++/13/bits/random.tcc /usr/include/c++/13/numeric \
  /usr/include/c++/13/bits/stl_numeric.h \
  /usr/include/c++/13/pstl/glue_numeric_defs.h \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/render.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/enemy.hpp \
  /usr/include/c++/13/iostream /usr/include/c++/13/istream \
  /usr/include/c++/13/bits/istream.tcc

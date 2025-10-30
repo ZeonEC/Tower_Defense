@@ -15,6 +15,13 @@ namespace
     }
 }
 
+int FlyTourelle::counter = 0;
+int BasicTourelle::counter = 0;
+int PoisonTourelle::counter = 0;
+int shotgunTourelle::counter = 0;
+int TargetTourelle::counter = 0;
+
+
 // ========================================================================== //
 
 //                         FONCTIONS STANDARDS TOURELLES                      // 
@@ -107,12 +114,13 @@ bool Tourelle::tryShoot(float dt,
     // 3) créer un projectile
     // La direction précise/anticipation est gérée dans Projectile (direction vers la cible actuelle).
     outProjectiles.emplace_back(
-        getPosition(),
-        target->getPosition(),
-        projectileSpeed,
-        damage,
-        /*radius*/ 4.f
-    );
+    getPosition(),
+    target->getPosition(),
+    projectileSpeed,
+    damage,
+    /*radius*/ 4.f,
+    /*allowedMask*/ allowedMask
+);
 
     // 4) reset cooldown
     cooldown = (fireRate > 0.f) ? (1.f / fireRate) : 0.25f;
@@ -150,11 +158,14 @@ bool shotgunTourelle::tryShoot(float dt,
     {
         sf::Vector2f dir = rotateVector(toTarget, a);
         sf::Vector2f targetPos = getPosition() + dir; // point visé légèrement décalé
+        
         outProjectiles.emplace_back(
-            getPosition(), targetPos,
+            getPosition(),
+            target->getPosition(),
             projectileSpeed,
             damage,
-            4.f
+            /*radius*/ 4.f,
+            /*allowedMask*/ allowedMask
         );
     }
 
@@ -162,7 +173,9 @@ bool shotgunTourelle::tryShoot(float dt,
     return true;
 }
 
-Enemy* FlyTourelle::acquireTarget(const std::vector<Enemy*>& enemies) const {
+// FONCTION DE CIBLAGE SUR UNE CLASSE UNIQUE (plutot que d'utiliser les mask mais je trouve que c'est plus long car c'est une fonction par type d'ennemie ici)
+
+/*Enemy* FlyTourelle::acquireTarget(const std::vector<Enemy*>& enemies) const {
     const float r2 = range * range;
     Enemy* best = nullptr;
     float bestD2 = r2;
@@ -171,7 +184,7 @@ Enemy* FlyTourelle::acquireTarget(const std::vector<Enemy*>& enemies) const {
     for (auto e : enemies) {
         if (!e || e->isDead()) continue;
 
-        // ✅ On ne vise que les ennemis volants
+        // On ne vise que les ennemis volants
         if (dynamic_cast<FlyEnemy*>(e) == nullptr)
             continue;
 
@@ -184,78 +197,79 @@ Enemy* FlyTourelle::acquireTarget(const std::vector<Enemy*>& enemies) const {
         }
     }
     return best;
-}
+}*/
+
 
 // ===================== Variantes =====================
 
-BasicTourelle::BasicTourelle(float radius)
-: Tourelle(
-    /*damage*/          1000,
-    /*range*/           220.f,
-    /*fireRate*/        1.0f,   // 1 tir / s
-    /*projectileSpeed*/ 450.f,
-    /*radius*/          radius,
-    /*color*/           sf::Color(60, 180, 255)
-) {
-    // Autoriser tout SAUF les volants :
-    forbid(EnemyKind::Fly);
-}
+//BasicTourelle::BasicTourelle(float radius)
+//: Tourelle(
+//    /*damage*/          1000,
+//    /*range*/           220.f,
+//    /*fireRate*/        1.0f,   // 1 tir / s
+//    /*projectileSpeed*/ 450.f,
+//    /*radius*/          radius,
+//    /*color*/           sf::Color(60, 180, 255)
+//) {
+//    // Autoriser tout SAUF les volants :
+//   forbid(EnemyKind::Fly);
+//}
 
 // Poison : dégâts faibles + cadence correcte + portée moyenne
-PoisonTourelle::PoisonTourelle(float radius)
-: Tourelle(
-    /*damage*/          600,
-    /*range*/           200.f,
-    /*fireRate*/        1.2f,
-    /*projectileSpeed*/ 420.f,
-    /*radius*/          radius,
-    /*color*/           sf::Color(150, 255, 150)
-) {
-    // Autoriser tout SAUF les volants :
-    forbid(EnemyKind::Fly);
-}
+//PoisonTourelle::PoisonTourelle(float radius)
+//: Tourelle(
+//    /*damage*/          600,
+//   /*range*/           200.f,
+//    /*fireRate*/        1.2f,
+//    /*projectileSpeed*/ 420.f,
+//    /*radius*/          radius,
+//    /*color*/           sf::Color(150, 255, 150)
+//) {
+//    // Autoriser tout SAUF les volants :
+//    forbid(EnemyKind::Fly);
+//}
 
 // Shotgun : cadence élevée, dégâts faibles, faible portée
-shotgunTourelle::shotgunTourelle(float radius)
-: Tourelle(
-    /*damage*/          100,
-    /*range*/           160.f,
-    /*fireRate*/        3.0f,
-    /*projectileSpeed*/ 680.f,
-    /*radius*/          radius,
-    /*color*/           sf::Color(200, 200, 255)
-) 
-{
-    // Autoriser tout SAUF les volants :
-    forbid(EnemyKind::Fly);
-}
+//shotgunTourelle::shotgunTourelle(float radius)
+//: Tourelle(
+//    /*damage*/          100,
+//    /*range*/           160.f,
+//    /*fireRate*/        3.0f,
+//    /*projectileSpeed*/ 680.f,
+//    /*radius*/          radius,
+//    /*color*/           sf::Color(200, 200, 255)
+//) 
+//{
+//    // Autoriser tout SAUF les volants :
+//   forbid(EnemyKind::Fly);
+//}
 
-int FlyTourelle::counter = 0;
+//int FlyTourelle::counter = 0;
 
 // Fly : stats équilibrées, couleur violette (et compteur si tu l’utilises)
-FlyTourelle::FlyTourelle(float radius)
-: Tourelle(
-    /*damage*/          800,
-    /*range*/           220.f,
-    /*fireRate*/        1.2f,
-    /*projectileSpeed*/ 520.f,
-    /*radius*/          radius,
-    /*color*/           sf::Color(200, 0, 0)
-) { ++counter; }
+//FlyTourelle::FlyTourelle(float radius)
+//: Tourelle(
+ //   /*damage*/          800,
+//    /*range*/           220.f,
+//    /*fireRate*/        1.2f,
+//    /*projectileSpeed*/ 520.f,
+//    /*radius*/          radius,
+//    /*color*/           sf::Color(200, 0, 0)
+//) { ++counter; }
 
-FlyTourelle::~FlyTourelle() { --counter; }
+//FlyTourelle::~FlyTourelle() { --counter; }
 
 // Target : portée un peu plus grande, dégâts moyens
-TargetTourelle::TargetTourelle(float radius)
-: Tourelle(
-    /*damage*/          1000,
-    /*range*/           240.f,
-    /*fireRate*/        1.0f,
-    /*projectileSpeed*/ 450.f,
-    /*radius*/          radius,
-    /*color*/           sf::Color(255, 200, 140)
-
-) {
+//TargetTourelle::TargetTourelle(float radius)
+//: Tourelle(
+//    /*damage*/          1000,
+//    /*range*/           240.f,
+//    /*fireRate*/        1.0f,
+//    /*projectileSpeed*/ 450.f,
+//    /*radius*/          radius,
+//    /*color*/           sf::Color(255, 200, 140)
+//
+//) {
     // Autoriser tout SAUF les volants :
-    forbid(EnemyKind::Fly);
-}
+//    forbid(EnemyKind::Fly);
+//}

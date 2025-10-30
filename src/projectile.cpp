@@ -10,8 +10,8 @@ Projectile::Projectile(const sf::Vector2f& start,
                        const sf::Vector2f& target,
                        float speed,
                        int   damage,
-                       float radius)
-: dmg(damage)
+                       float radius,
+                       EnemyMask allowedMask) : dmg(damage), allowedMask_(allowedMask)
 {
     shape.setRadius(radius);
     shape.setOrigin(radius, radius);
@@ -20,6 +20,12 @@ Projectile::Projectile(const sf::Vector2f& start,
 
     auto dir = normalized(target - start);
     velocity = dir * speed;
+}
+
+bool Projectile::accepts(const Enemy* e) const noexcept {
+    if (!e) return false;
+    const EnemyKind k = e->getKind();
+    return (allowedMask_ & kindBit(k)) != 0;
 }
 
 void Projectile::update(float dt) {

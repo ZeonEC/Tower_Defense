@@ -112,14 +112,14 @@ void Game::destroyTourelles(std::vector<Tourelle*>& tourelles) {
             if (!p.isAlive()) continue;
             for (auto e : enemies) {
                 if (!e || e->isDead()) continue;
-                const float enemyRadius = 20.f; // adapte si tu as un vrai rayon
+
+                // ⬅️ AJOUT : ignorer les ennemis non autorisés par le projectile
+                if (!p.accepts(e)) continue;
+
+                const float enemyRadius = e->getRadius(); // idéalement : rayon réel (ex: e->getRadius())
                 if (p.collidesWith(e->getPosition(), enemyRadius)) 
                 {
-                    std::cout << "Hit " << typeid(*e).name() 
-                            << " HP avant=" << e->getHp();
                     e->takeDamage(p.getDamage());
-                    std::cout << " HP apres=" << e->getHp() 
-                            << " dead=" << e->isDead() << "\n";
                     p.kill();
                     break;
                 }

@@ -6,6 +6,8 @@
 #include <cstdlib>  // pour rand() et srand()
 #include <ctime>    // pour time()
 
+#include "render.hpp"
+
 
 enum class EnemyKind { Basic = 0, Fast, Tank, Target, Fly };
 
@@ -51,6 +53,7 @@ class Enemy // Déclaration de la classe Ennemy
     bool hasEaten() const;
     void takeDamage(int amount);
     virtual void draw(sf::RenderWindow& win) const;
+    float getRadius() const;
 
 
 //--- SFML --//
