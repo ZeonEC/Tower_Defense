@@ -6,6 +6,7 @@
 #include <random>
 #include <cstdlib>  // pour rand() et srand()
 #include <ctime>    // pour time()
+#include <string>
 
 //------------------------ INCLUDE prog ----------------------//
 
@@ -38,11 +39,13 @@ class Enemy // Déclaration de la classe Ennemy
     //Apparition des ennemies
     int r = static_cast<int>(rand() % 5); // entre 0 et 3
 
-    //Définition de la forme de l'ennemie
-    sf::CircleShape shape;
+    //Définition du sprite
+    sf::Texture texture;
+    sf::Sprite  sprite;
 
-    //On défini a la construction de l'ennemi sa vie,vitesse, sa taille et sa couleur (pour l'instant c'est des forme ronde de couleur)
-    Enemy(int hp, float spd,float radius, sf::Color color); // Constructeur générique d'un ennemi, utile pour les type d'ennemis dérivés
+
+    // On défini a la construction de l'ennemi sa vie,vitesse, sa taille et son sprite
+    Enemy(int hp, float spd, float radius, const std::string& texturePath); // Constructeur générique d'un ennemi, utile pour les type d'ennemis dérivés
     
 
     public:
@@ -61,14 +64,15 @@ class Enemy // Déclaration de la classe Ennemy
     float getSpeed() const;
     bool hasEaten() const;
     void takeDamage(int amount);
-     float getRadius() const;
+     
 
 
 //--- SFML --//
 
-    void setPosition(float x, float y) { shape.setPosition(x, y); }
-
-    sf::Vector2f getPosition() const   { return shape.getPosition(); }
+    void setPosition(float x, float y) { sprite.setPosition(x, y); }
+    float getRadius() const;
+    sf::Vector2f getPosition() const   { return sprite.getPosition(); }
+    
     virtual void draw(sf::RenderWindow& win) const;
 
     // Boucle de jeu

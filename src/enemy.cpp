@@ -15,39 +15,54 @@ int FlyEnemy::counter   = 0;
 
 
 // Constructeur générique : initialise les stats
-Enemy::Enemy(int hp, float spd, float radius, sf::Color color) : dead(false), eat(false), health(hp), speed(spd), shape(radius) 
+Enemy::Enemy(int hp, float spd, float radius, const std::string& texturePath)
+: health(hp), speed(spd), dead(false), eat(false)
 {
-    shape.setFillColor(color);
-    shape.setOrigin(radius, radius); // origine au centre pour faciliter la position
-    counter++; // Incrémente le compteur d'ennemis à chaque création
-}
+    // Charger la texture
+    if (!texture.loadFromFile(texturePath)) {
+        std::cerr << "Erreur : impossible de charger la texture : " << texturePath << "\n";
+        // Fallback minimal : texture 1x1 blanche pour éviter un sprite vide
+        sf::Image img; img.create(1, 1, sf::Color::White);
+        texture.loadFromImage(img);
+    }
+    sprite.setTexture(texture);
 
+    // Centrer l'origine
+    const auto local = sprite.getLocalBounds(); // taille en pixels de la texture
+    sprite.setOrigin(local.width * 0.5f, local.height * 0.5f);
+
+    // Mise à l’échelle pour que le sprite ait "radius" de rayon visuel
+    // => diamètre visuel = 2 * radius
+    const float targetDiameter = radius * 2.f;
+    // éviter div/0 si texture très petite
+    float sx = targetDiameter / std::max(1.f, local.width);
+    float sy = targetDiameter / std::max(1.f, local.height);
+    sprite.setScale(sx, sy);
+
+    ++counter; // compteur global d'ennemis
+}
 
 // ----------------------------------------------------------
 // Gestion des points de vie
-    void Enemy::hit(int amount)
-    {
-        health -= amount;
-        if (health < 0) health = 0; // La vie ne peut pas être négative
-        if (health == 0) dead = true; // L'ennemi est mort
 
-        // Option visuelle : griser le cercle pour montrer la mort
-        auto c = shape.getFillColor();
-        shape.setFillColor(sf::Color(c.r/2, c.g/2, c.b/2, 120));
+   void Enemy::hit(int amount) {
+    health -= amount;
+    if (health < 0) health = 0;
+    if (health == 0) dead = true;
+
+    // Feedback visuel simple : assombrir le sprite
+    sf::Color c = sprite.getColor();
+    sprite.setColor(sf::Color(c.r / 2, c.g / 2, c.b / 2, 180));
     }
 
     void Enemy::draw(sf::RenderWindow& win) const {
-    if (!dead)
-        win.draw(shape);
-}
+    if (!dead) win.draw(sprite);
+    }
 
 
-    void Enemy::update(float dt)
-    {
-        // ALGO A*
+    void Enemy::update(float dt) {
     if (dead) return;
-    // Déplacement simple vers la droite
-    shape.move(speed * dt, 0.f);
+    sprite.move(speed * dt, 0.f); // déplacement (à remplacer par ton A* plus tard)
     }
 
     bool Enemy::isDead() const 
@@ -77,7 +92,7 @@ Enemy::Enemy(int hp, float spd, float radius, sf::Color color) : dead(false), ea
     if (health <= 0) {
         health = 0;
         dead = true;
-        shape.setFillColor(sf::Color(60, 60, 60, 100)); // effet visuel
+        sprite.setColor(sf::Color(60, 60, 60, 180));
     }
 }
 
@@ -89,7 +104,7 @@ BasicEnemy::BasicEnemy()
         /*hp*/     100,
         /*speed*/  3,
         /*radius*/ Render::Cell::cellSize * 0.5f, // taille = cellule
-        /*color*/  sf::Color(255, 0, 0)
+        /*texturePath*/ "../src/assets/enemies/basic.png"
     ) { ++counter; }
     
     BasicEnemy::~BasicEnemy() { --BasicEnemy::counter; }
@@ -102,7 +117,7 @@ BasicEnemy::BasicEnemy()
         /*hp*/     75,
         /*speed*/  50,
         /*radius*/ Render::Cell::cellSize * 0.25f, // taille = cellule/2
-        /*color*/  sf::Color(0, 255, 0)
+        /*texturePath*/ "../src/assets/enemies/Fast.png"
     ) { ++counter; }
 
     FastEnemy::~FastEnemy() { --FastEnemy::counter; } 
@@ -115,7 +130,7 @@ BasicEnemy::BasicEnemy()
         /*hp*/     300,
         /*speed*/  1,
         /*radius*/ Render::Cell::cellSize * 0.6f, // taille = cellule *0.6
-        /*color*/  sf::Color(0, 0, 255)
+        /*texturePath*/ "../src/assets/enemies/Tank.png"
     ) { ++counter; }
 
     TankEnemy::~TankEnemy() { --TankEnemy::counter; } 
@@ -130,7 +145,7 @@ BasicEnemy::BasicEnemy()
         /*hp*/     150,
         /*speed*/  3,
         /*radius*/ Render::Cell::cellSize * 0.5f,     
-        /*color*/  sf::Color(100, 100, 100)
+        /*texturePath*/ "../src/assets/enemies/Target.png"
     ) { ++counter; }
 
     TargetEnemy::~TargetEnemy() { --TargetEnemy::counter; }
@@ -143,7 +158,7 @@ BasicEnemy::BasicEnemy()
         /*hp*/     100,
         /*speed*/  4,
         /*radius*/ Render::Cell::cellSize * 0.4f,
-        /*color*/  sf::Color(200, 0, 150)
+        /*texturePath*/ "../src/assets/enemies/Fly.png"
     ) { ++counter; }
 
     FlyEnemy::~FlyEnemy() { --FlyEnemy::counter; }
