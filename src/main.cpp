@@ -17,6 +17,17 @@
 #include "game.hpp"
 #include "enemy.hpp"
 
+sf::Texture bgTexture;
+sf::Sprite  bgSprite;
+
+bool loadBackground(const std::string& path) {
+    if (!bgTexture.loadFromFile(path)) return false;
+    bgTexture.setSmooth(false); // pixel-art
+    bgSprite.setTexture(bgTexture);
+    bgSprite.setPosition(0.f, 0.f);
+    return true;
+}
+
 
 //using namespace std;
 
@@ -28,8 +39,12 @@ int main() {
 //---------------------------- INITIALISATION ------------------------------//
 
     // Initialisation de la fenêtre SFML
-    sf::RenderWindow game_window(sf::VideoMode(800, 600), "Enemies + SFML");
+    sf::RenderWindow game_window(sf::VideoMode(800, 600), " SHIN MEGAMI TENSEI VI");
     game_window.setFramerateLimit(60);
+
+    if (!loadBackground("../src/assets/maps/map_forest_800x600_grid.png")) {
+        std::cerr << "Erreur : impossible de charger le fond de carte !" << std::endl;
+    }
     //float cellSize = 20.f;
 
     // Initialisation des acteurs
@@ -83,7 +98,7 @@ int main() {
         }*/
 
         //On nettoie la fenêtre de la frame précédente
-        game_window.clear(sf::Color(30, 30, 35));
+        //game_window.clear(sf::Color(30, 30, 35));
 
 
         //------- UPDATE DES ENTITES -------// 
@@ -97,6 +112,8 @@ int main() {
 
         //--A FAIRE AVANT LES AUTRES ENTITES--// 
         //On redessine les grilles
+        game_window.clear(sf::Color(30, 30, 35));   // la couleur n'est plus visible, on couvre par le fond
+        game_window.draw(bgSprite);
         Render::drawGrid(game_window, sf::Color(80, 80, 80));
 
         // Mise à jour et dessin des ennemis
