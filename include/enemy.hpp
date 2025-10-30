@@ -1,13 +1,22 @@
 #ifndef ENEMY_HPP
 #define ENEMY_HPP
 
+//------------------------ INCLUDE libs ----------------------//
 #include <SFML/Graphics.hpp>
 #include <random>
 #include <cstdlib>  // pour rand() et srand()
 #include <ctime>    // pour time()
 
-#include "render.hpp"
+//------------------------ INCLUDE prog ----------------------//
 
+//#include "render.hpp"
+
+// ====================================== ROLE DE LA CLASSE =========================================== //
+
+// La classe Enemy représente une unité ennemie que les tourelles doivent attaquer. C’est une entité mobile et destructible du jeu
+// Les classes dérivées (BasicEnemy, FastEnemy, TankEnemy, etc.) héritent de Enemy et définissent leurs caractéristiques propres : vitesse, points de vie, apparence…
+
+// ==================================================================================================== //
 
 enum class EnemyKind { Basic = 0, Fast, Tank, Target, Fly };
 
@@ -52,8 +61,7 @@ class Enemy // Déclaration de la classe Ennemy
     float getSpeed() const;
     bool hasEaten() const;
     void takeDamage(int amount);
-    virtual void draw(sf::RenderWindow& win) const;
-    float getRadius() const;
+     float getRadius() const;
 
 
 //--- SFML --//
@@ -61,80 +69,74 @@ class Enemy // Déclaration de la classe Ennemy
     void setPosition(float x, float y) { shape.setPosition(x, y); }
 
     sf::Vector2f getPosition() const   { return shape.getPosition(); }
+    virtual void draw(sf::RenderWindow& win) const;
 
     // Boucle de jeu
     virtual void update(float dt);                 // déplacement basique
 };
 
+// ---------------------------- DECLARATION DES ENNEMIES ---------------------------- //
+
+// Je ne peux pas faire toute la déclaration ici, malheureusement inclure render ici ferai une loupe d'inclusion 
+// (je peux pas recupérer la cellsize si elle est pas construite)
+// Donc la déclaration est dans le cpp
 
 //----------------------------------------------------------
 //Ennemi de base 
 
-class BasicEnemy : public Enemy
-{
+class BasicEnemy : public Enemy {
 public:
-static int counter; // Compteur d'ennemis de type BasicEnemy
-    BasicEnemy() : Enemy(100, 3, 16.f, sf::Color(255,0,0)) {++counter;}
-    ~BasicEnemy() { --BasicEnemy::counter; }
-    
-    EnemyKind getKind() const override { return EnemyKind::Basic; } 
-
+    static int counter;
+    BasicEnemy();                 
+    ~BasicEnemy();               
+    EnemyKind getKind() const override { return EnemyKind::Basic; }
 };
 
 //----------------------------------------------------------
 //Ennemi rapide (comportement identique au ennemie de base, hp et vitesse change)
 
-class FastEnemy : public Enemy
-{
+class FastEnemy : public Enemy {
 public:
-    static int counter; // Compteur d'ennemis de type FastEnemy
-    FastEnemy() : Enemy(75, 6, 12.f, sf::Color(0,255,0)) {++counter;}
-    ~FastEnemy() { --FastEnemy::counter; } 
-
+    static int counter;
+    FastEnemy();
+    ~FastEnemy();
     EnemyKind getKind() const override { return EnemyKind::Fast; }
 };
 
 //----------------------------------------------------------
 //Ennemi tank (comportement identique au ennemie de base, hp et vitesse change) 
 
-class TankEnemy : public Enemy
-{
+class TankEnemy : public Enemy {
 public:
-    static int counter; // Compteur d'ennemis de type TankEnemy
-    TankEnemy() : Enemy(300, 1, 10.f, sf::Color(0,0,255)) {++counter;}
-    ~TankEnemy() { --TankEnemy::counter; } 
-
-    EnemyKind getKind() const override { return EnemyKind::Tank;  }   // TankEnemy
+    static int counter;
+    TankEnemy();
+    ~TankEnemy();
+    EnemyKind getKind() const override { return EnemyKind::Tank; }
 };
 
 //----------------------------------------------------------
 //Ennemi target (leur objectif est de détruire les tourelles sur leur passage (chemin le plus cours en ignorant les tourelles)
 //hp et vitesse change) 
 
-class TargetEnemy : public Enemy
-{
+class TargetEnemy : public Enemy {
 public:
-    static int counter; // Compteur d'ennemis de type TargetEnemy
-    TargetEnemy() : Enemy(150, 3, 20.f, sf::Color(100,100,100)) {++counter;}
-    ~TargetEnemy() { --TargetEnemy::counter; }
-
+    static int counter;
+    TargetEnemy();
+    ~TargetEnemy();
     EnemyKind getKind() const override { return EnemyKind::Target; }
-
 };
 
 //----------------------------------------------------------
 //Ennemi volatile (ils ignorent les tourelles, vole par dessus, hp et vitesse change) 
 
-class FlyEnemy : public Enemy
-{
+class FlyEnemy : public Enemy {
 public:
-    static int counter; // Compteur d'ennemis de type FlyEnemy
-    FlyEnemy() : Enemy(100, 4, 30.f, sf::Color(200,0,150)) {++counter;}
-    ~FlyEnemy() { --FlyEnemy::counter; }
-
+    static int counter;
+    FlyEnemy();
+    ~FlyEnemy();
     EnemyKind getKind() const override { return EnemyKind::Fly; }
-
 };
+
 
 
 #endif

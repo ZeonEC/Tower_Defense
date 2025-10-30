@@ -13,6 +13,12 @@
 
 
 
+// ====================================== ROLE DE LA CLASSE =========================================== //
+
+// La classe Tourelle représente une tourelle de défense capable de détecter des ennemis, de tirer des projectiles et de gérer ses propres caractéristiques de combat.
+// Les classes dérivées (BasicTourelle, PoisonTourelle, etc.) spécialisent la tourelle en modifiant ses statistiques et ses comportements particuliers.
+
+// ==================================================================================================== //
 
 
 // Déclarations anticipées (évite les inclusions circulaires dans les .hpp)

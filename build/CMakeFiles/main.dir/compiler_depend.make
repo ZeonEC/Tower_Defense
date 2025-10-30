@@ -1009,7 +1009,6 @@ CMakeFiles/main.dir/src/main.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/s
 CMakeFiles/main.dir/src/projectile.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/src/projectile.cpp \
   /home/enzoec/Documents/GitHub/TowerDefense/include/enemy.hpp \
   /home/enzoec/Documents/GitHub/TowerDefense/include/projectile.hpp \
-  /home/enzoec/Documents/GitHub/TowerDefense/include/render.hpp \
   /usr/include/SFML/Config.hpp \
   /usr/include/SFML/Graphics.hpp \
   /usr/include/SFML/Graphics/BlendMode.hpp \
@@ -1670,7 +1669,6 @@ CMakeFiles/main.dir/src/render.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense
 CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/src/tower.cpp \
   /home/enzoec/Documents/GitHub/TowerDefense/include/enemy.hpp \
   /home/enzoec/Documents/GitHub/TowerDefense/include/projectile.hpp \
-  /home/enzoec/Documents/GitHub/TowerDefense/include/render.hpp \
   /home/enzoec/Documents/GitHub/TowerDefense/include/tower.hpp \
   /usr/include/SFML/Config.hpp \
   /usr/include/SFML/Graphics.hpp \

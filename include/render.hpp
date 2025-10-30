@@ -7,9 +7,15 @@
 
 #include "enemy.hpp"
 
+// ====================================== ROLE DE LA CLASSE =========================================== //
+
+// La classe Render s’occupe de tout ce qui concerne la grille visuelle du jeu : elle définit la structure de la carte et fournit les outils pour l’afficher à l’écran.
+
+// ==================================================================================================== //
+
 class Render {
 
-public:
+    public:
 
     // ---------- représentation d’une cellule ---------- //
     struct Cell {

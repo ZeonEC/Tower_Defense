@@ -63,7 +63,7 @@ void Game::generateTourelle(std::vector<Tourelle*>& tourelles, std::vector<Rende
     
     if (it->turreted) {
         // déjà une tourelle sur cette cellule
-        std::cout << "Cellule " << it->id << " déjà occupée !\n";
+        //std::cout << "Cellule " << it->id << " déjà occupée !\n";
         return;
     }
 
@@ -78,7 +78,7 @@ void Game::generateTourelle(std::vector<Tourelle*>& tourelles, std::vector<Rende
             case 4: tourelles.push_back(new FlyTourelle((cs/2))); break;
         }
         it->turreted = true; // on marque la cellule comme occupée
-        std::cout << "Tourelle placée en cellule " << it->id << "\n";
+        //std::cout << "Tourelle placée en cellule " << it->id << "\n";
     }
         
     
@@ -98,22 +98,30 @@ void Game::destroyTourelles(std::vector<Tourelle*>& tourelles) {
 
     void Game::update(float dt, std::vector<Enemy*>& enemies, std::vector<Tourelle*>& tourelles)
     {
-        // 1) les tourelles tentent de tirer (création éventuelle de projectiles)
+
+        // INTEGRER LE A* DANS UPDATE ENEMY 
+        // Mettre a jour les ennemies dans la frame
+        for (auto* e : enemies) {
+        if (!e || e->isDead()) continue;
+        e->update(dt);   // <-- appelle ta fonction Enemy::update()
+        }
+
+        // les tourelles tentent de tirer (création éventuelle de projectiles)
         for (auto t : tourelles) {
             if (!t) continue;
             t->tryShoot(dt, enemies, projectiles);
         }
 
-        // 2) avancer les projectiles
+        // avancer les projectiles
         for (auto& p : projectiles) p.update(dt);
 
-        // 3) collisions projectile/ennemi
+        // collisions projectile/ennemi
         for (auto& p : projectiles) {
             if (!p.isAlive()) continue;
             for (auto e : enemies) {
                 if (!e || e->isDead()) continue;
 
-                // ⬅️ AJOUT : ignorer les ennemis non autorisés par le projectile
+                // ignorer les ennemis non autorisés par le projectile
                 if (!p.accepts(e)) continue;
 
                 const float enemyRadius = e->getRadius(); // idéalement : rayon réel (ex: e->getRadius())

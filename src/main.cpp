@@ -37,7 +37,7 @@ int main() {
     std::vector<Tourelle*> tourelles;      // PAS de new ici pas besoin grace à l'instance de Game
     std::vector<Render::Cell> cells; // Tableau de cellules pour la grille
     cells = Render::buildCells(game_window); // On construit les cellules une fois pour toute au début (Seul les caractéristiques des cellules compte dans cette fonction)
-    Game game;                       
+    Game game;                     
 
     // Initialisation des aléatoires
     std::srand(static_cast<unsigned>(std::time(nullptr))); // seed une fois

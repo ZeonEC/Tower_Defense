@@ -1,4 +1,5 @@
 #include "enemy.hpp"
+#include "render.hpp"
 
 #include <iostream>
 
@@ -21,6 +22,7 @@ Enemy::Enemy(int hp, float spd, float radius, sf::Color color) : dead(false), ea
     counter++; // Incrémente le compteur d'ennemis à chaque création
 }
 
+
 // ----------------------------------------------------------
 // Gestion des points de vie
     void Enemy::hit(int amount)
@@ -42,6 +44,7 @@ Enemy::Enemy(int hp, float spd, float radius, sf::Color color) : dead(false), ea
 
     void Enemy::update(float dt)
     {
+        // ALGO A*
     if (dead) return;
     // Déplacement simple vers la droite
     shape.move(speed * dt, 0.f);
@@ -78,6 +81,72 @@ Enemy::Enemy(int hp, float spd, float radius, sf::Color color) : dead(false), ea
     }
 }
 
+//----------------------------------------------------------
+//Ennemi de base 
+
+BasicEnemy::BasicEnemy()
+    : Enemy(
+        /*hp*/     100,
+        /*speed*/  3,
+        /*radius*/ Render::Cell::cellSize * 0.5f, // taille = cellule
+        /*color*/  sf::Color(255, 0, 0)
+    ) { ++counter; }
+    
+    BasicEnemy::~BasicEnemy() { --BasicEnemy::counter; }
+
+//----------------------------------------------------------
+//Ennemi rapide (comportement identique au ennemie de base, hp et vitesse change)
+
+    FastEnemy::FastEnemy()
+    : Enemy(
+        /*hp*/     75,
+        /*speed*/  50,
+        /*radius*/ Render::Cell::cellSize * 0.25f, // taille = cellule/2
+        /*color*/  sf::Color(0, 255, 0)
+    ) { ++counter; }
+
+    FastEnemy::~FastEnemy() { --FastEnemy::counter; } 
+
+//----------------------------------------------------------
+//Ennemi tank (comportement identique au ennemie de base, hp et vitesse change) 
+
+    TankEnemy::TankEnemy()
+    : Enemy(
+        /*hp*/     300,
+        /*speed*/  1,
+        /*radius*/ Render::Cell::cellSize * 0.6f, // taille = cellule *0.6
+        /*color*/  sf::Color(0, 0, 255)
+    ) { ++counter; }
+
+    TankEnemy::~TankEnemy() { --TankEnemy::counter; } 
+
+
+//----------------------------------------------------------
+//Ennemi target (leur objectif est de détruire les tourelles sur leur passage (chemin le plus cours en ignorant les tourelles)
+//hp et vitesse change) 
+
+    TargetEnemy::TargetEnemy()
+    : Enemy(
+        /*hp*/     150,
+        /*speed*/  3,
+        /*radius*/ Render::Cell::cellSize * 0.5f,     
+        /*color*/  sf::Color(100, 100, 100)
+    ) { ++counter; }
+
+    TargetEnemy::~TargetEnemy() { --TargetEnemy::counter; }
+
+//----------------------------------------------------------
+//Ennemi volatile (ils ignorent les tourelles, vole par dessus, hp et vitesse change) 
+
+    FlyEnemy::FlyEnemy()
+    : Enemy(
+        /*hp*/     100,
+        /*speed*/  4,
+        /*radius*/ Render::Cell::cellSize * 0.4f,
+        /*color*/  sf::Color(200, 0, 150)
+    ) { ++counter; }
+
+    FlyEnemy::~FlyEnemy() { --FlyEnemy::counter; }
 
 
   /*  void Enemy::generateEnemy ()

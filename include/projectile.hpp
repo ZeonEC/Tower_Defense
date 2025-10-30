@@ -1,16 +1,30 @@
 #ifndef PROJECTILE_HPP
 #define PROJECTILE_HPP
 
+//------------------------ INCLUDE libs ----------------------//
+
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "enemy.hpp"     // ← recommandé pour EnemyKind et Enemy::getKind()
 
+//------------------------ INCLUDE prog ----------------------//
+
+#include "enemy.hpp"     // Pour EnemyKind et Enemy::getKind()
+
+
+// ====================================== ROLE DE LA CLASSE =========================================== //
+
+// La classe Projectile représente les tirs lancés par les tourelles. 
+// Chaque projectile se déplace vers une cible et inflige des dégâts quand il entre en collision avec un ennemi.
+// Ses propriété peuvent changer en fonction du type de tourelle
+
+// ==================================================================================================== //
 
 class Enemy;      // fwd declarations pour éviter les inclusions circulaires
 class Tourelle;   // (pas utilisé ici dans l'API, mais utile si tu en auras besoin plus tard)
 
 class Projectile {
-public:
+
+    public:
 //--------------------------------------------------------------------------------//
 
     using EnemyMask = unsigned;
@@ -46,6 +60,7 @@ public:
 
 
 private:
+
     sf::CircleShape shape;
     sf::Vector2f    velocity;   // pixels/sec
     int             dmg;

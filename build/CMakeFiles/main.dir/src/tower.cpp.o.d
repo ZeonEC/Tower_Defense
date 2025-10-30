@@ -265,6 +265,6 @@ CMakeFiles/main.dir/src/tower.cpp.o: \
  /usr/include/c++/13/bits/random.tcc /usr/include/c++/13/numeric \
  /usr/include/c++/13/bits/stl_numeric.h \
  /usr/include/c++/13/pstl/glue_numeric_defs.h \
- /home/enzoec/Documents/GitHub/TowerDefense/include/render.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/projectile.hpp \
  /home/enzoec/Documents/GitHub/TowerDefense/include/projectile.hpp \
  /home/enzoec/Documents/GitHub/TowerDefense/include/enemy.hpp

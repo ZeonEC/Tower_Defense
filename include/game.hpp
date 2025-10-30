@@ -10,10 +10,19 @@
 #include <SFML/System/Vector2.hpp>
 
 //------------------------ INCLUDE prog ----------------------//
-#include "render.hpp"
-#include "enemy.hpp"
-#include "tower.hpp"
+
+#include "render.hpp" // Pour la gestion de création d'ennemy/tourelle en fonction de la taille de cellule
+#include "enemy.hpp" // création/déplacement/destruction
+#include "tower.hpp" // placement/essais de tir des tourelles
 #include "projectile.hpp"          
+
+
+// ====================================== ROLE DE LA CLASSE =========================================== //
+
+// Game orchestre le gameplay runtime : spawns, placements, tir/MAJ, collisions, nettoyage. 
+// Elle possède le stock de projectiles (par valeur) et manipule des pointeurs vers ennemis/tourelles
+
+// ==================================================================================================== //
 
 class Game {
 public:
@@ -29,10 +38,10 @@ public:
     void generateTourelle(std::vector<Tourelle*>& tourelles, std::vector<Render::Cell>& cells, float x, float y);
     void destroyTourelles(std::vector<Tourelle*>& tourelles);
 
-    // ⬅logique projectiles / tirs / collisions
+    // C'est elle qui met a jour le jeu. logique / projectiles / tirs / collisions
     void update(float dt, std::vector<Enemy*>& enemies, std::vector<Tourelle*>& tourelles);
 
-    // ⬅accès lecture/écriture aux projectiles (pour dessin)
+    // accès lecture/écriture aux projectiles (pour dessin)
     const std::vector<Projectile>& getProjectiles() const { return projectiles; }
     std::vector<Projectile>&       getProjectiles()       { return projectiles; }
 
