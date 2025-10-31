@@ -31,7 +31,6 @@ bool loadBackground(const std::string& path) {
 
 sf::Music backgroundMusic;
 
-//using namespace std;
 
 // Pour les paramètres de base, possible de faire des constantes globales dans un fichier de config !!!!!
 
