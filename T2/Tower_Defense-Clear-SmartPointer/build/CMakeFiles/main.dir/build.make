@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer
+CMAKE_SOURCE_DIR = /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/build
+CMAKE_BINARY_DIR = /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/main.dir/depend.make
@@ -70,102 +70,102 @@ include CMakeFiles/main.dir/progress.make
 include CMakeFiles/main.dir/flags.make
 
 CMakeFiles/main.dir/src/main.cpp.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/src/main.cpp.o: /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/main.cpp
+CMakeFiles/main.dir/src/main.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/main.cpp
 CMakeFiles/main.dir/src/main.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/main.dir/src/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/main.cpp.o -MF CMakeFiles/main.dir/src/main.cpp.o.d -o CMakeFiles/main.dir/src/main.cpp.o -c /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/main.dir/src/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/main.cpp.o -MF CMakeFiles/main.dir/src/main.cpp.o.d -o CMakeFiles/main.dir/src/main.cpp.o -c /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/main.cpp
 
 CMakeFiles/main.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/main.cpp > CMakeFiles/main.dir/src/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/main.cpp > CMakeFiles/main.dir/src/main.cpp.i
 
 CMakeFiles/main.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/main.cpp -o CMakeFiles/main.dir/src/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/main.cpp -o CMakeFiles/main.dir/src/main.cpp.s
 
 CMakeFiles/main.dir/src/render.cpp.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/src/render.cpp.o: /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/render.cpp
+CMakeFiles/main.dir/src/render.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/render.cpp
 CMakeFiles/main.dir/src/render.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/main.dir/src/render.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/render.cpp.o -MF CMakeFiles/main.dir/src/render.cpp.o.d -o CMakeFiles/main.dir/src/render.cpp.o -c /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/render.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/main.dir/src/render.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/render.cpp.o -MF CMakeFiles/main.dir/src/render.cpp.o.d -o CMakeFiles/main.dir/src/render.cpp.o -c /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/render.cpp
 
 CMakeFiles/main.dir/src/render.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/render.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/render.cpp > CMakeFiles/main.dir/src/render.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/render.cpp > CMakeFiles/main.dir/src/render.cpp.i
 
 CMakeFiles/main.dir/src/render.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/render.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/render.cpp -o CMakeFiles/main.dir/src/render.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/render.cpp -o CMakeFiles/main.dir/src/render.cpp.s
 
 CMakeFiles/main.dir/src/projectile.cpp.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/src/projectile.cpp.o: /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/projectile.cpp
+CMakeFiles/main.dir/src/projectile.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/projectile.cpp
 CMakeFiles/main.dir/src/projectile.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/main.dir/src/projectile.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/projectile.cpp.o -MF CMakeFiles/main.dir/src/projectile.cpp.o.d -o CMakeFiles/main.dir/src/projectile.cpp.o -c /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/projectile.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/main.dir/src/projectile.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/projectile.cpp.o -MF CMakeFiles/main.dir/src/projectile.cpp.o.d -o CMakeFiles/main.dir/src/projectile.cpp.o -c /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/projectile.cpp
 
 CMakeFiles/main.dir/src/projectile.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/projectile.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/projectile.cpp > CMakeFiles/main.dir/src/projectile.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/projectile.cpp > CMakeFiles/main.dir/src/projectile.cpp.i
 
 CMakeFiles/main.dir/src/projectile.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/projectile.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/projectile.cpp -o CMakeFiles/main.dir/src/projectile.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/projectile.cpp -o CMakeFiles/main.dir/src/projectile.cpp.s
 
 CMakeFiles/main.dir/src/enemy.cpp.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/src/enemy.cpp.o: /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/enemy.cpp
+CMakeFiles/main.dir/src/enemy.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/enemy.cpp
 CMakeFiles/main.dir/src/enemy.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/main.dir/src/enemy.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/enemy.cpp.o -MF CMakeFiles/main.dir/src/enemy.cpp.o.d -o CMakeFiles/main.dir/src/enemy.cpp.o -c /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/enemy.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/main.dir/src/enemy.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/enemy.cpp.o -MF CMakeFiles/main.dir/src/enemy.cpp.o.d -o CMakeFiles/main.dir/src/enemy.cpp.o -c /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/enemy.cpp
 
 CMakeFiles/main.dir/src/enemy.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/enemy.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/enemy.cpp > CMakeFiles/main.dir/src/enemy.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/enemy.cpp > CMakeFiles/main.dir/src/enemy.cpp.i
 
 CMakeFiles/main.dir/src/enemy.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/enemy.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/enemy.cpp -o CMakeFiles/main.dir/src/enemy.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/enemy.cpp -o CMakeFiles/main.dir/src/enemy.cpp.s
 
 CMakeFiles/main.dir/src/tower.cpp.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/src/tower.cpp.o: /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/tower.cpp
+CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/tower.cpp
 CMakeFiles/main.dir/src/tower.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/main.dir/src/tower.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/tower.cpp.o -MF CMakeFiles/main.dir/src/tower.cpp.o.d -o CMakeFiles/main.dir/src/tower.cpp.o -c /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/tower.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/main.dir/src/tower.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/tower.cpp.o -MF CMakeFiles/main.dir/src/tower.cpp.o.d -o CMakeFiles/main.dir/src/tower.cpp.o -c /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/tower.cpp
 
 CMakeFiles/main.dir/src/tower.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/tower.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/tower.cpp > CMakeFiles/main.dir/src/tower.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/tower.cpp > CMakeFiles/main.dir/src/tower.cpp.i
 
 CMakeFiles/main.dir/src/tower.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/tower.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/tower.cpp -o CMakeFiles/main.dir/src/tower.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/tower.cpp -o CMakeFiles/main.dir/src/tower.cpp.s
 
 CMakeFiles/main.dir/src/game.cpp.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/src/game.cpp.o: /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/game.cpp
+CMakeFiles/main.dir/src/game.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/game.cpp
 CMakeFiles/main.dir/src/game.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/main.dir/src/game.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/game.cpp.o -MF CMakeFiles/main.dir/src/game.cpp.o.d -o CMakeFiles/main.dir/src/game.cpp.o -c /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/game.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/main.dir/src/game.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/game.cpp.o -MF CMakeFiles/main.dir/src/game.cpp.o.d -o CMakeFiles/main.dir/src/game.cpp.o -c /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/game.cpp
 
 CMakeFiles/main.dir/src/game.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/game.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/game.cpp > CMakeFiles/main.dir/src/game.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/game.cpp > CMakeFiles/main.dir/src/game.cpp.i
 
 CMakeFiles/main.dir/src/game.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/game.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/game.cpp -o CMakeFiles/main.dir/src/game.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/game.cpp -o CMakeFiles/main.dir/src/game.cpp.s
 
 CMakeFiles/main.dir/src/Astar.cpp.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/src/Astar.cpp.o: /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/Astar.cpp
+CMakeFiles/main.dir/src/Astar.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/Astar.cpp
 CMakeFiles/main.dir/src/Astar.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/main.dir/src/Astar.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/Astar.cpp.o -MF CMakeFiles/main.dir/src/Astar.cpp.o.d -o CMakeFiles/main.dir/src/Astar.cpp.o -c /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/Astar.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/main.dir/src/Astar.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/src/Astar.cpp.o -MF CMakeFiles/main.dir/src/Astar.cpp.o.d -o CMakeFiles/main.dir/src/Astar.cpp.o -c /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/Astar.cpp
 
 CMakeFiles/main.dir/src/Astar.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/src/Astar.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/Astar.cpp > CMakeFiles/main.dir/src/Astar.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/Astar.cpp > CMakeFiles/main.dir/src/Astar.cpp.i
 
 CMakeFiles/main.dir/src/Astar.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/src/Astar.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/src/Astar.cpp -o CMakeFiles/main.dir/src/Astar.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/Astar.cpp -o CMakeFiles/main.dir/src/Astar.cpp.s
 
 # Object files for target main
 main_OBJECTS = \
@@ -193,7 +193,7 @@ main: /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.6.1
 main: /usr/lib/x86_64-linux-gnu/libsfml-audio.so.2.6.1
 main: /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.6.1
 main: CMakeFiles/main.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable main"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/main.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -205,6 +205,6 @@ CMakeFiles/main.dir/clean:
 .PHONY : CMakeFiles/main.dir/clean
 
 CMakeFiles/main.dir/depend:
-	cd /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/build /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/build /home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles/main.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/build /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/build /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles/main.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/main.dir/depend
 

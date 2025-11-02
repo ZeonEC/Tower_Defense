@@ -276,7 +276,7 @@ class Tourelle {
             /*fireRate*/        1.f,
             /*projectileSpeed*/ 680.f,
             /*radius*/          cellsize,
-            /*color*/           sf::Color(200, 200, 255),
+            /*color*/           sf::Color(255, 255, 255),
             /*cost*/            40
         ) 
             {
