@@ -1,3 +1,0 @@
-/home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles/main.dir
-/home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles/edit_cache.dir
-/home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/build/CMakeFiles/rebuild_cache.dir

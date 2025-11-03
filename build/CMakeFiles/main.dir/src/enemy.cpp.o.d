@@ -1,7 +1,7 @@
-CMakeFiles/main.dir/src/projectile.cpp.o: \
- /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/projectile.cpp \
+CMakeFiles/main.dir/src/enemy.cpp.o: \
+ /home/enzoec/Documents/GitHub/TowerDefense/src/enemy.cpp \
  /usr/include/stdc-predef.h \
- /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/include/projectile.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/enemy.hpp \
  /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
  /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
  /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \
@@ -235,9 +235,8 @@ CMakeFiles/main.dir/src/projectile.cpp.o: \
  /usr/include/SFML/Graphics/Glsl.hpp /usr/include/SFML/Graphics/Glsl.inl \
  /usr/include/SFML/Graphics/Sprite.hpp \
  /usr/include/SFML/Graphics/Text.hpp \
- /usr/include/SFML/Graphics/VertexBuffer.hpp \
- /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/include/enemy.hpp \
- /usr/include/c++/13/random /usr/include/c++/13/cmath /usr/include/math.h \
+ /usr/include/SFML/Graphics/VertexBuffer.hpp /usr/include/c++/13/random \
+ /usr/include/c++/13/cmath /usr/include/math.h \
  /usr/include/x86_64-linux-gnu/bits/math-vector.h \
  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
  /usr/include/x86_64-linux-gnu/bits/flt-eval-method.h \
@@ -265,8 +264,8 @@ CMakeFiles/main.dir/src/projectile.cpp.o: \
  /usr/include/c++/13/bits/random.tcc /usr/include/c++/13/numeric \
  /usr/include/c++/13/bits/stl_numeric.h \
  /usr/include/c++/13/pstl/glue_numeric_defs.h \
- /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/include/Astar.hpp \
- /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/include/render.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/Astar.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/render.hpp \
  /usr/include/c++/13/iostream /usr/include/c++/13/istream \
  /usr/include/c++/13/bits/istream.tcc \
- /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/include/Player.hpp
+ /home/enzoec/Documents/GitHub/TowerDefense/include/Player.hpp

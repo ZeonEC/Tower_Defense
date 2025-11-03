@@ -1,4 +1,4 @@
-# Install script for directory: /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer
+# Install script for directory: /home/enzoec/Documents/GitHub/TowerDefense
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/enzoec/Documents/GitHub/TowerDefense/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

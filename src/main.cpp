@@ -53,7 +53,7 @@ int main() {
     std::cerr << "Erreur chargement musique !" << std::endl;
     }
     // volume et boucle
-    backgroundMusic.setVolume(0.1f);  // entre 0 et 100
+    backgroundMusic.setVolume(1.f);  // entre 0 et 100
     backgroundMusic.setLoop(true);
     backgroundMusic.play();
 

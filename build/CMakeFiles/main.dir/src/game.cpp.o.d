@@ -1,7 +1,7 @@
 CMakeFiles/main.dir/src/game.cpp.o: \
- /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/src/game.cpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/src/game.cpp \
  /usr/include/stdc-predef.h \
- /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/include/game.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/game.hpp \
  /usr/include/c++/13/iostream /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
@@ -190,7 +190,7 @@ CMakeFiles/main.dir/src/game.cpp.o: \
  /usr/include/c++/13/pstl/execution_defs.h \
  /usr/include/SFML/System/Vector2.hpp \
  /usr/include/SFML/System/Vector2.inl \
- /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/include/render.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/render.hpp \
  /usr/include/SFML/Graphics.hpp /usr/include/SFML/Window.hpp \
  /usr/include/SFML/System.hpp /usr/include/SFML/Config.hpp \
  /usr/include/SFML/System/Clock.hpp /usr/include/SFML/System/Export.hpp \
@@ -269,11 +269,11 @@ CMakeFiles/main.dir/src/game.cpp.o: \
  /usr/include/SFML/Graphics/Sprite.hpp \
  /usr/include/SFML/Graphics/Text.hpp \
  /usr/include/SFML/Graphics/VertexBuffer.hpp \
- /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/include/Player.hpp \
- /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/include/enemy.hpp \
- /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/include/Astar.hpp \
- /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/include/tower.hpp \
- /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/include/projectile.hpp \
- /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/include/enemy.hpp \
- /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/include/tower.hpp \
- /home/enzoec/Documents/GitHub/TowerDefense/T2/Tower_Defense-Clear-SmartPointer/include/projectile.hpp
+ /home/enzoec/Documents/GitHub/TowerDefense/include/Player.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/enemy.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/Astar.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/tower.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/projectile.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/enemy.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/tower.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/projectile.hpp
