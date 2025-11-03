@@ -140,6 +140,7 @@ static sf::Vector2f rotateVector(const sf::Vector2f& v, float degrees)
 
 // ===================== shotgunTourelle tir multiple =====================
 
+// Tryshoot ici est indépedant du tryshoot générale, on modifie avec le vecteur d'angles les projectiles, c'est pour ça qu'on prend un targetpos
 bool shotgunTourelle::tryShoot(float dt,
                                const std::vector<Enemy*>& enemies,
                                std::vector<Projectile>& outProjectiles)
@@ -154,7 +155,7 @@ bool shotgunTourelle::tryShoot(float dt,
     sf::Vector2f toTarget = target->getPosition() - getPosition();
 
     // liste des angles pour le cône de tir
-    std::vector<float> angles = { 0.f, 22.5f, -22.5f, 45.f, -45.f, 67.5f };
+    std::vector<float> angles = { 0.f, 15.f, -15.f, 30.f, -30.f};
 
     for (float a : angles)
     {
@@ -163,7 +164,7 @@ bool shotgunTourelle::tryShoot(float dt,
         
         outProjectiles.emplace_back(
             getPosition(),
-            target->getPosition(),
+            targetPos,
             projectileSpeed,
             damage,
             /*radius*/ 4.f,
@@ -174,6 +175,7 @@ bool shotgunTourelle::tryShoot(float dt,
     cooldown = (fireRate > 0.f) ? (1.f / fireRate) : 0.25f;
     return true;
 }
+
 
 // FONCTION DE CIBLAGE SUR UNE CLASSE UNIQUE (plutot que d'utiliser les mask mais je trouve que c'est plus long car c'est une fonction par type d'ennemie ici)
 

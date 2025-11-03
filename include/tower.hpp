@@ -99,9 +99,6 @@ class Tourelle {
 
         int getCost() const { return cost; }
 
-    
-    protected:
-
         // ------------- PARTAGE AUX CLASSES HERITIERES ------------- //
 
     // Accès pour les classes dérivées
