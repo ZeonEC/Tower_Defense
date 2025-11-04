@@ -342,7 +342,9 @@ CMakeFiles/main.dir/src/enemy.cpp.o
  /home/enzoec/Documents/GitHub/TowerDefense/include/Astar.hpp
  /home/enzoec/Documents/GitHub/TowerDefense/include/Player.hpp
  /home/enzoec/Documents/GitHub/TowerDefense/include/enemy.hpp
+ /home/enzoec/Documents/GitHub/TowerDefense/include/projectile.hpp
  /home/enzoec/Documents/GitHub/TowerDefense/include/render.hpp
+ /home/enzoec/Documents/GitHub/TowerDefense/include/tower.hpp
  /usr/include/SFML/Config.hpp
  /usr/include/SFML/Graphics.hpp
  /usr/include/SFML/Graphics/BlendMode.hpp

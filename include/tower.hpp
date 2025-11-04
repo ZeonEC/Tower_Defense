@@ -68,6 +68,7 @@ class Tourelle {
         virtual void draw(sf::RenderTarget& win) const;
 
         // ------------- GAMEPLAY ------------- //
+
         
         // Les setters sont accesoires, un type d'ennemies a une range bien précise, on ne fait pas d'exception ( Piste d'amelioration si on veut upgrade des tourelles )
 
@@ -203,6 +204,18 @@ class Tourelle {
                 EnemyKind k = e->getKind();
                 return (allowedMask & kindBit(k)) != 0;
             }
+
+            // --- destruction par les ennemis ---
+        void takeDamage(int dmg) {
+            if (destroyed) return;
+            hp -= dmg;
+            if (hp <= 0) { hp = 0; destroyed = true; }
+        }
+        bool isDestroyed() const { return destroyed; }
+        
+    private:
+    int  hp = 120;        // PV de base d'une tourelle (ajuste comme tu veux)
+    bool destroyed = false;
 
 // ================================================================================= //
 // ================================================================================= //

@@ -340,7 +340,9 @@ CMakeFiles/main.dir/src/enemy.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
   /home/enzoec/Documents/GitHub/TowerDefense/include/Astar.hpp \
   /home/enzoec/Documents/GitHub/TowerDefense/include/Player.hpp \
   /home/enzoec/Documents/GitHub/TowerDefense/include/enemy.hpp \
+  /home/enzoec/Documents/GitHub/TowerDefense/include/projectile.hpp \
   /home/enzoec/Documents/GitHub/TowerDefense/include/render.hpp \
+  /home/enzoec/Documents/GitHub/TowerDefense/include/tower.hpp \
   /usr/include/SFML/Config.hpp \
   /usr/include/SFML/Graphics.hpp \
   /usr/include/SFML/Graphics/BlendMode.hpp \
@@ -2402,9 +2404,9 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
 
 /usr/include/SFML/Audio/AlResource.hpp:
 
-/home/enzoec/Documents/GitHub/TowerDefense/include/projectile.hpp:
-
 /home/enzoec/Documents/GitHub/TowerDefense/include/game.hpp:
+
+/home/enzoec/Documents/GitHub/TowerDefense/include/projectile.hpp:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h:
 

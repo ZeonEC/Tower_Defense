@@ -227,76 +227,165 @@ void Game::destroyTourelles(std::vector<Tourelle*>& tourelles) {
 }
 
 
-    void Game::update(PathFinding_AStar& pathfinder, const std::vector<Render::Cell>& cells, float dt, std::vector<Enemy*>& enemies, std::vector<Tourelle*>& tourelles, Player* player)
-    {
-
-        // INTEGRER LE A* DANS UPDATE ENEMY 
-        // Mettre a jour les ennemies dans la frame
-for (auto it = enemies.begin(); it != enemies.end(); )
+void Game::update(PathFinding_AStar& pathfinder,
+                  const std::vector<Render::Cell>& cells,
+                  float dt,
+                  std::vector<Enemy*>& enemies,
+                  std::vector<Tourelle*>& tourelles,
+                  Player* player)
 {
-    Enemy* e = *it;
-    if (!e) {
+    // =======================
+    // 1) UPDATE ENNEMIS
+    // =======================
+    for (auto it = enemies.begin(); it != enemies.end(); )
+    {
+        Enemy* e = *it;
+        if (!e) { it = enemies.erase(it); continue; }
+
+        // Fournir la liste des tours aux FlyEnemy pour leur IA (anti-A*)
+        if (auto* fe = dynamic_cast<FlyEnemy*>(e)) {
+            fe->setTowerList(&tourelles);
+        }
+
+        // Fournir la liste des tours aux TargetEnemy  (ici pas comme les Fly car il garde le astar mais tir quand ils en ont une a porté)
+
+        if (auto* te = dynamic_cast<TargetEnemy*>(e)) {
+        te->setTowerList(&tourelles);
+        }
+
+        // Mise à jour de l'ennemi (A* pour les ground, poursuite/arrêt à portée pour les Fly)
+        e->update(pathfinder, cells);
+
+        // Les Fly et les Target tirent s'ils sont à portée d'une tour
+        if (auto* fe = dynamic_cast<FlyEnemy*>(e)) {
+            fe->tryShoot(dt, projectiles);
+        }
+
+        if (auto* te = dynamic_cast<TargetEnemy*>(e)) {
+        te->tryShoot(dt, projectiles);
+        }
+
+        // Sorties de boucle selon l'état
+        if (e->reachedGoal) {
+            player->reduceHealth(e->getDamage());
+            delete e;
+            it = enemies.erase(it);
+            std::cout << "Un ennemi a atteint la fin ! Vie du joueur : "
+                      << player->getHealth() << "\n";
+            continue;
+        }
+
+        if (e->isDead()) {
+            const int rv = e->ressourceValue; // sauvegarder AVANT delete
+            delete e;
+            it = enemies.erase(it);
+            player->AddRessources(rv);
+            std::cout << "Ennemi tué ! Ressources gagnées : " << rv
+                      << " | Total : " << player->getRessources() << "\n";
+            continue;
+        }
+
         ++it;
-        continue;
     }
 
-    e->update(pathfinder, cells);
+    // =======================
+    // 2) TOURELLES : TIR
+    // =======================
+    for (auto* t : tourelles) {
+        if (!t) continue;
+        t->tryShoot(dt, enemies, projectiles);
+    }
 
-    if (e->reachedGoal) {
-        // L'ennemi a atteint la fin : réduit la vie du joueur
-        player->reduceHealth(e->getDamage());
-        delete e;
-        it = enemies.erase(it);
-        std::cout << "Un ennemi a atteint la fin ! Vie du joueur : " << player->getHealth() << "\n";
-    } 
-    else if (e->isDead()) {
-        // L'ennemi est mort avant d'atteindre la fin : donne des ressources
-        player->AddRessources(e->ressourceValue);
-        delete e;
-        it = enemies.erase(it);
-        std::cout << "Ennemi tué ! Ressources gagnées : " << e->ressourceValue 
-                  << " | Total : " << player->getRessources() << "\n";
-    } 
-    else {
-        ++it;
+    // =======================
+    // 3) PROJECTILES : UPDATE
+    // =======================
+    for (auto& p : projectiles) {
+        p.update(dt);
+    }
+
+    // =======================
+    // 4) COLLISIONS
+    // =======================
+
+    // --- 4a) Projectiles qui VISENT LES TOURELLES ---
+    for (auto& p : projectiles) {
+        if (!p.isAlive()) continue;
+        if (!p.targetsTowers()) continue; // <-- nécessite Projectile::targetsTowers()
+
+        for (auto* t : tourelles) {
+            if (!t || t->isDestroyed()) continue;
+
+            if (p.collidesWith(t->getPosition(), t->getRadius())) {
+                t->takeDamage(p.getDamage());
+                p.kill();
+                break; // projectile consommé
+            }
+        }
+    }
+
+    // --- 4b) Projectiles qui VISENT LES ENNEMIS (comportement existant) ---
+    for (auto& p : projectiles) {
+        if (!p.isAlive()) continue;
+        if (p.targetsTowers()) continue; // ignorer ceux destinés aux tours
+
+        for (auto* e : enemies) {
+            if (!e || e->isDead()) continue;
+
+            // Respect du masque de ciblage du projectile
+            if (!p.accepts(e)) continue;
+
+            const float enemyRadius = e->getRadius();
+            if (p.collidesWith(e->getPosition(), enemyRadius)) {
+                e->takeDamage(p.getDamage());
+                p.kill();
+                break; // projectile consommé
+            }
+        }
+    }
+
+    // Nettoyage des projectiles inactifs
+    projectiles.erase(
+        std::remove_if(projectiles.begin(), projectiles.end(),
+                       [](const Projectile& pr){ return !pr.isAlive(); }),
+        projectiles.end()
+    );
+
+    // =======================
+    // 5) TOURELLES DÉTRUITES : NETTOYAGE + LIBÉRATION A*
+    // =======================
+    for (auto tit = tourelles.begin(); tit != tourelles.end(); )
+    {
+        Tourelle* t = *tit;
+        if (t && t->isDestroyed()) {
+            // Libérer la cellule (marque visuelle + A*)
+            const sf::Vector2f tp = t->getPosition();
+
+            auto& cellsNC = const_cast<std::vector<Render::Cell>&>(cells);
+            auto cit = std::find_if(cellsNC.begin(), cellsNC.end(),
+                                    [&tp](const Render::Cell& c){ return c.bounds.contains(tp); });
+
+            if (cit != cellsNC.end()) {
+                cit->turreted = false;
+
+                // Libérer aussi le node de la grille A*
+                const int index = cit->row * pathfinder.gridCols + cit->col;
+                if (index >= 0 && index < (int)pathfinder.Nodes.size()) {
+                    pathfinder.Nodes[index].turreted = false;
+                }
+            }
+
+            delete t;
+            tit = tourelles.erase(tit);
+
+            // Prévenir les ennemis (les non-fly) qu'un nouveau chemin peut exister
+            for (auto* e : enemies) if (e) e->needRepath = true;
+        } else {
+            ++tit;
+        }
     }
 }
 
-        // les tourelles tentent de tirer (création éventuelle de projectiles)
-        for (auto t : tourelles) {
-            if (!t) continue;
-            t->tryShoot(dt, enemies, projectiles);
-        }
 
-        // avancer les projectiles
-        for (auto& p : projectiles) p.update(dt);
-
-        // collisions projectile/ennemi
-        for (auto& p : projectiles) {
-            if (!p.isAlive()) continue;
-            for (auto e : enemies) {
-                if (!e || e->isDead()) continue;
-
-                // ignorer les ennemis non autorisés par le projectile
-                if (!p.accepts(e)) continue;
-
-                const float enemyRadius = e->getRadius(); // idéalement : rayon réel (ex: e->getRadius())
-                if (p.collidesWith(e->getPosition(), enemyRadius)) 
-                {
-                    e->takeDamage(p.getDamage());
-                    p.kill();
-                    break;
-                }
-            }
-        }
-
-        // 4) nettoyage
-        projectiles.erase(
-            std::remove_if(projectiles.begin(), projectiles.end(),
-                        [](const Projectile& pr){ return !pr.isAlive(); }),
-            projectiles.end()
-        );
-    }
 
 /*float Game::spawn(float x, float y) {  //Fonction qui marche pas
     static std::random_device rd;

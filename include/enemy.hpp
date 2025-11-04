@@ -12,7 +12,9 @@
 
 
 //------------------------ INCLUDE prog ----------------------//
-
+#include <vector>
+class Tourelle;
+class Projectile;
 //#include "render.hpp"
 
 // ====================================== ROLE DE LA CLASSE =========================================== //
@@ -141,6 +143,28 @@ public:
     TargetEnemy();
     ~TargetEnemy();
     EnemyKind getKind() const override { return EnemyKind::Target; }
+
+    void update(PathFinding_AStar& /*pathfinder*/, const std::vector<Render::Cell>& /*cells*/) override;
+
+    // injecté par Game avant l’update
+    void setTowerList(const std::vector<Tourelle*>* list) { towers = list; } 
+    bool tryShoot(float dt, std::vector<Projectile>& outProjectiles);
+
+    private:
+
+    const std::vector<Tourelle*>* towers = nullptr;
+    Tourelle* target = nullptr;
+
+    // paramètres d’attaque
+    float shootRange   = 50.f;
+    float projSpeed    = 520.f;
+    int   projDamage   = 6;
+    float fireRate     = 1.5f;   // tirs/s
+    float fireCooldown = 0.f;
+
+    void acquireTarget();                 // pick la tourelle la plus proche
+    void moveTowards(const sf::Vector2f& dest, float step);
+
 };
 
 //----------------------------------------------------------
@@ -152,24 +176,31 @@ public:
     FlyEnemy();
     ~FlyEnemy();
     EnemyKind getKind() const override { return EnemyKind::Fly; }
+
+    // on garde la même signature que Enemy::update (virtuel)
+    void update(PathFinding_AStar& /*pathfinder*/, const std::vector<Render::Cell>& /*cells*/) override;
+
+    // injecté par Game avant l’update
+    void setTowerList(const std::vector<Tourelle*>* list) { towers = list; } 
+    bool tryShoot(float dt, std::vector<Projectile>& outProjectiles);
+
+private:
+    // contexte
+    const std::vector<Tourelle*>* towers = nullptr;
+    Tourelle* target = nullptr;
+
+    // paramètres d’attaque
+    float shootRange   = 50.f;
+    float projSpeed    = 520.f;
+    int   projDamage   = 6;
+    float fireRate     = 1.5f;   // tirs/s
+    float fireCooldown = 0.f;
+
+    void acquireTarget();                 // pick la tourelle la plus proche
+    void moveTowards(const sf::Vector2f& dest, float step);
 };
 
 
 
+
 #endif
-
-
-//----------------------------------------------------------
-    //Accessors (lecture)
-
-    //int getHp() const;
-    //float getSpeed() const;
-    //bool isDead() const;
-    //bool hasEaten() const;
-
-
-    //Mutators (écriture)
-
-    //void hit(int amount);
-
-//----------------------------------------------------------

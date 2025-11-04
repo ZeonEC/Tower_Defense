@@ -268,4 +268,8 @@ CMakeFiles/main.dir/src/enemy.cpp.o: \
  /home/enzoec/Documents/GitHub/TowerDefense/include/render.hpp \
  /usr/include/c++/13/iostream /usr/include/c++/13/istream \
  /usr/include/c++/13/bits/istream.tcc \
- /home/enzoec/Documents/GitHub/TowerDefense/include/Player.hpp
+ /home/enzoec/Documents/GitHub/TowerDefense/include/Player.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/tower.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/enemy.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/projectile.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/include/projectile.hpp
