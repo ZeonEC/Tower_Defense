@@ -2,118 +2,153 @@
 #define ENEMY_HPP
 
 //------------------------ INCLUDE libs ----------------------//
-#include <SFML/Graphics.hpp>
-#include <random>
-#include <cstdlib>  // pour rand() et srand()
-#include <ctime>    // pour time()
-#include <string>
-#include "Astar.hpp"
-#include "render.hpp"
 
+#include <SFML/Graphics.hpp>  // sf::Texture, sf::Sprite, sf::Vector2f, sf::RenderTarget
+#include <vector>             
+#include <string>             
+#include <cstdlib>            // rand()
+#include <ctime>              // time() (seed éventuel ailleurs)
+//#include <random>             
 
 //------------------------ INCLUDE prog ----------------------//
-#include <vector>
+
+// On a besoin de PathFinding_AStar et Render::Cell dans les signatures de update().
+// Pour limiter les dépendances en .hpp, on pourrait *forward-decl* ces types ici
+// et n'inclure les headers réels que dans enemy.cpp. Mais je maitrise pas trop (a redemander a Fougerolle)
+
+#include "Astar.hpp"   // pour PathFinding_AStar
+#include "render.hpp"  // pour Render::Cell
+
+// Forward-decl pour éviter les inclusions circulaires
 class Tourelle;
 class Projectile;
-//#include "render.hpp"
 
-// ====================================== ROLE DE LA CLASSE =========================================== //
 
-// La classe Enemy représente une unité ennemie que les tourelles doivent attaquer. C’est une entité mobile et destructible du jeu
-// Les classes dérivées (BasicEnemy, FastEnemy, TankEnemy, etc.) héritent de Enemy et définissent leurs caractéristiques propres : vitesse, points de vie, apparence…
-
+// ==================================================================================================== //
+//                                       RÔLE DU MODULE ENEMY                                           //
+// ---------------------------------------------------------------------------------------------------- //
+// La classe de base `Enemy` représente une unité hostile du jeu : mobile, destructible et rendue avec
+// SFML. Les classes dérivées (BasicEnemy, FastEnemy, TankEnemy, TargetEnemy, FlyEnemy) ne changent
+// que les stats (HP, vitesse, forme...) et dans certain cas le behavior ("vol", tir, etc.)
+//
+// Le cycle de vie d'un ennemi :
+//   - construction (stats, sprite)
+//   - update() : déplacement (A* pour les terrestres), logique (tir éventuel), états (mort/goal)
+//   - draw()   : rendu SFML
+//
+// On utilise le polymorphisme donc des virtual-- pour séparer certain comportement des enemies
 // ==================================================================================================== //
 
 
-
+//------------------------ Typage des types d’ennemis ----------------------//
+//
+// Utilisé partout (tourelles, projectiles) pour filtrer/identifier rapidement les cibles.
+// Avec ça on peut définir les autorisations de tir sur enemy mais commme on a mis les même noms
+// pour turret et enemy bah on s'en sert pareil (1 mask plutot que 2);
+//
 enum class EnemyKind { Basic = 0, Fast, Tank, Target, Fly };
 
-class Enemy // Déclaration de la classe Ennemy
-{
-    //private:
 
-    protected : //Protégé = accessible aux classes dérivées (les différents types d'ennemis)
+// ===================================== CLASSE DE BASE ===================================== //
 
-    //Paramètres de base de l'ennemi
-    int   health;
-    float speed;
-    bool dead; // Variable d'état de l'ennemie (vivant/mort)
-    bool eat; // Variable d'objetif atteint 
+class Enemy {
 
+protected:
 
-    // Tableau de pointeurs vers des ennemis, comprennant la classe enemy, il porte le nom de "enemies"
+    // ------------------------ Paramètres de base ------------------------ //
+    int   health;   // Points de vie
+    float speed;    // Vitesse linéaire (px/s)
+    bool  dead;     // État dead/goal
+    bool  eat;      // Objectif atteint ? (ex: a traversé la map etc.)
+
+    // Vecteur de la totalité des enemy 
     std::vector<Enemy*> enemies;
-    //Apparition des ennemies
-    int r = static_cast<int>(rand() % 5); // entre 0 et 3
 
-    //Définition du sprite
-    sf::Texture texture;
-    sf::Sprite  sprite;
+    // ------------------------ Gestion de la RNG ------------------------ //
+    // Petite variable de variété (pour le spawn typiquement).
+    int r = static_cast<int>(rand() % 5); // [0..4]
 
+    // ------------------------ SFML : visuel ------------------------ //
+    sf::Texture texture;  // texture du sprite
+    sf::Sprite  sprite;   // sprite affiché en jeu
 
-    // On défini a la construction de l'ennemi sa vie,vitesse, sa taille et son sprite
-    Enemy(int hp, float spd, float radius, const std::string& texturePath, int ressourceValue); // Constructeur générique d'un ennemi, utile pour les type d'ennemis dérivés
+    // ------------------------ Cheminement (path) ------------------------ //
+    // Pour les unités terrestres : liste de points à suivre (chemin A* discrétisé)
+    std::vector<sf::Vector2f> pathPoints; // points de passage
+    int   currentPathIndex;               // index du point courant
+    int   enemyID;                        // ID utile pour debug/trace
 
-    std::vector<sf::Vector2f> pathPoints; // Tableau contenant tous les points de la trajectoire de l'ennemi
-    int currentPathIndex; // index actuel du tableau de points
-    int enemyID;
+    // ------------------------ Constructeur ------------------------ //
+    // - hp/spd : stats
+    // - radius : taille de l'enemy (on s'en sert surtout pour 'calibrer' les sprites et la hitbox)
+    // - texturePath : chemin vers l'image pour SFML
+    // - ressourceValue : ressources données au joueur à la mort
+    Enemy(int hp, float spd, float radius, const std::string& texturePath, int ressourceValue);
 
-    public:
+public:
 
-    bool reachedGoal = false;
-    bool needRepath;
+    // ------------------------ État public temps réel ------------------------ //
+    bool reachedGoal = false; // a atteint l’objectif de la vague ?
+    bool needRepath  = false; // doit recalculer son chemin (obstacles, tourelles posées, etc...)
 
-    virtual ~Enemy() = default; // Destructeur virtuel par défaut -- apparement obligatoire
-    virtual EnemyKind getKind() const = 0;  // chaque dérivée le précise
+    static int counter; // Compteur global (tous types confondus)
+    virtual ~Enemy() = default; // Destructeur 
 
-    static int counter; // Compteur d'ennemis total
+    // Type dynamique de l'ennemi (obligatoire dans chaque dérivé pour le mask)
+    virtual EnemyKind getKind() const = 0;
 
-    //Gestion des points de vie
-    void hit(int amount); // L'ennemie subit des dégats
-    bool isDead() const; // L'ennemi est-il mort ?
-
-    //Etat de l'ennemi -- De simple getter pas forcément utile
-    int getHp() const;
-    float getSpeed() const;
-    bool hasEaten() const;
+    // ------------------------ Gestion des PV ------------------------ //
+    // Applique des dégâts bruts (dmg) et met à jour l'état mort si nécessaire.
+    void hit(int amount);
     void takeDamage(int amount);
-    
-    int getDamage() const { return 1; } // valeur par défaut, à adapter selon le type d'ennemi
+
+    bool isDead() const; // HP <= 0 ?
+
+    // ------------------------ Accesseurs ------------------------ //
+    int   getHp()    const;
+    float getSpeed() const;
+    bool  hasEaten() const;
+
+    // Dégâts infligés au joueur/structure si l’ennemi atteint sa cible (par défaut 1)
+    int getDamage() const { return 1; }
+
+    // Ressources données au joueur à la mort 
     int ressourceValue;
 
-
-//--- SFML --//
-
+    // ------------------------ SFML & Géo ------------------------ //
     void setPosition(float x, float y) { sprite.setPosition(x, y); }
-    float getRadius() const;
     sf::Vector2f getPosition() const   { return sprite.getPosition(); }
-    
+
+    // Rayon "logique" (collision simple ou scale visuel selon ton implémentation)
+    float getRadius() const;
+
+    // Affichage
     virtual void draw(sf::RenderTarget& win) const;
 
-    // Boucle de jeu
-    virtual void update(PathFinding_AStar& pathfinder, const std::vector<Render::Cell>& cells);                 // déplacement basique
+    // ------------------------ Boucle de jeu ------------------------ //
+    // Déplacement/comportement de base.
+    // - pathfinder : permet de (re)calculer le chemin (A*)
+    // - cells      : grille (cellules) fournie par le moteur de rendu (positions, walkable, etc.)
+    virtual void update(PathFinding_AStar& pathfinder, const std::vector<Render::Cell>& cells);
 };
 
-// ---------------------------- DECLARATION DES ENNEMIES ---------------------------- //
 
-// Je ne peux pas faire toute la déclaration ici, malheureusement inclure render ici ferai une loupe d'inclusion 
-// (je peux pas recupérer la cellsize si elle est pas construite)
-// Donc la déclaration est dans le cpp
+// ===================================== DÉRIVÉS CONCRETS ===================================== //
+//
+// Tous héritent de Enemy, changent simplement les stats et parfois update() / tir.
 
 //----------------------------------------------------------
-//Ennemi de base 
-
+// Ennemi de base : stats équilibrées
 class BasicEnemy : public Enemy {
 public:
     static int counter;
-    BasicEnemy();                 
-    ~BasicEnemy();               
+    BasicEnemy();
+    ~BasicEnemy();
     EnemyKind getKind() const override { return EnemyKind::Basic; }
 };
 
 //----------------------------------------------------------
-//Ennemi rapide (comportement identique au ennemie de base, hp et vitesse change)
-
+// Ennemi rapide : vitesse ↑, PV ↓ (comportement identique sinon)
 class FastEnemy : public Enemy {
 public:
     static int counter;
@@ -123,8 +158,7 @@ public:
 };
 
 //----------------------------------------------------------
-//Ennemi tank (comportement identique au ennemie de base, hp et vitesse change) 
-
+// Ennemi tank : PV ↑↑, vitesse ↓ (comportement identique sinon)
 class TankEnemy : public Enemy {
 public:
     static int counter;
@@ -134,9 +168,9 @@ public:
 };
 
 //----------------------------------------------------------
-//Ennemi target (leur objectif est de détruire les tourelles sur leur passage (chemin le plus cours en ignorant les tourelles)
-//hp et vitesse change) 
-
+// Ennemi "Target" : objectif = attaquer les tourelles sur sa route.
+// - Peut tirer (tryShoot)
+// - Se déplace vers une tourelle acquise (acquireTarget + moveTowards)
 class TargetEnemy : public Enemy {
 public:
     static int counter;
@@ -144,32 +178,36 @@ public:
     ~TargetEnemy();
     EnemyKind getKind() const override { return EnemyKind::Target; }
 
+    // Ignore le pathfinding global (comportement personnalisé)
     void update(PathFinding_AStar& /*pathfinder*/, const std::vector<Render::Cell>& /*cells*/) override;
 
-    // injecté par Game avant l’update
-    void setTowerList(const std::vector<Tourelle*>* list) { towers = list; } 
+    // Le Game injecte la liste des tourelles à chaque frame (ou au spawn)
+    void setTowerList(const std::vector<Tourelle*>* list) { towers = list; }
+
+    // Tente un tir si la cadence le permet, pousse le projectile dans outProjectiles
     bool tryShoot(float dt, std::vector<Projectile>& outProjectiles);
 
-    private:
+private:
+    // ------------------------ Contexte combat ------------------------ //
+    const std::vector<Tourelle*>* towers = nullptr; // référence externe (non possédée)
+    Tourelle* target = nullptr;                      // cible actuelle
 
-    const std::vector<Tourelle*>* towers = nullptr;
-    Tourelle* target = nullptr;
+    // ------------------------ Stats d'attaque ------------------------ //
+    float shootRange   = 50.f;  // portée du tir (px)
+    float projSpeed    = 520.f; // vitesse du projectile (px/s)
+    int   projDamage   = 6;     // dégâts infligés par projectile
+    float fireRate     = 1.5f;  // tirs par seconde
+    float fireCooldown = 0.f;   // temps restant avant prochain tir
 
-    // paramètres d’attaque
-    float shootRange   = 50.f;
-    float projSpeed    = 520.f;
-    int   projDamage   = 6;
-    float fireRate     = 1.5f;   // tirs/s
-    float fireCooldown = 0.f;
-
-    void acquireTarget();                 // pick la tourelle la plus proche
-    void moveTowards(const sf::Vector2f& dest, float step);
-
+    // ------------------------ Helpers comportement ------------------------ //
+    void acquireTarget();                        // choisit la tourelle la plus proche
+    void moveTowards(const sf::Vector2f& dest, float step); // avance vers dest (step=px/frame)
 };
 
 //----------------------------------------------------------
-//Ennemi volatile (ils ignorent les tourelles, vole par dessus, hp et vitesse change) 
-
+// Ennemi volant : ignore les obstacles/tourelles au sol.
+// - Peut aussi tirer (tryShoot)
+// - update survol simple + acquisition tourelle la plus proche
 class FlyEnemy : public Enemy {
 public:
     static int counter;
@@ -177,30 +215,27 @@ public:
     ~FlyEnemy();
     EnemyKind getKind() const override { return EnemyKind::Fly; }
 
-    // on garde la même signature que Enemy::update (virtuel)
-    void update(PathFinding_AStar& /*pathfinder*/, const std::vector<Render::Cell>& /*cells*/) override;
+    // Vol = pas d'A* sol
+    void update(PathFinding_AStar&, const std::vector<Render::Cell>&) override;
 
-    // injecté par Game avant l’update
-    void setTowerList(const std::vector<Tourelle*>* list) { towers = list; } 
+    void setTowerList(const std::vector<Tourelle*>* list) { towers = list; }
     bool tryShoot(float dt, std::vector<Projectile>& outProjectiles);
 
 private:
-    // contexte
+    // ------------------------ Contexte combat ------------------------ //
     const std::vector<Tourelle*>* towers = nullptr;
     Tourelle* target = nullptr;
 
-    // paramètres d’attaque
+    // ------------------------ Stats d'attaque ------------------------ //
     float shootRange   = 50.f;
     float projSpeed    = 520.f;
     int   projDamage   = 6;
     float fireRate     = 1.5f;   // tirs/s
     float fireCooldown = 0.f;
 
-    void acquireTarget();                 // pick la tourelle la plus proche
+    // ------------------------ Helpers comportement ------------------------ //
+    void acquireTarget();                        // choisit la tourelle la plus proche
     void moveTowards(const sf::Vector2f& dest, float step);
 };
-
-
-
 
 #endif
