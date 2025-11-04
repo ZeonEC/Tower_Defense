@@ -131,8 +131,6 @@ CMakeFiles/main.dir/src/Astar.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
   /usr/include/c++/13/bits/postypes.h \
   /usr/include/c++/13/bits/predefined_ops.h \
   /usr/include/c++/13/bits/ptr_traits.h \
-  /usr/include/c++/13/bits/random.h \
-  /usr/include/c++/13/bits/random.tcc \
   /usr/include/c++/13/bits/range_access.h \
   /usr/include/c++/13/bits/refwrap.h \
   /usr/include/c++/13/bits/requires_hosted.h \
@@ -149,7 +147,6 @@ CMakeFiles/main.dir/src/Astar.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
   /usr/include/c++/13/bits/stl_iterator_base_types.h \
   /usr/include/c++/13/bits/stl_map.h \
   /usr/include/c++/13/bits/stl_multimap.h \
-  /usr/include/c++/13/bits/stl_numeric.h \
   /usr/include/c++/13/bits/stl_pair.h \
   /usr/include/c++/13/bits/stl_tempbuf.h \
   /usr/include/c++/13/bits/stl_tree.h \
@@ -170,7 +167,6 @@ CMakeFiles/main.dir/src/Astar.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
   /usr/include/c++/13/clocale \
   /usr/include/c++/13/cmath \
   /usr/include/c++/13/cstddef \
-  /usr/include/c++/13/cstdint \
   /usr/include/c++/13/cstdio \
   /usr/include/c++/13/cstdlib \
   /usr/include/c++/13/ctime \
@@ -195,13 +191,10 @@ CMakeFiles/main.dir/src/Astar.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
   /usr/include/c++/13/locale \
   /usr/include/c++/13/map \
   /usr/include/c++/13/new \
-  /usr/include/c++/13/numeric \
   /usr/include/c++/13/ostream \
   /usr/include/c++/13/pstl/execution_defs.h \
   /usr/include/c++/13/pstl/glue_algorithm_defs.h \
-  /usr/include/c++/13/pstl/glue_numeric_defs.h \
   /usr/include/c++/13/pstl/pstl_config.h \
-  /usr/include/c++/13/random \
   /usr/include/c++/13/stdexcept \
   /usr/include/c++/13/streambuf \
   /usr/include/c++/13/string \
@@ -323,7 +316,6 @@ CMakeFiles/main.dir/src/Astar.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
   /usr/include/x86_64-linux-gnu/c++/13/bits/gthr-default.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/gthr.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/messages_members.h \
-  /usr/include/x86_64-linux-gnu/c++/13/bits/opt_random.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/time_members.h \
   /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
@@ -468,8 +460,6 @@ CMakeFiles/main.dir/src/enemy.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
   /usr/include/c++/13/bits/postypes.h \
   /usr/include/c++/13/bits/predefined_ops.h \
   /usr/include/c++/13/bits/ptr_traits.h \
-  /usr/include/c++/13/bits/random.h \
-  /usr/include/c++/13/bits/random.tcc \
   /usr/include/c++/13/bits/range_access.h \
   /usr/include/c++/13/bits/refwrap.h \
   /usr/include/c++/13/bits/requires_hosted.h \
@@ -486,7 +476,6 @@ CMakeFiles/main.dir/src/enemy.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
   /usr/include/c++/13/bits/stl_iterator_base_types.h \
   /usr/include/c++/13/bits/stl_map.h \
   /usr/include/c++/13/bits/stl_multimap.h \
-  /usr/include/c++/13/bits/stl_numeric.h \
   /usr/include/c++/13/bits/stl_pair.h \
   /usr/include/c++/13/bits/stl_tempbuf.h \
   /usr/include/c++/13/bits/stl_tree.h \
@@ -507,7 +496,6 @@ CMakeFiles/main.dir/src/enemy.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
   /usr/include/c++/13/clocale \
   /usr/include/c++/13/cmath \
   /usr/include/c++/13/cstddef \
-  /usr/include/c++/13/cstdint \
   /usr/include/c++/13/cstdio \
   /usr/include/c++/13/cstdlib \
   /usr/include/c++/13/ctime \
@@ -532,13 +520,10 @@ CMakeFiles/main.dir/src/enemy.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
   /usr/include/c++/13/locale \
   /usr/include/c++/13/map \
   /usr/include/c++/13/new \
-  /usr/include/c++/13/numeric \
   /usr/include/c++/13/ostream \
   /usr/include/c++/13/pstl/execution_defs.h \
   /usr/include/c++/13/pstl/glue_algorithm_defs.h \
-  /usr/include/c++/13/pstl/glue_numeric_defs.h \
   /usr/include/c++/13/pstl/pstl_config.h \
-  /usr/include/c++/13/random \
   /usr/include/c++/13/stdexcept \
   /usr/include/c++/13/streambuf \
   /usr/include/c++/13/string \
@@ -660,7 +645,6 @@ CMakeFiles/main.dir/src/enemy.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
   /usr/include/x86_64-linux-gnu/c++/13/bits/gthr-default.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/gthr.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/messages_members.h \
-  /usr/include/x86_64-linux-gnu/c++/13/bits/opt_random.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/time_members.h \
   /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
@@ -2160,8 +2144,6 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
   /usr/include/c++/13/bits/postypes.h \
   /usr/include/c++/13/bits/predefined_ops.h \
   /usr/include/c++/13/bits/ptr_traits.h \
-  /usr/include/c++/13/bits/random.h \
-  /usr/include/c++/13/bits/random.tcc \
   /usr/include/c++/13/bits/range_access.h \
   /usr/include/c++/13/bits/refwrap.h \
   /usr/include/c++/13/bits/requires_hosted.h \
@@ -2178,7 +2160,6 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
   /usr/include/c++/13/bits/stl_iterator_base_types.h \
   /usr/include/c++/13/bits/stl_map.h \
   /usr/include/c++/13/bits/stl_multimap.h \
-  /usr/include/c++/13/bits/stl_numeric.h \
   /usr/include/c++/13/bits/stl_pair.h \
   /usr/include/c++/13/bits/stl_tempbuf.h \
   /usr/include/c++/13/bits/stl_tree.h \
@@ -2199,7 +2180,6 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
   /usr/include/c++/13/clocale \
   /usr/include/c++/13/cmath \
   /usr/include/c++/13/cstddef \
-  /usr/include/c++/13/cstdint \
   /usr/include/c++/13/cstdio \
   /usr/include/c++/13/cstdlib \
   /usr/include/c++/13/ctime \
@@ -2224,13 +2204,10 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
   /usr/include/c++/13/locale \
   /usr/include/c++/13/map \
   /usr/include/c++/13/new \
-  /usr/include/c++/13/numeric \
   /usr/include/c++/13/ostream \
   /usr/include/c++/13/pstl/execution_defs.h \
   /usr/include/c++/13/pstl/glue_algorithm_defs.h \
-  /usr/include/c++/13/pstl/glue_numeric_defs.h \
   /usr/include/c++/13/pstl/pstl_config.h \
-  /usr/include/c++/13/random \
   /usr/include/c++/13/stdexcept \
   /usr/include/c++/13/streambuf \
   /usr/include/c++/13/string \
@@ -2352,7 +2329,6 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
   /usr/include/x86_64-linux-gnu/c++/13/bits/gthr-default.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/gthr.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/messages_members.h \
-  /usr/include/x86_64-linux-gnu/c++/13/bits/opt_random.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/time_members.h \
   /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
@@ -2388,6 +2364,12 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
 
 /usr/include/SFML/Audio/AlResource.hpp:
 
+/usr/include/c++/13/pstl/glue_numeric_defs.h:
+
+/usr/include/c++/13/cstdint:
+
+/usr/include/c++/13/bits/random.h:
+
 /home/enzoec/Documents/GitHub/TowerDefense/include/game.hpp:
 
 /home/enzoec/Documents/GitHub/TowerDefense/include/projectile.hpp:
@@ -2395,6 +2377,10 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
 /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h:
+
+/usr/include/c++/13/numeric:
+
+/usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h:
 
 /usr/include/x86_64-linux-gnu/sys/cdefs.h:
 
@@ -2482,20 +2468,6 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
 
 /usr/include/x86_64-linux-gnu/bits/sched.h:
 
-/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
-
-/usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
-
-/usr/include/SFML/Audio/SoundFileReader.hpp:
-
-/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h:
-
-/usr/include/x86_64-linux-gnu/bits/math-vector.h:
-
 /usr/include/c++/13/bits/ostream.tcc:
 
 /usr/include/c++/13/bits/uses_allocator_args.h:
@@ -2507,6 +2479,10 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
 /usr/include/x86_64-linux-gnu/bits/timesize.h:
 
 /usr/include/c++/13/bits/locale_classes.h:
+
+/usr/include/SFML/Audio/SoundFileReader.hpp:
+
+/usr/include/x86_64-linux-gnu/bits/mathcalls.h:
 
 /usr/include/SFML/Graphics/RenderStates.hpp:
 
@@ -2586,6 +2562,8 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
 
 /usr/include/c++/13/bits/hash_bytes.h:
 
+/usr/include/x86_64-linux-gnu/bits/math-vector.h:
+
 /usr/include/c++/13/bits/basic_string.tcc:
 
 /usr/include/c++/13/bit:
@@ -2605,6 +2583,8 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
 /usr/include/SFML/Audio.hpp:
 
 /usr/include/SFML/System/ThreadLocalPtr.inl:
+
+/usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
 
 /usr/include/SFML/Window/Sensor.hpp:
 
@@ -2627,6 +2607,10 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
 /usr/include/c++/13/bits/ios_base.h:
 
 /usr/include/c++/13/iterator:
+
+/usr/include/c++/13/bits/stl_numeric.h:
+
+/usr/include/SFML/Window/Joystick.hpp:
 
 /usr/include/c++/13/bits/stl_vector.h:
 
@@ -2796,6 +2780,12 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
 
 /usr/include/SFML/Graphics/BlendMode.hpp:
 
+/usr/include/c++/13/random:
+
+/usr/include/c++/13/bits/random.tcc:
+
+/usr/include/SFML/Graphics/Vertex.hpp:
+
 /usr/include/c++/13/bits/stl_map.h:
 
 /usr/include/c++/13/bits/new_allocator.h:
@@ -2845,6 +2835,8 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
 /usr/include/x86_64-linux-gnu/c++/13/bits/ctype_base.h:
 
 /usr/include/SFML/System/InputStream.hpp:
+
+/usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
 
 /usr/include/SFML/System/Lock.hpp:
 
@@ -2896,6 +2888,8 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
 
 /usr/include/c++/13/bits/uses_allocator.h:
 
+/usr/include/x86_64-linux-gnu/bits/mathcalls-narrow.h:
+
 /usr/include/c++/13/bits/predefined_ops.h:
 
 /usr/include/c++/13/iosfwd:
@@ -2903,8 +2897,6 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
 /usr/include/SFML/Graphics/Text.hpp:
 
 /usr/include/c++/13/bits/ptr_traits.h:
-
-/usr/include/c++/13/bits/random.h:
 
 /usr/include/c++/13/bits/refwrap.h:
 
@@ -2929,10 +2921,6 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
 /usr/include/c++/13/tr1/beta_function.tcc:
 
 /usr/include/c++/13/bits/stl_heap.h:
-
-/usr/include/SFML/Window/Joystick.hpp:
-
-/usr/include/c++/13/bits/stl_numeric.h:
 
 /usr/include/c++/13/bits/stl_tempbuf.h:
 
@@ -2959,8 +2947,6 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
 /usr/include/c++/13/ext/atomicity.h:
 
 /usr/include/c++/13/tr1/gamma.tcc:
-
-/usr/include/c++/13/cstdint:
 
 /usr/include/c++/13/cstdlib:
 
@@ -2998,21 +2984,9 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
 
 /usr/include/c++/13/ios:
 
-/usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h:
-
-/usr/include/c++/13/numeric:
-
 /usr/include/SFML/System/Err.hpp:
 
 /usr/include/c++/13/pstl/glue_algorithm_defs.h:
-
-/usr/include/c++/13/pstl/glue_numeric_defs.h:
-
-/usr/include/c++/13/bits/random.tcc:
-
-/usr/include/SFML/Graphics/Vertex.hpp:
-
-/usr/include/c++/13/random:
 
 /usr/include/c++/13/pstl/pstl_config.h:
 
@@ -3095,3 +3069,5 @@ CMakeFiles/main.dir/src/tower.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
 /usr/include/c++/13/string_view:
 
 /usr/include/x86_64-linux-gnu/bits/iscanonical.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h:

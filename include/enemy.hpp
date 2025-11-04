@@ -208,6 +208,7 @@ private:
 // Ennemi volant : ignore les obstacles/tourelles au sol.
 // - Peut aussi tirer (tryShoot)
 // - update survol simple + acquisition tourelle la plus proche
+
 class FlyEnemy : public Enemy {
 public:
     static int counter;
