@@ -29,12 +29,56 @@ bool loadBackground(const std::string& path) {
     bgSprite.setPosition(0.f, 0.f);
     return true;
 }
+// Musique du menu
+sf::Music MainMenuMusic;
 
+// Musique de fond InGame
 sf::Music backgroundMusic;
 
 
 // Pour les paramètres de base, possible de faire des constantes globales dans un fichier de config !!!!!
 
+// -------------------- MENU --------------------
+
+enum class AppState {
+    Menu,
+    Playing,
+    Paused,
+    GameOver
+};
+
+struct Button {
+    sf::RectangleShape box;
+    sf::Text label;
+
+    void set(const sf::Font& font, const std::string& txt, sf::Vector2f size, sf::Vector2f pos) {
+        box.setSize(size);
+        box.setFillColor(sf::Color(60, 60, 120));
+        box.setOutlineColor(sf::Color::White);
+        box.setOutlineThickness(2.f);
+        box.setOrigin(size.x * 0.5f, size.y * 0.5f);
+        box.setPosition(pos);
+
+        label.setFont(font);
+        label.setCharacterSize(28);
+        label.setString(txt);
+        label.setFillColor(sf::Color::White);
+
+        // centrer le texte dans le bouton
+        auto r = label.getLocalBounds();
+        label.setOrigin(r.left + r.width / 2.f, r.top + r.height / 2.f);
+        label.setPosition(pos);
+    }
+
+    bool contains(sf::Vector2f p) const {
+        return box.getGlobalBounds().contains(p);
+    }
+
+    void draw(sf::RenderTarget& rt) const {
+        rt.draw(box);
+        rt.draw(label);
+    }
+};
 
 int main() {
 
@@ -48,15 +92,46 @@ int main() {
         std::cerr << "Erreur : impossible de charger le fond de carte !" << std::endl;
     }
 
+//---------------------------- MENU ------------------------------//
+    AppState appState = AppState::Menu;
+
+    // --- assets du MENU ---
+    sf::Texture menuBgTex;
+    sf::Sprite  menuBg;
+    sf::Font    uiFont;
+    Button      startBtn;
+
+    if (!menuBgTex.loadFromFile("../src/assets/maps/menu_bg.png")) {
+        std::cerr << "Erreur : menu_bg.png introuvable.\n";
+    }
+    menuBgTex.setSmooth(false);
+    menuBg.setTexture(menuBgTex);
+    menuBg.setPosition(0.f, 0.f);
+
+    // Recharge la même police (ou une autre)
+    if (!uiFont.loadFromFile("../src/assets/police/AGENCYB.TTF")) {
+        std::cerr << "Erreur : police du menu introuvable.\n";
+    }
+
+    // bouton centré
+    startBtn.set(uiFont, "DEMARRER", {260.f, 64.f}, {400.f, 420.f});
+
+
     //---------------------------- MUSIQUE ------------------------------//
     if (!backgroundMusic.openFromFile("../src/assets/musics/WELCOME_TO_THE_CITY.ogg")) {
     std::cerr << "Erreur chargement musique !" << std::endl;
     }
-    // volume et boucle
+    if (!MainMenuMusic.openFromFile("../src/assets/musics/MainMenu.ogg")) {
+    std::cerr << "Erreur chargement musique !" << std::endl;
+    }
+
+    MainMenuMusic.setVolume(10.f);  // entre 0 et 100
+    MainMenuMusic.setLoop(true);
+    MainMenuMusic.play();
+
     backgroundMusic.setVolume(10.f);  // entre 0 et 100
     backgroundMusic.setLoop(true);
-    backgroundMusic.play();
-
+    
 
     //------------------- ZONES -------------------//
 
@@ -92,48 +167,57 @@ int main() {
 //---------------------------- LOOP DU JEU ------------------------------//
 
     while (game_window.isOpen()) {
-        sf::Event event{};
-        while (game_window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) game_window.close();
-            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
-                game_window.close();
+    sf::Event event{};
+    while (game_window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed) game_window.close();
 
-            if (event.type == sf::Event::KeyPressed) {
-                switch (event.key.code) {
-                    case sf::Keyboard::A: currentTowerType = 0;
-                        std::cout << "Tourelle Basic sélectionnée\n";
-                        //controlText.setString("Tourelle : Basic");
-                        renderInfo.setPreviewTowerType(0);
-                        break;
+        // ESC: quitter depuis n'importe quel état
+        if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
+            game_window.close();
+        }
 
-                    case sf::Keyboard::Z: currentTowerType = 1;
-                        std::cout << "Tourelle Poison sélectionnée\n";
-                        //controlText.setString("Tourelle : Poison");
-                        renderInfo.setPreviewTowerType(1);
-                        break;
-
-                    case sf::Keyboard::E: currentTowerType = 2;
-                        std::cout << "Tourelle Shotgun sélectionnée\n";
-                        //controlText.setString("Tourelle : Shotgun");
-                        renderInfo.setPreviewTowerType(2);
-                        break;
-
-                    case sf::Keyboard::R: currentTowerType = 3;
-                        std::cout << "Tourelle Target sélectionnée\n";
-                        //controlText.setString("Tourelle : Target");
-                        renderInfo.setPreviewTowerType(3);
-                        break;
-
-                    case sf::Keyboard::T: currentTowerType = 4;
-                        std::cout << "Tourelle Fly sélectionnée\n";
-                        //controlText.setString("Tourelle : Fly");
-                        renderInfo.setPreviewTowerType(4);
-                        break;
-
-                    default: 
-                        break;
+        if (appState == AppState::Menu) {
+            // Clic sur le bouton "DEMARRER"
+            if (event.type == sf::Event::MouseButtonPressed &&
+                event.mouseButton.button == sf::Mouse::Left) {
+                sf::Vector2f mp(static_cast<float>(event.mouseButton.x),
+                                static_cast<float>(event.mouseButton.y));
+                if (startBtn.contains(mp)) {
+                    appState = AppState::Playing;
+                    if (MainMenuMusic.getStatus() == sf::Music::Playing) MainMenuMusic.stop();
+                    if (backgroundMusic.getStatus() != sf::Music::Playing) backgroundMusic.play();
                 }
             }
+
+            // Touche Entrée = démarrer
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {
+                appState = AppState::Playing;
+                if (MainMenuMusic.getStatus() == sf::Music::Playing) MainMenuMusic.stop();
+                if (backgroundMusic.getStatus() != sf::Music::Playing) backgroundMusic.play();
+                // backgroundMusic.play();
+            }
+        }
+        else if (appState == AppState::Playing) {
+            
+            // ---- tes contrôles actuels du JEU (inchangés) ----
+            if (event.type == sf::Event::KeyPressed) {
+                switch (event.key.code) {
+                    case sf::Keyboard::A: currentTowerType = 0; renderInfo.setPreviewTowerType(0); break;
+                    case sf::Keyboard::Z: currentTowerType = 1; renderInfo.setPreviewTowerType(1); break;
+                    case sf::Keyboard::E: currentTowerType = 2; renderInfo.setPreviewTowerType(2); break;
+                    case sf::Keyboard::R: currentTowerType = 3; renderInfo.setPreviewTowerType(3); break;
+                    case sf::Keyboard::T: currentTowerType = 4; renderInfo.setPreviewTowerType(4); break;
+                    
+                    
+                    case sf::Keyboard::Q :
+                        { 
+                            appState = AppState::Menu; 
+                            break;
+                        }; 
+                    default: break;
+                }
+            }
+
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
                 sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
 
@@ -145,80 +229,72 @@ int main() {
                     int y = event.mouseButton.y - renderControl.getSprite().getPosition().y;
                     renderControl.handleClick(x, y);
                 }
-                
-
             }
+
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right) {
                 sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
-
-                // Si clic dans la zone de la MAP
                 if (event.mouseButton.x <= renderMap.getSize().x && event.mouseButton.y <= renderMap.getSize().y) {
-                Tourelle* selected = nullptr;
-
-                // Parcours de toutes les tourelles
-                for (auto* t : tourelles) {
-                    if (!t) continue;
-                    if (t->getGlobalBounds().contains(mousePos)) { // méthode qu'on va ajouter juste après
-                        selected = t;
-                        break;
+                    Tourelle* selected = nullptr;
+                    for (auto* t : tourelles) {
+                        if (!t) continue;
+                        if (t->getGlobalBounds().contains(mousePos)) {
+                            selected = t; break;
+                        }
                     }
-                }
-                if (!selected)
-                renderInfo.setSelectedTower(nullptr); // efface l’aperçu
-
-
-                // On met à jour le panneau info
-                renderInfo.setSelectedTower(selected);
+                    if (!selected) renderInfo.setSelectedTower(nullptr);
+                    renderInfo.setSelectedTower(selected);
                 }
             }
-    
         }
-       
-        // --- timing ---
-        float dt = clock.restart().asSeconds(); // dt mis à jour A CHAQUE FRAME
+    } // fin pollEvent
 
-        spawnt += dt;
+    // --- timing global (on calcule toujours dt) ---
+    float dt = clock.restart().asSeconds();
 
-        // Spawn tant qu'on a dépassé l'intervalle (robuste si un frame lag)
-        while (spawnt >= spawnoffset) {
-            game.generateEnemy(enemies,cells);
-            spawnt -= spawnoffset;
-        }
-
-
-        //------- UPDATE DES ENTITES -------// 
-
-        game.update(pathfinder, cells, dt, enemies, tourelles, &player);
-
-
-        // ------- DESSIN DES ZONES ------- //
-
-        // 1) MAP
-        renderMap.clear();
-        renderMap.drawBackground(bgSprite);
-        renderMap.drawGridLines();
-        for (auto& e : enemies) e->draw(renderMap.getTexture());
-        for (auto& t : tourelles) t->draw(renderMap.getTexture());
-        for (const auto& p : game.getProjectiles()) p.draw(renderMap.getTexture());
-        renderMap.display();
-
-        // 2) CONTROL
-        renderControl.displayFull(&player);
-
-        // 3) INFO
-        renderInfo.clear();
-        renderInfo.drawInfo();
-        renderInfo.display();
-
-
-        // ------- DESSIN SUR LA FENÊTRE ------- //
-        game_window.clear(sf::Color(30, 30, 35));
-        renderMap.drawTo(game_window);
-        renderInfo.drawTo(game_window);
-        renderControl.drawTo(game_window);
+    // --- Rendu/Update selon l'état ---
+    if (appState == AppState::Menu) {
+        // juste l’écran de menu
+        game_window.clear(sf::Color(20, 20, 30));
+        game_window.draw(menuBg);
+        startBtn.draw(game_window);
         game_window.display();
-
+        continue; // ne fait pas tourner le jeu
     }
+
+    // ----- Etat PLAYING : ton jeu d'origine -----
+    spawnt += dt;
+    while (spawnt >= spawnoffset) {
+        game.generateEnemy(enemies,cells);
+        spawnt -= spawnoffset;
+    }
+
+    game.update(pathfinder, cells, dt, enemies, tourelles, &player);
+
+    // Map
+    renderMap.clear();
+    renderMap.drawBackground(bgSprite);
+    renderMap.drawGridLines();
+    for (auto& e : enemies) e->draw(renderMap.getTexture());
+    for (auto& t : tourelles) t->draw(renderMap.getTexture());
+    for (const auto& p : game.getProjectiles()) p.draw(renderMap.getTexture());
+    renderMap.display();
+
+    // Control
+    renderControl.displayFull(&player);
+
+    // Info
+    renderInfo.clear();
+    renderInfo.drawInfo();
+    renderInfo.display();
+
+    // Fenêtre
+    game_window.clear(sf::Color(30, 30, 35));
+    renderMap.drawTo(game_window);
+    renderInfo.drawTo(game_window);
+    renderControl.drawTo(game_window);
+    game_window.display();
+}
+
 
    
     // Libérer la mémoire avant de quitter

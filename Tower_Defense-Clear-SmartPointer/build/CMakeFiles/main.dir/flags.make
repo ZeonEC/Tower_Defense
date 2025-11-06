@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/ubuntu/4A/T2/Tower_Defense-Clear-SmartPointer/include
+CXX_INCLUDES = -I/home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include
 
 CXX_FLAGS = -std=gnu++17
 
