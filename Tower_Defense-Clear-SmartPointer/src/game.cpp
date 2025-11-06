@@ -225,3 +225,87 @@ for (auto it = enemies.begin(); it != enemies.end(); )
             projectiles.end()
         );
     }
+
+    void Game::upgradeTourelle(std::vector<Tourelle*>& tourelles, Player* player, float mouseX, float mouseY)
+{
+    sf::Vector2f mousePos(mouseX, mouseY);
+    for (auto* t : tourelles) {
+        if (!t) continue;
+        if (t->getGlobalBounds().contains(mousePos)) {
+            int upgradeCost = static_cast<int>(t->getCost()); // coût actuel avant upgrade
+
+            if (player->getRessources() >= upgradeCost) {
+                player->reduceRessources(upgradeCost);
+                t->upgrade1();
+                std::cout << "Tourelle améliorée ! Nouveau coût : " << t->getCost() 
+                          << " | Ressources restantes : " << player->getRessources() << "\n";
+            } else {
+                std::cout << "Pas assez de ressources pour améliorer cette tourelle ! "
+                          << "(Besoin : " << upgradeCost << ", Tu as : " << player->getRessources() << ")\n";
+            }
+            return; // une seule tourelle à la fois
+        }
+    }
+
+    std::cout << "Aucune tourelle sélectionnée pour upgrade.\n";
+}
+
+void Game::startWaves() {
+    waveIndex = 0;
+    toSpawn   = waves[0].count;
+    spawnIv   = waves[0].interval;
+    spawnT    = 0.f;
+    interWave = false;
+    interT    = 0.f;
+    wavesFinished = false;
+}
+
+void Game::updateWaves(float dt,
+                       std::vector<Enemy*>& enemies,
+                       const std::vector<Render::Cell>& cells)
+{
+    if (wavesFinished || waveIndex < 0) return;
+
+    // Phase inter-vague (petit délai avant la suivante)
+    if (interWave) {
+        interT += dt;
+        if (interT >= interDelay) {
+            interWave = false;
+            interT = 0.f;
+
+            // Passe à la vague suivante
+            ++waveIndex;
+            if (waveIndex >= (int)waves.size()) {
+                wavesFinished = true;
+                std::cout << "Toutes les vagues sont terminées !\n";
+                return;
+            }
+            toSpawn = waves[waveIndex].count;
+            spawnIv = waves[waveIndex].interval;
+            spawnT  = 0.f;
+            std::cout << "Vague " << (waveIndex+1) << " !\n";
+        }
+        return;
+    }
+
+    // Phase de spawn de la vague en cours
+    if (toSpawn > 0) {
+        spawnT += dt;
+        while (toSpawn > 0 && spawnT >= spawnIv) {
+            generateEnemy(enemies, cells); // ← ta fonction existante
+            --toSpawn;
+            spawnT -= spawnIv;
+        }
+        return;
+    }
+
+    // Vague finie côté "spawn" : on attend que tous les ennemis soient morts/partis
+    bool encoreDesEnnemis = false;
+    for (auto* e : enemies) { if (e && !e->isDead()) { encoreDesEnnemis = true; break; } }
+    if (!encoreDesEnnemis) {
+        // lancer le délai avant la prochaine vague
+        interWave = true;
+        interT = 0.f;
+        std::cout << "Vague " << (waveIndex+1) << " terminée. Prochaine dans " << interDelay << "s.\n";
+    }
+}

@@ -48,6 +48,29 @@ public:
     const std::vector<Projectile>& getProjectiles() const { return projectiles; }
     std::vector<Projectile>&       getProjectiles()       { return projectiles; }
 
+    void upgradeTourelle(std::vector<Tourelle*>& tourelles, Player* player, float mouseX, float mouseY);
+
+    void startWaves();
+    void updateWaves(float dt, std::vector<Enemy*>& enemies, const std::vector<Render::Cell>& cells);
+
+    int  getWaveIndex() const { return waveIndex + 1; }   // +1 pour que ça commence à 1 au lieu de 0
+    int  getWaveTotal() const { return static_cast<int>(waves.size()); }
+    bool isWavesFinished() const { return wavesFinished; }
+
+    struct Wave { int count; float interval; }; // nombre d’ennemis, intervalle de spawn (s)
+    
+    // LES VAGUES :
+    std::vector<Wave> waves = { {100,0.1f}, {12,0.5f}, {18,0.4f}, {18,0.4f}, {18,0.4f}  };
+
+    int   waveIndex = -1;         // -1 = pas commencé
+    int   toSpawn   = 0;          // restants à spawner dans la vague courante
+    float spawnIv   = 0.f;        // intervalle de spawn pour la vague
+    float spawnT    = 0.f;        // timer cumulatif
+    bool  interWave = false;      // on est dans le délai entre deux vagues
+    float interT    = 0.f;        // timer du délai
+    float interDelay = 3.f;       // 3 secondes entre vagues
+    bool  wavesFinished = false;  // toutes les vagues terminées
+
 private:
     size_t enemyRepathIndex = 0;      // Index rotatif
     int maxRepathPerFrame = 2;        // Nb d'ennemis recalculant par frame

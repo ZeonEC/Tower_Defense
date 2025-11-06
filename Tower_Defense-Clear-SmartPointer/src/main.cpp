@@ -68,6 +68,8 @@ struct Button {
         auto r = label.getLocalBounds();
         label.setOrigin(r.left + r.width / 2.f, r.top + r.height / 2.f);
         label.setPosition(pos);
+
+        
     }
 
     bool contains(sf::Vector2f p) const {
@@ -79,6 +81,8 @@ struct Button {
         rt.draw(label);
     }
 };
+
+
 
 int main() {
 
@@ -115,6 +119,13 @@ int main() {
 
     // bouton centré
     startBtn.set(uiFont, "DEMARRER", {260.f, 64.f}, {400.f, 420.f});
+
+    // TEXTE DE VAGUE D'ENEMIES
+    sf::Text waveText;
+    waveText.setFont(uiFont);
+    waveText.setCharacterSize(22);
+    waveText.setFillColor(sf::Color::White);
+    waveText.setPosition(10.f, 5.f); // en haut à gauche
 
 
     //---------------------------- MUSIQUE ------------------------------//
@@ -176,6 +187,7 @@ int main() {
             game_window.close();
         }
 
+        //---------------------------- ETAT : MENU ------------------------------//
         if (appState == AppState::Menu) {
             // Clic sur le bouton "DEMARRER"
             if (event.type == sf::Event::MouseButtonPressed &&
@@ -184,6 +196,7 @@ int main() {
                                 static_cast<float>(event.mouseButton.y));
                 if (startBtn.contains(mp)) {
                     appState = AppState::Playing;
+                    game.startWaves();
                     if (MainMenuMusic.getStatus() == sf::Music::Playing) MainMenuMusic.stop();
                     if (backgroundMusic.getStatus() != sf::Music::Playing) backgroundMusic.play();
                 }
@@ -192,12 +205,15 @@ int main() {
             // Touche Entrée = démarrer
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {
                 appState = AppState::Playing;
+                game.startWaves();
                 if (MainMenuMusic.getStatus() == sf::Music::Playing) MainMenuMusic.stop();
                 if (backgroundMusic.getStatus() != sf::Music::Playing) backgroundMusic.play();
                 // backgroundMusic.play();
             }
         }
+        //---------------------------- ETAT : INGAME ------------------------------//
         else if (appState == AppState::Playing) {
+           
             
             // ---- tes contrôles actuels du JEU (inchangés) ----
             if (event.type == sf::Event::KeyPressed) {
@@ -245,6 +261,13 @@ int main() {
                     renderInfo.setSelectedTower(selected);
                 }
             }
+
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Middle) {
+                sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
+                if (mousePos.x <= renderMap.getSize().x && mousePos.y <= renderMap.getSize().y) {
+                    game.upgradeTourelle(tourelles, &player, mousePos.x, mousePos.y);
+                }
+            }
         }
     } // fin pollEvent
 
@@ -262,13 +285,29 @@ int main() {
     }
 
     // ----- Etat PLAYING : ton jeu d'origine -----
-    spawnt += dt;
+    
+    // bOUCLE DE SPAWN RANDOM
+    /*spawnt += dt;
     while (spawnt >= spawnoffset) {
         game.generateEnemy(enemies,cells);
         spawnt -= spawnoffset;
+    }*/
+    //game.updateWaves(dt, enemies, cells);
+
+    game.updateWaves(dt, enemies, cells);
+    game.update(pathfinder, cells, dt, enemies, tourelles, &player);
+    
+
+    // --- mise à jour du texte de vague ---
+    if (!game.isWavesFinished()) {
+        waveText.setString(
+            "Vague : " + std::to_string(game.getWaveIndex()) +
+            " / " + std::to_string(game.getWaveTotal())
+        );
+    } else {
+        waveText.setString("Toutes les vagues terminées !");
     }
 
-    game.update(pathfinder, cells, dt, enemies, tourelles, &player);
 
     // Map
     renderMap.clear();
@@ -292,6 +331,10 @@ int main() {
     renderMap.drawTo(game_window);
     renderInfo.drawTo(game_window);
     renderControl.drawTo(game_window);
+
+    game_window.draw(waveText);
+    game_window.display();
+
     game_window.display();
 }
 

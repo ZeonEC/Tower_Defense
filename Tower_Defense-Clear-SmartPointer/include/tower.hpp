@@ -106,6 +106,7 @@ class Tourelle {
     }
 
     virtual const sf::Shape* getShapePtr() const { return &shape; } // utile pour RenderInfo
+    virtual void upgrade1() {}
 
 
     
@@ -217,11 +218,19 @@ class Tourelle {
                 return (allowedMask & kindBit(k)) != 0;
             }
 
+            
 // ================================================================================= //
 // ================================================================================= //
 };
 
-
+//Variable de construction de tourelle (rappel pour l'amélioration)
+/*sf::CircleShape shape;
+        int   damage;
+        float range;
+        float fireRate;
+        float cooldown;
+        float projectileSpeed;
+        int cost;*/
 
     // --------------------- Variantes ---------------------
 
@@ -250,6 +259,16 @@ class Tourelle {
 
             ~BasicTourelle() { --counter; }
             
+            // ================ AMELIORATION =========== //
+
+            void upgrade1() override       
+            { 
+                damage = damage*10000.f;
+                range = range*1.2f;
+                fireRate = fireRate*1.2f;
+                cost = cost*2;
+                shape.setFillColor(sf::Color(0, 0, 255)); 
+            }
         };
 
     // ================================ POISON TOURELLLE ================================ //
@@ -274,6 +293,15 @@ class Tourelle {
             }
 
             ~PoisonTourelle() { --counter; }
+
+            void upgrade1()   override     
+            { 
+                damage = damage*2.f;
+                range = range*1.2f;
+                fireRate = fireRate*1.2f;
+                cost = cost*1.5f;
+                shape.setFillColor(sf::Color(0, 255, 0)); 
+            }
         };
 
     // ================================ SHOTGUN TOURELLLE ================================ //
@@ -299,6 +327,15 @@ class Tourelle {
             bool tryShoot(float dt, const std::vector<Enemy*>& enemies, std::vector<Projectile>& outProjectiles) override;
 
             ~shotgunTourelle() { --counter; }
+
+            void upgrade1()   override     
+            { 
+                damage = damage*2.f;
+                range = range*1.2f;
+                fireRate = fireRate*1.2f;
+                cost = cost*1.5f;
+            }
+
         };
 
     // ================================ FLY TOURELLLE ================================ //
@@ -325,6 +362,14 @@ class Tourelle {
             }
             ~FlyTourelle() { --counter; }
 
+            void upgrade1()  override      
+            { 
+                damage = damage*2.f;
+                range = range*1.2f;
+                fireRate = fireRate*1.2f;
+                cost = cost*1.5f;
+                shape.setFillColor(sf::Color(255, 0, 0)); 
+            }
             //Enemy* acquireTarget(const std::vector<Enemy*>& enemies) const override;
 
         };
@@ -351,6 +396,15 @@ class Tourelle {
                 forbid(EnemyKind::Fly);
             }
             ~TargetTourelle() { --counter; }
+
+            void upgrade1()  override      
+            { 
+                damage = damage*2.f;
+                range = range*1.2f;
+                fireRate = fireRate*1.2f;
+                cost = cost*1.5f;
+            }
+
         };
 
 #endif // TOWER_HPP
