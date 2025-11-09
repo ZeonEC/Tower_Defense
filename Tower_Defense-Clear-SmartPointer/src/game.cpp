@@ -1,0 +1,316 @@
+#include "game.hpp"
+#include "enemy.hpp"
+#include "tower.hpp"
+#include "projectile.hpp"  // ⬅️ AJOUT
+#include "Astar.hpp"
+
+
+#include <algorithm>
+#include <random>
+
+// ------------ FONCTIONS DES ENNEMIES ------------ //
+
+void Game::generateEnemy(std::vector<Enemy*>& enemies, const std::vector<Render::Cell> cells) { //Faire spawn les ennemies au centre de certaines cellules ///A FAIRE///
+    int r = std::rand() % 5; // 0..4
+    switch (r) {
+        case 0: enemies.push_back(new BasicEnemy());  break;
+        case 1: enemies.push_back(new FastEnemy());   break;
+        case 2: enemies.push_back(new TankEnemy());   break;
+        case 3: enemies.push_back(new FlyEnemy());    break;
+        case 4: enemies.push_back(new TargetEnemy()); break;
+    }
+std::vector<const Render::Cell*> spawnCells;
+    for (const auto& c : cells) {
+        if (c.col < 3) // colonnes 0, 1, 2
+            spawnCells.push_back(&c);
+    }
+
+    if (spawnCells.empty()) {
+        std::cout << "Erreur : aucune cellule de spawn disponible !" << std::endl;
+        delete enemies.back();
+        enemies.pop_back();
+        return;
+    }
+
+    // Choisir une cellule au hasard dans ces 3 colonnes
+    int idx = std::rand() % spawnCells.size();
+    const Render::Cell* spawnCell = spawnCells[idx];
+
+    // Positionner l’ennemi au centre de la cellule choisie
+    enemies.back()->setPosition(spawnCell->center.x, spawnCell->center.y);
+
+    std::cout << "Ennemi spawné en cellule " << spawnCell->id
+              << " (col=" << spawnCell->col
+              << ", row=" << spawnCell->row << ")\n";
+}
+
+void Game::destroyEnemy(std::vector<Enemy*>& enemies) {
+    for (auto*& e : enemies) {
+        delete e;    // appelle le destructeur virtuel de Enemy (voir note ci-dessous)
+        e = nullptr;
+    }
+    enemies.clear();
+}
+
+
+// ====================== Game::generateTourelle ======================
+void Game::generateTourelle(
+    std::vector<Tourelle*>& tourelles,
+    std::vector<Render::Cell>& cells,
+    PathFinding_AStar& pathfinder,
+    std::vector<Enemy*>& enemies,
+    float x, float y,
+    int type,
+    Player* player
+) { 
+    if (cells.empty()) return;
+
+    // Trouver la cellule cliquée
+    auto it = std::find_if(cells.begin(), cells.end(),
+        [x, y](Render::Cell& c){ return c.bounds.contains(x, y); });
+    if (it == cells.end()) return; // clic hors grille
+
+    if (it->col < 3 || it->col == pathfinder.gridCols - 1) {
+        std::cout << "Impossible de placer une tourelle dans les 3 premières colonnes !\n";
+        return;
+    }
+
+    if (it->turreted) {
+        std::cout << "Cellule " << it->id << " déjà occupée !\n";
+        return;
+    }
+
+        // 🔹 Vérification si un ennemi est sur cette cellule
+    for (auto* e : enemies) {
+        if (!e || e->isDead()) continue;
+
+        const sf::Vector2f& pos = e->getPosition();
+        if (it->bounds.contains(pos)) {  // si la position de l’ennemi est dans la cellule
+            std::cout << "Impossible de placer une tourelle ici : un ennemi est présent !\n";
+            return;
+        }
+    }
+
+    // Marque le node comme occupé
+    int index = it->row * pathfinder.gridCols + it->col;
+        pathfinder.Nodes[index].turreted = true;
+
+    // ⚡ Vérifie si le chemin reste possible
+    sf::Vector2f entryPos = cells.front().center; // point d'entrée des ennemis
+    if (!pathfinder.IsPathStillPossible(entryPos)) {
+        std::cout << "Placement refusé : cela bloquerait le chemin !\n";
+        pathfinder.Nodes[index].turreted = false; // annule la pose
+        return;
+    }
+
+    // 🔹 Crée une tourelle temporaire pour vérifier le coût
+int towerCost = 0;
+switch (type) {
+    case 0: towerCost = 10; break;
+    case 1: towerCost = 30; break;
+    case 2: towerCost = 40; break;
+    case 3: towerCost = 40; break;
+    case 4: towerCost = 50; break;
+}
+
+// 🔹 Vérifie si le joueur a assez de ressources
+if (player->getRessources() < towerCost) {
+    std::cout << "Pas assez de ressources ! Il faut " << towerCost 
+              << " mais tu as " << player->getRessources() << ".\n";
+    pathfinder.Nodes[index].turreted = false;
+    return;
+}
+
+// 🔹 Si oui, retire le coût
+player->reduceRessources(towerCost);
+
+    // Crée la tourelle
+    switch (type) {
+        case 0: tourelles.push_back(new BasicTourelle(Render::Cell::cellSize * 0.4f)); break;
+        case 1: tourelles.push_back(new PoisonTourelle(Render::Cell::cellSize * 0.4f)); break;
+        case 2: tourelles.push_back(new shotgunTourelle(Render::Cell::cellSize * 0.4f)); break;
+        case 3: tourelles.push_back(new TargetTourelle(Render::Cell::cellSize * 0.4f)); break;
+        case 4: tourelles.push_back(new FlyTourelle(Render::Cell::cellSize * 0.4f)); break;
+        default: break;
+    }
+
+    // Place la tourelle au centre de la cellule
+    tourelles.back()->setPosition(it->center.x, it->center.y);
+    it->turreted = true;
+
+    std::cout << "Tourelle placée en cellule " << it->id << "\n";
+
+    // ⚡ Indique à tous les ennemis de recalculer leur chemin au prochain update
+    for (auto* e : enemies) {
+        if (!e->isDead()) e->needRepath = true;
+    }
+}
+
+void Game::destroyTourelles(std::vector<Tourelle*>& tourelles) {
+    for (auto*& t : tourelles) {
+        delete t;    // appelle le destructeur virtuel de tourelles
+        t = nullptr;
+    }
+    tourelles.clear();
+}
+
+
+    void Game::update(PathFinding_AStar& pathfinder, const std::vector<Render::Cell>& cells, float dt, std::vector<Enemy*>& enemies, std::vector<Tourelle*>& tourelles, Player* player)
+    {
+
+        // INTEGRER LE A* DANS UPDATE ENEMY 
+        // Mettre a jour les ennemies dans la frame
+for (auto it = enemies.begin(); it != enemies.end(); )
+{
+    Enemy* e = *it;
+    if (!e) {
+        ++it;
+        continue;
+    }
+
+    e->update(pathfinder, cells);
+
+    if (e->reachedGoal) {
+        // L'ennemi a atteint la fin : réduit la vie du joueur
+        player->reduceHealth(e->getDamage());
+        delete e;
+        it = enemies.erase(it);
+        std::cout << "Un ennemi a atteint la fin ! Vie du joueur : " << player->getHealth() << "\n";
+    } 
+    else if (e->isDead()) {
+        // L'ennemi est mort avant d'atteindre la fin : donne des ressources
+        player->AddRessources(e->ressourceValue);
+        delete e;
+        it = enemies.erase(it);
+        std::cout << "Ennemi tué ! Ressources gagnées : " << e->ressourceValue 
+                  << " | Total : " << player->getRessources() << "\n";
+    } 
+    else {
+        ++it;
+    }
+}
+
+        // les tourelles tentent de tirer (création éventuelle de projectiles)
+        for (auto t : tourelles) {
+            if (!t) continue;
+            t->tryShoot(dt, enemies, projectiles);
+        }
+
+        // avancer les projectiles
+        for (auto& p : projectiles) p.update(dt);
+
+        // collisions projectile/ennemi
+        for (auto& p : projectiles) {
+            if (!p.isAlive()) continue;
+            for (auto e : enemies) {
+                if (!e || e->isDead()) continue;
+
+                // ignorer les ennemis non autorisés par le projectile
+                if (!p.accepts(e)) continue;
+
+                const float enemyRadius = e->getRadius(); // idéalement : rayon réel (ex: e->getRadius())
+                if (p.collidesWith(e->getPosition(), enemyRadius)) 
+                {
+                    e->takeDamage(p.getDamage());
+                    p.kill();
+                    break;
+                }
+            }
+        }
+
+        // 4) nettoyage
+        projectiles.erase(
+            std::remove_if(projectiles.begin(), projectiles.end(),
+                        [](const Projectile& pr){ return !pr.isAlive(); }),
+            projectiles.end()
+        );
+        if (player->getHealth() <= 0) {
+            player->reduceHealth(0); // s'assure que c'est exactement 0
+            gameOver = true;
+            std::cout << "GAME OVER !" << std::endl;
+        }
+    }
+
+    void Game::upgradeTourelle(std::vector<Tourelle*>& tourelles, Player* player, float mouseX, float mouseY)
+{
+    sf::Vector2f mousePos(mouseX, mouseY);
+    for (auto* t : tourelles) {
+        if (!t) continue;
+        if (t->getGlobalBounds().contains(mousePos)) {
+            int upgradeCost = static_cast<int>(t->getCost()); // coût actuel avant upgrade
+
+            if (player->getRessources() >= upgradeCost) {
+                player->reduceRessources(upgradeCost);
+                t->upgrade1();
+                std::cout << "Tourelle améliorée ! Nouveau coût : " << t->getCost() 
+                          << " | Ressources restantes : " << player->getRessources() << "\n";
+            } else {
+                std::cout << "Pas assez de ressources pour améliorer cette tourelle ! "
+                          << "(Besoin : " << upgradeCost << ", Tu as : " << player->getRessources() << ")\n";
+            }
+            return; // une seule tourelle à la fois
+        }
+    }
+
+    std::cout << "Aucune tourelle sélectionnée pour upgrade.\n";
+}
+
+void Game::startWaves() {
+    waveIndex = 0;
+    toSpawn   = waves[0].count;
+    spawnIv   = waves[0].interval;
+    spawnT    = 0.f;
+    interWave = false;
+    interT    = 0.f;
+    wavesFinished = false;
+}
+
+void Game::updateWaves(float dt,
+                       std::vector<Enemy*>& enemies,
+                       const std::vector<Render::Cell>& cells)
+{
+    if (wavesFinished || waveIndex < 0) return;
+
+    // Phase inter-vague (petit délai avant la suivante)
+    if (interWave) {
+        interT += dt;
+        if (interT >= interDelay) {
+            interWave = false;
+            interT = 0.f;
+
+            // Passe à la vague suivante
+            ++waveIndex;
+            if (waveIndex >= (int)waves.size()) {
+                wavesFinished = true;
+                std::cout << "Toutes les vagues sont terminées !\n";
+                return;
+            }
+            toSpawn = waves[waveIndex].count;
+            spawnIv = waves[waveIndex].interval;
+            spawnT  = 0.f;
+            std::cout << "Vague " << (waveIndex+1) << " !\n";
+        }
+        return;
+    }
+
+    // Phase de spawn de la vague en cours
+    if (toSpawn > 0) {
+        spawnT += dt;
+        while (toSpawn > 0 && spawnT >= spawnIv) {
+            generateEnemy(enemies, cells); // ← ta fonction existante
+            --toSpawn;
+            spawnT -= spawnIv;
+        }
+        return;
+    }
+
+    // Vague finie côté "spawn" : on attend que tous les ennemis soient morts/partis
+    bool encoreDesEnnemis = false;
+    for (auto* e : enemies) { if (e && !e->isDead()) { encoreDesEnnemis = true; break; } }
+    if (!encoreDesEnnemis) {
+        // lancer le délai avant la prochaine vague
+        interWave = true;
+        interT = 0.f;
+        std::cout << "Vague " << (waveIndex+1) << " terminée. Prochaine dans " << interDelay << "s.\n";
+    }
+}
