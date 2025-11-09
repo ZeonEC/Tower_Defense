@@ -78,25 +78,43 @@ void Tourelle::update(float dt) {
 }
 
 Enemy* Tourelle::acquireTarget(const std::vector<Enemy*>& enemies) const {
+
+    // r2 = portée² → tout ennemi avec d² > r2 est hors de portée.
     const float r2 = range * range;
-    Enemy* best = nullptr;
-    float bestD2 = r2;
-    auto  p = getPosition();
 
+    // INITIALISATION VAR DE TARGET
+    
+    Enemy* best   = nullptr; // meilleur candidat trouvé jusque-là (nullptr = aucun pour l'instant)
+    float  bestD2 = r2;      // distance² du meilleur candidat (initialisé à la portée max)
+    auto   p      = getPosition(); // position de la tourelle dans le monde
+
+    // Parcours de tous les ennemis actuellement présents dans la vague
     for (auto e : enemies) {
-        if (!e || e->isDead()) continue;
+        if (!e || e->isDead()) 
+            continue; // On ignore les pointeurs nuls et les ennemis déjà morts
 
-        // ⬅️ filtre par type d'ennemi
-        if (!accepts(e)) continue;
+        // Vérifie si la tourelle a le droit de tirer sur ce type d'ennemi
+        // (gestion via le masque allowedMask : Basic seulement, Fly uniquement, etc.)
+        if (!accepts(e)) 
+            continue;
 
-        float d2 = (e->getPosition().x - p.x) * (e->getPosition().x - p.x)
-                 + (e->getPosition().y - p.y) * (e->getPosition().y - p.y);
+        // Calcul de la distance AU CARRÉ entre la tourelle et l'ennemi.
+        // d² = (dx² + dy²) où dx = delta x, dy = delta y
+        float dx = e->getPosition().x - p.x;
+        float dy = e->getPosition().y - p.y;
+        float d2 = dx * dx + dy * dy;
 
+        // Si l'ennemi est plus proche que le meilleur candidat actuel (et dans la portée),
+        // on met à jour "best" et "bestD2".
         if (d2 <= bestD2) {
             bestD2 = d2;
-            best = e;
+            best   = e;
         }
     }
+
+    // À la fin de la boucle :
+    //  - best pointe vers l'ennemi le plus proche (dans la portée et autorisé)
+    //  - ou reste nullptr si aucune cible n'était valide
     return best;
 }
 
@@ -163,7 +181,7 @@ bool shotgunTourelle::tryShoot(float dt,
         
         outProjectiles.emplace_back(
             getPosition(),
-            target->getPosition(),
+            targetPos,
             projectileSpeed,
             damage,
             /*radius*/ 4.f,
