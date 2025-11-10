@@ -62,6 +62,43 @@ std::vector<Render::Cell> Render::buildCells(sf::RenderTarget& window) {
 }
 
 // ============================================================================
+// RenderMainMenu
+// ============================================================================
+RenderMainMenu::RenderMainMenu(const sf::Vector2u& windowSize) {
+    texture.create(windowSize.x, windowSize.y);
+    sprite.setTexture(texture.getTexture());
+
+    if (!font.loadFromFile("../src/assets/police/AGENCYB.TTF")) {
+        std::cerr << "Erreur : impossible de charger la police AGENCYB.TTF !" << std::endl;
+    }
+
+    if (!backgroundTexture.loadFromFile("../src/assets/maps/menu_bg.png")) {
+        std::cerr << "Erreur : impossible de charger le background\n";
+    }
+    background.setTexture(backgroundTexture);
+
+    setupButtons();
+}
+
+void RenderMainMenu::setupButtons() {
+    startButton.set(font, "DEMARRER", {260.f, 64.f}, {400.f, 420.f});
+    quitButton.set(font, "QUITTER", {260.f, 64.f}, {400.f, 490.f});
+}
+
+void RenderMainMenu::drawMenu() {
+    clear();
+    texture.clear(sf::Color(20, 20, 30));
+    texture.draw(background);
+    startButton.draw(texture);
+    quitButton.draw(texture);
+    texture.display();
+}
+
+void RenderMainMenu::clear() {
+    texture.clear(sf::Color(20, 20, 30)); // ou une couleur de fond que tu veux
+}
+
+// ============================================================================
 // RenderMap
 // ============================================================================
 RenderMap::RenderMap(const sf::Vector2u& windowSize) {
@@ -69,14 +106,28 @@ RenderMap::RenderMap(const sf::Vector2u& windowSize) {
     texture.create(size.x, size.y);
     sprite.setTexture(texture.getTexture());
     sprite.setPosition(0.f, 0.f);
+
+    if (!font.loadFromFile("../src/assets/police/AGENCYB.TTF")) {
+        std::cerr << "Erreur : impossible de charger la police AGENCYB.TTF !" << std::endl;
+    }
+    if (!backgroundTexture.loadFromFile("../src/assets/maps/map_forest_800x600_grid.png")) {
+        std::cerr << "Erreur : impossible de charger le background\n";
+    }
+    background.setTexture(backgroundTexture);
+
+    waveText.setFont(font);
+    waveText.setCharacterSize(22);
+    waveText.setFillColor(sf::Color::White);
+    waveText.setPosition(10.f, 5.f); // en haut à gauche
+
 }
 
 void RenderMap::clear() {
     texture.clear(sf::Color::Black);
 }
 
-void RenderMap::drawBackground(const sf::Sprite& bg) {
-    texture.draw(bg);
+void RenderMap::drawBackground() {
+    texture.draw(background);
 }
 
 void RenderMap::drawGridLines() {
@@ -93,7 +144,7 @@ RenderControl::RenderControl(const sf::Vector2u& windowSize)
     sprite.setTexture(texture.getTexture());
     sprite.setPosition(static_cast<float>(windowSize.x * 0.7f), static_cast<float>(windowSize.y * 0.6f));
 
-    tabs = {"Tourelles", "Ennemis", "Options"};
+    tabs = {"Tourelles", "Ennemis", "Menu"};
 
     if (!font.loadFromFile("../src/assets/police/AGENCYB.TTF")) {
         std::cerr << "Erreur : impossible de charger la police AGENCYB.TTF !" << std::endl;
@@ -184,21 +235,26 @@ void RenderControl::drawContent(Player* player) {
             break;
 
         case 2:
-            contentText.setString("Options :\n- Volume musique\n- Vitesse de jeu\n- Mode debug");
+            contentText.setString(" ");
             texture.draw(contentText);
             break;
     }
 }
 
-
-
-void RenderControl::handleClick(int mouseX, int mouseY) {
+void RenderControl::handleClick(int mouseX, int mouseY,RenderMenu& menu) {
     float x = 10.f;
     for (std::size_t i = 0; i < tabs.size(); ++i) {
         if (mouseX >= x && mouseX <= x + 70.f && mouseY >= 10.f && mouseY <= 40.f) {
             activeTab = static_cast<int>(i);
             std::cout << "Changement d'onglet : " << tabs[i] << std::endl;
+            if (tabs[i] == "Menu") {
+                menu.isSelected();      // 👉 Ouvre le menu
+            } else {
+                menu.isNotSelected();   // 👉 Cache le menu sinon
+            }
         }
+
+
         x += 80.f;
     }
 }
@@ -265,36 +321,90 @@ RenderInfo::RenderInfo(const sf::Vector2u& windowSize) {
     
 }
 
-void RenderInfo::setTowerInfo(const std::string& name) {
-    TowerText.setString("Tourelle : " + name);
-}
-
-void RenderInfo::setSelectedTower(Tourelle* t)
-{
+void RenderInfo::updateTowerPreview(Tourelle* t, int towerType) {
+    towerShapePreview.reset();
     selectedTower = t;
+
+    std::unique_ptr<Tourelle> tempTower = nullptr;
+
+    if (!t && towerType >= 0) {
+        switch (towerType) {
+            case 0: tempTower = std::make_unique<BasicTourelle>(0.f); break;
+            case 1: tempTower = std::make_unique<PoisonTourelle>(0.f); break;
+            case 2: tempTower = std::make_unique<shotgunTourelle>(0.f); break;
+            case 3: tempTower = std::make_unique<TargetTourelle>(0.f); break;
+            case 4: tempTower = std::make_unique<FlyTourelle>(0.f); break;
+            default: return;
+        }
+        t = tempTower.get();
+    }
+
     if (!t) {
-        TowerText.setString("Tourelle : -");
-        towerDamageText.setString("Damage : -");
-        towerShapePreview.reset();
-        return;
+        clearPreview();
     }
 
     TowerText.setString("Tourelle : " + t->getName());
     towerDamageText.setString("Damage : " + std::to_string(t->getDamage()));
 
-    towerShapePreview.reset();
-
     towerShapePreview = cloneShape(t->getShapePtr());
     if (towerShapePreview) {
-        towerShapePreview->setPosition(80.f, 220.f);
+        towerShapePreview->setPosition(80.f, 240.f);
         towerShapePreview->setScale(0.5f, 0.5f);
     }
 }
 
+void RenderInfo::setSelectedTower(Tourelle* t) {
+    updateTowerPreview(t);
+}
 
+void RenderInfo::setPreviewTowerType(int towerType) {
+    updateTowerPreview(nullptr, towerType);
+}
 
+// ================================
+// Fonction utilitaire pour copier n'importe quel sf::Shape
+// ================================
+std::unique_ptr<sf::Shape> RenderInfo::cloneShape(const sf::Shape* shape) {
+    if (!shape) return nullptr;
 
+    if (auto* circle = dynamic_cast<const sf::CircleShape*>(shape)) {
+        auto copy = std::make_unique<sf::CircleShape>(circle->getRadius(), circle->getPointCount());
+        copy->setFillColor(circle->getFillColor());
+        copy->setOutlineColor(circle->getOutlineColor());
+        copy->setOutlineThickness(circle->getOutlineThickness());
+        copy->setOrigin(circle->getOrigin());
+        copy->setPosition(circle->getPosition());
+        copy->setScale(circle->getScale());
+        return copy;
+    }
 
+    if (auto* rect = dynamic_cast<const sf::RectangleShape*>(shape)) {
+        auto copy = std::make_unique<sf::RectangleShape>(rect->getSize());
+        copy->setFillColor(rect->getFillColor());
+        copy->setOutlineColor(rect->getOutlineColor());
+        copy->setOutlineThickness(rect->getOutlineThickness());
+        copy->setOrigin(rect->getOrigin());
+        copy->setPosition(rect->getPosition());
+        copy->setScale(rect->getScale());
+        return copy;
+    }
+
+    if (auto* convex = dynamic_cast<const sf::ConvexShape*>(shape)) {
+        auto copy = std::make_unique<sf::ConvexShape>();
+        copy->setPointCount(convex->getPointCount());
+        for (size_t i = 0; i < convex->getPointCount(); ++i)
+        copy->setPoint(i, convex->getPoint(i));
+        copy->setFillColor(convex->getFillColor());
+        copy->setOutlineColor(convex->getOutlineColor());
+        copy->setOutlineThickness(convex->getOutlineThickness());
+        copy->setOrigin(convex->getOrigin());
+        copy->setPosition(convex->getPosition());
+        copy->setScale(convex->getScale());
+        return copy;
+    }
+
+    return nullptr;
+}
 
 void RenderInfo::drawInfo() {
     // Texte info tourelle
@@ -341,137 +451,155 @@ void RenderInfo::drawInfo() {
     }
 }
 
-void RenderInfo::setPreviewTowerType(int towerType) {
-    towerShapePreview.reset();
-    std::string name;
-    int damage = 0;
-
-    switch (towerType) {
-        case 0: {
-            BasicTourelle t(0.f);
-            name = t.getName();
-            damage = t.getDamage();
-towerShapePreview = cloneShape(t.getShapePtr());
-if (towerShapePreview) {
-    towerShapePreview->setPosition(80.f, 220.f);
-    towerShapePreview->setScale(0.5f, 0.5f);
+void RenderInfo::clearPreview() {
+    towerShapePreview.reset(); // supprime la shape
+    selectedTower = nullptr;   // aucune tourelle sélectionnée
+    TowerText.setString("Tourelle : -");
+    towerDamageText.setString("Damage : -");
 }
-
-            break;
-        }
-        case 1: {
-            PoisonTourelle t(0.f);
-            name = t.getName();
-            damage = t.getDamage();
-towerShapePreview = cloneShape(t.getShapePtr());
-if (towerShapePreview) {
-    towerShapePreview->setPosition(80.f, 220.f);
-    towerShapePreview->setScale(0.5f, 0.5f);
-}
-
-            break;
-        }
-        case 2: {
-            shotgunTourelle t(0.f);
-            name = t.getName();
-            damage = t.getDamage();
-towerShapePreview = cloneShape(t.getShapePtr());
-if (towerShapePreview) {
-    towerShapePreview->setPosition(80.f, 220.f);
-    towerShapePreview->setScale(0.5f, 0.5f);
-}
-
-            break;
-        }
-        case 3: {
-            TargetTourelle t(0.f);
-            name = t.getName();
-            damage = t.getDamage();
-towerShapePreview = cloneShape(t.getShapePtr());
-if (towerShapePreview) {
-    towerShapePreview->setPosition(80.f, 220.f);
-    towerShapePreview->setScale(0.5f, 0.5f);
-}
-
-            break;
-        }
-        case 4: {
-            FlyTourelle t(0.f);
-            name = t.getName();
-            damage = t.getDamage();
-towerShapePreview = cloneShape(t.getShapePtr());
-if (towerShapePreview) {
-    towerShapePreview->setPosition(80.f, 220.f);
-    towerShapePreview->setScale(0.5f, 0.5f);
-}
-            break;
-        }
-        default:
-            return;
-    }
-
-    // Ajuste position et échelle
-    if (towerShapePreview) {
-        towerShapePreview->setPosition(80.f, 220.f);
-        towerShapePreview->setScale(0.5f, 0.5f);
-    }
-
-    TowerText.setString("Tourelle : " + name);
-    towerDamageText.setString("Damage : " + std::to_string(damage));
-    selectedTower = nullptr;
-}
-
-// Fonction utilitaire pour copier n'importe quel sf::Shape
-std::unique_ptr<sf::Shape> RenderInfo::cloneShape(const sf::Shape* shape) {
-    if (!shape) return nullptr;
-
-    // Cercle
-    if (const auto* circle = dynamic_cast<const sf::CircleShape*>(shape)) {
-        auto copy = std::make_unique<sf::CircleShape>(circle->getRadius(), circle->getPointCount());
-        copy->setPosition(circle->getPosition());
-        copy->setScale(circle->getScale());
-        copy->setFillColor(circle->getFillColor());
-        copy->setOutlineColor(circle->getOutlineColor());
-        copy->setOutlineThickness(circle->getOutlineThickness());
-        copy->setOrigin(circle->getOrigin());
-        return copy;
-    }
-
-    // Rectangle
-    if (const auto* rect = dynamic_cast<const sf::RectangleShape*>(shape)) {
-        auto copy = std::make_unique<sf::RectangleShape>(rect->getSize());
-        copy->setPosition(rect->getPosition());
-        copy->setScale(rect->getScale());
-        copy->setFillColor(rect->getFillColor());
-        copy->setOutlineColor(rect->getOutlineColor());
-        copy->setOutlineThickness(rect->getOutlineThickness());
-        copy->setOrigin(rect->getOrigin());
-        return copy;
-    }
-
-    // ConvexShape
-    if (const auto* convex = dynamic_cast<const sf::ConvexShape*>(shape)) {
-        auto copy = std::make_unique<sf::ConvexShape>();
-        copy->setPointCount(convex->getPointCount());
-        for (size_t i = 0; i < convex->getPointCount(); ++i)
-            copy->setPoint(i, convex->getPoint(i));
-        copy->setPosition(convex->getPosition());
-        copy->setScale(convex->getScale());
-        copy->setFillColor(convex->getFillColor());
-        copy->setOutlineColor(convex->getOutlineColor());
-        copy->setOutlineThickness(convex->getOutlineThickness());
-        copy->setOrigin(convex->getOrigin());
-        return copy;
-    }
-
-    // Autres shapes inconnus
-    return nullptr;
-}
-
-
-
 
 void RenderInfo::clear() {
     texture.clear(sf::Color(30, 30, 35));
 }
 
+// ============================================================================
+// RenderGameOver
+// ============================================================================
+RenderGameOver::RenderGameOver(const sf::Vector2u& windowSize) {
+    size = windowSize;
+    texture.create(size.x, size.y);
+    sprite.setTexture(texture.getTexture());
+    sprite.setPosition(0.f, 0.f);
+
+    if (!font.loadFromFile("../src/assets/police/AGENCYB.TTF"))
+        std::cerr << "Erreur : impossible de charger la police AGENCYB.TTF !" << std::endl;
+
+    // Texte "GAME OVER"
+    gameOverText.setFont(font);
+    gameOverText.setCharacterSize(72);
+    gameOverText.setFillColor(sf::Color::Red);
+    gameOverText.setString("GAME OVER");
+    sf::FloatRect textRect = gameOverText.getLocalBounds();
+    gameOverText.setOrigin(textRect.left + textRect.width / 2.f,
+                           textRect.top + textRect.height / 2.f);
+    gameOverText.setPosition(size.x / 2.f, size.y / 2.f - 100.f);
+
+    // Bouton Restart
+    restartButton.setSize({200.f, 60.f});
+    restartButton.setFillColor(sf::Color(100, 100, 255));
+    restartButton.setPosition(size.x / 2.f - 220.f, size.y / 2.f + 20.f);
+
+    restartText.setFont(font);
+    restartText.setCharacterSize(24);
+    restartText.setFillColor(sf::Color::White);
+    restartText.setString("Restart");
+    sf::FloatRect rTextRect = restartText.getLocalBounds();
+    restartText.setOrigin(rTextRect.left + rTextRect.width / 2.f,
+                          rTextRect.top + rTextRect.height / 2.f);
+    restartText.setPosition(restartButton.getPosition().x + restartButton.getSize().x / 2.f,
+                            restartButton.getPosition().y + restartButton.getSize().y / 2.f);
+
+    // Bouton Quit
+    quitButton.setSize({200.f, 60.f});
+    quitButton.setFillColor(sf::Color(255, 100, 100));
+    quitButton.setPosition(size.x / 2.f + 20.f, size.y / 2.f + 20.f);
+
+    quitText.setFont(font);
+    quitText.setCharacterSize(24);
+    quitText.setFillColor(sf::Color::White);
+    quitText.setString("Quit");
+    sf::FloatRect qTextRect = quitText.getLocalBounds();
+    quitText.setOrigin(qTextRect.left + qTextRect.width / 2.f,
+                       qTextRect.top + qTextRect.height / 2.f);
+    quitText.setPosition(quitButton.getPosition().x + quitButton.getSize().x / 2.f,
+                         quitButton.getPosition().y + quitButton.getSize().y / 2.f);
+}
+
+void RenderGameOver::show() {
+    visible = true;
+}
+
+void RenderGameOver::hide() {
+    visible = false;
+}
+
+void RenderGameOver::clear() {
+    texture.clear(sf::Color(0, 0, 0, 180)); // fond semi-transparent
+}
+
+void RenderGameOver::drawOverlay() {
+    if (!visible) return;
+
+    clear();
+    texture.draw(gameOverText);
+    texture.draw(restartButton);
+    texture.draw(restartText);
+    texture.draw(quitButton);
+    texture.draw(quitText);
+    display();
+}
+
+// ============================================================================
+// RenderMenu
+// ============================================================================
+RenderMenu::RenderMenu(const sf::Vector2u& windowSize) {
+    size = windowSize;
+    texture.create(size.x, size.y);
+    sprite.setTexture(texture.getTexture());
+    sprite.setPosition(0.f, 0.f);
+
+    if (!font.loadFromFile("../src/assets/police/AGENCYB.TTF"))
+        std::cerr << "Erreur : impossible de charger la police AGENCYB.TTF !" << std::endl;
+
+    // Titre
+    titleText.setFont(font);
+    titleText.setCharacterSize(48);
+    titleText.setFillColor(sf::Color::White);
+    titleText.setString("MAIN MENU");
+    sf::FloatRect textRect = titleText.getLocalBounds();
+    titleText.setOrigin(textRect.left + textRect.width / 2.f,
+                        textRect.top + textRect.height / 2.f);
+    titleText.setPosition(size.x / 2.f, 100.f);
+
+    // Création des boutons
+    auto createButton = [&](sf::RectangleShape& btn, sf::Text& txt, const std::string& str, float y) {
+        btn.setSize({200.f, 60.f});
+        btn.setFillColor(sf::Color(100, 100, 255));
+        btn.setPosition(size.x / 2.f - 100.f, y);
+
+        txt.setFont(font);
+        txt.setCharacterSize(24);
+        txt.setFillColor(sf::Color::White);
+        txt.setString(str);
+        sf::FloatRect tRect = txt.getLocalBounds();
+        txt.setOrigin(tRect.left + tRect.width / 2.f,
+                      tRect.top + tRect.height / 2.f);
+        txt.setPosition(btn.getPosition().x + btn.getSize().x / 2.f,
+                        btn.getPosition().y + btn.getSize().y / 2.f);
+    };
+
+    createButton(playButton, playText, "Play", 200.f);
+    createButton(restartButton, restartText, "Restart", 360.f);
+    createButton(quitButton, quitText, "Quit", 440.f);
+}
+
+void RenderMenu::clear() {
+    texture.clear(sf::Color(20, 20, 30, 200)); // semi-transparent
+}
+
+void RenderMenu::drawMenu() {
+    clear();
+    texture.draw(titleText);
+    texture.draw(playButton);
+    texture.draw(playText);
+    texture.draw(restartButton);
+    texture.draw(restartText);
+    texture.draw(quitButton);
+    texture.draw(quitText);
+    display();
+}
+
+void RenderMenu::drawOverlay() {
+    if (!visible) return;
+    drawMenu();
+}

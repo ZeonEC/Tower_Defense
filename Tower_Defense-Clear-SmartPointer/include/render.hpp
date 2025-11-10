@@ -48,14 +48,117 @@ protected:
 };
 
 // ============================================================================
+// CLASSE DERIVÉE : RenderMainMenu
+// ============================================================================
+class RenderMainMenu : public Render {
+
+private:
+
+    sf::Sprite background;
+    sf::Texture backgroundTexture;
+
+    sf::Font font;
+    sf::Text label;
+
+    struct Button {
+        sf::RectangleShape box;
+        sf::Text label;
+
+        void set(const sf::Font& font, const std::string& txt, sf::Vector2f size, sf::Vector2f pos) {
+            box.setSize(size);
+            box.setFillColor(sf::Color(60, 60, 120));
+            box.setOutlineColor(sf::Color::White);
+            box.setOutlineThickness(2.f);
+            box.setOrigin(size.x * 0.5f, size.y * 0.5f);
+            box.setPosition(pos);
+
+            label.setFont(font);
+            label.setCharacterSize(28);
+            label.setString(txt);
+            label.setFillColor(sf::Color::White);
+
+            auto r = label.getLocalBounds();
+            label.setOrigin(r.left + r.width / 2.f, r.top + r.height / 2.f);
+            label.setPosition(pos);
+        }
+
+        bool contains(sf::Vector2f p) const { return box.getGlobalBounds().contains(p); }
+        void draw(sf::RenderTarget& rt) const { rt.draw(box); rt.draw(label); }
+    };
+
+    Button startButton;
+    Button quitButton;
+    Button settingsButton;
+
+public:
+    explicit RenderMainMenu(const sf::Vector2u& windowSize);
+
+    void setupButtons();
+    void drawMenu();
+    void clear();
+    const Button& getStartButton() const { return startButton; };
+    const Button& getQuitButton() const { return quitButton; };
+    const Button& getSettingButton() const { return settingsButton; };
+
+    
+};
+
+// ============================================================================
 // CLASSE DERIVÉE : RenderMap
 // ============================================================================
 class RenderMap : public Render {
+private :
+    sf::Text waveText;
+    sf::Font font;
+    sf::Sprite background;
+    sf::Texture backgroundTexture; 
 public:
     explicit RenderMap(const sf::Vector2u& windowSize);
     void clear() override;
-    void drawBackground(const sf::Sprite& bg);
+    void drawBackground();
     void drawGridLines();
+    void setWaveText(std::string text) {waveText.setString(text);};
+    sf::Text getWaveText() const {return waveText;};
+};
+
+// ============================================================================
+// CLASSE DERIVÉE : RenderMenu
+// ============================================================================
+
+class RenderMenu : public Render {
+private:
+    sf::Font font;
+    sf::Text titleText;
+
+    sf::RectangleShape playButton;
+    sf::Text playText;
+
+    sf::RectangleShape restartButton;
+    sf::Text restartText;
+
+    sf::RectangleShape quitButton;
+    sf::Text quitText;
+
+    bool visible = false;
+    bool MenuSelected = false;
+
+
+public:
+    explicit RenderMenu(const sf::Vector2u& windowSize);
+
+    void show() { visible = true; }
+    void hide() { visible = false; }
+    bool isVisible() const { return visible; }
+    void isSelected() {MenuSelected = true;}
+    void isNotSelected() {MenuSelected = false;}
+    bool Selection() const {return MenuSelected;}
+    void clear() override;
+    void drawMenu();    // dessiner le menu sur la texture
+    void drawOverlay(); // afficher si visible
+
+    const sf::RectangleShape& getPlayButton() const { return playButton; }
+    const sf::RectangleShape& getRestartButton() const { return restartButton; }
+    const sf::RectangleShape& getQuitButton() const { return quitButton; }
 };
 
 // ============================================================================
@@ -76,7 +179,7 @@ public:
     void clear() override;
     void drawTabs();
     void drawContent(Player* player);
-    void handleClick(int mouseX, int mouseY);
+    void handleClick(int mouseX, int mouseY, RenderMenu& menu);
     void displayFull(Player* player);
 };
 
@@ -101,6 +204,7 @@ class RenderInfo : public Render {
 public:
 
     explicit RenderInfo(const sf::Vector2u& windowSize);
+    void clearPreview();
     void setTowerInfo(const std::string& name);
     void setPlayer(Player* p) { player = p; }
     void setSelectedTower(Tourelle* t);
@@ -112,4 +216,33 @@ public:
     void clear() override;
 };
 
+// ============================================================================
+// CLASSE DERIVÉE : RenderGameOver
+// ============================================================================
+class RenderGameOver : public Render {
+private:
+    sf::Font font;
+    sf::Text gameOverText;
+    sf::RectangleShape restartButton;
+    sf::Text restartText;
+    sf::RectangleShape quitButton;
+    sf::Text quitText;
+
+    bool visible = false;
+
+public:
+    explicit RenderGameOver(const sf::Vector2u& windowSize);
+    void show();
+    void hide();
+    bool isVisible() const { return visible; }
+
+    const sf::RectangleShape& getRestartButton() const { return restartButton; }
+    const sf::RectangleShape& getQuitButton() const { return quitButton; }
+
+    void clear() override;
+    void drawOverlay();
+};
+
+
 #endif // RENDER_HPP
+
