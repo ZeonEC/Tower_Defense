@@ -3,7 +3,7 @@
 class Player{
 
 private:
-    int playerHealth = 1;
+    int playerHealth = 100;
     int playerRessoures = 400;
 
 public:

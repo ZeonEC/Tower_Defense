@@ -1,6 +1,6 @@
 #include "enemy.hpp"
 #include "tower.hpp" 
-
+#include "Astar.hpp" 
 
 #include <iostream>
 
@@ -242,32 +242,60 @@ void FlyEnemy::moveTowards(const sf::Vector2f& dest, float step)
     setPosition(p.x, p.y);
 }
 
-void FlyEnemy::update(PathFinding_AStar&, const std::vector<Render::Cell>&)
+void FlyEnemy::update(PathFinding_AStar&, const std::vector<Render::Cell>& cells)
 {
-    if (dead) return;
+    acquireTarget();
 
-    const float step = getSpeed();   // ⬅️ identique aux autres ennemis
+    if (dead || reachedGoal) return;
 
+    const float step = getSpeed();
+
+    // 1) Cibler une tourelle
     if (!target || target->isDestroyed()) acquireTarget();
 
+    // 2) Déplacement : on se dirige vers la tourelle, sinon on avance vers la droite
     if (target) {
-    sf::Vector2f pos = getPosition();
-    sf::Vector2f tpos = target->getPosition();
-    sf::Vector2f d = tpos - pos;
-    float d2 = d.x*d.x + d.y*d.y;
+        sf::Vector2f pos  = getPosition();
+        sf::Vector2f tpos = target->getPosition();
+        sf::Vector2f d    = tpos - pos;
+        float d2 = d.x*d.x + d.y*d.y;
 
-    if (d2 > shootRange*shootRange) {
-        moveTowards(tpos, /*step*/ getSpeed());  // version "par frame" si tu as appliqué l'Option A
+        if (d2 > shootRange * shootRange) {
+            moveTowards(tpos, step); // moveTowards prend déjà un "step" en pixels/frame
+        } else {
+            // à portée de tir → on ne bouge pas (ou petit strafe si tu veux plus tard)
+        }
     } else {
-        // à portée de tir → on ne bouge pas (ou léger strafe si tu veux)
+        // pas de tourelle dispo → avance vers la droite
+        moveTowards(getPosition() + sf::Vector2f(1.f, 0.f), step);
     }
-    } else {
-        moveTowards(getPosition() + sf::Vector2f(1.f, 0.f), getSpeed());
+
+    // 3) Vérifier si on a atteint la "fin" de la map (bord droit)
+    if (!cells.empty()) {
+        int   maxCol = -1;
+        float goalX  = 0.f;
+
+        for (const auto& c : cells) {
+            if (c.col > maxCol) {
+                maxCol = c.col;
+                goalX  = c.center.x;
+            }
+        }
+
+        // On considère qu'on a atteint le but quand on dépasse un peu le dernier centre de cellule
+        goalX += Render::Cell::cellSize * 0.5f;
+
+        if (getPosition().x >= goalX) {
+            reachedGoal = true;
+        }
     }
 }
 
+
 bool FlyEnemy::tryShoot(float dt, std::vector<Projectile>& out)
 {
+
+    
     if (!target || target->isDestroyed()) return false;
 
     const sf::Vector2f pos  = getPosition();
@@ -324,29 +352,55 @@ void TargetEnemy::moveTowards(const sf::Vector2f& dest, float step)
     setPosition(p.x, p.y);
 }
 
-void TargetEnemy::update(PathFinding_AStar&, const std::vector<Render::Cell>&)
+void TargetEnemy::update(PathFinding_AStar&, const std::vector<Render::Cell>& cells)
 {
-    if (dead) return;
 
-    const float step = getSpeed();   // ⬅️ identique aux autres ennemis
+    acquireTarget();
+    
+    if (dead || reachedGoal) return;
 
+    const float step = getSpeed();
+
+    // 1) Cibler une tourelle
     if (!target || target->isDestroyed()) acquireTarget();
 
+    // 2) Déplacement : on se dirige vers la tourelle, sinon on avance vers la droite
     if (target) {
-    sf::Vector2f pos = getPosition();
-    sf::Vector2f tpos = target->getPosition();
-    sf::Vector2f d = tpos - pos;
-    float d2 = d.x*d.x + d.y*d.y;
+        sf::Vector2f pos  = getPosition();
+        sf::Vector2f tpos = target->getPosition();
+        sf::Vector2f d    = tpos - pos;
+        float d2 = d.x*d.x + d.y*d.y;
 
-    if (d2 > shootRange*shootRange) {
-        moveTowards(tpos, /*step*/ getSpeed());  // version "par frame" si tu as appliqué l'Option A
+        if (d2 > shootRange * shootRange) {
+            moveTowards(tpos, step);
+        } else {
+            // à portée de tir → on reste en place (ou léger mouvement latéral si tu veux)
+        }
     } else {
-        // à portée de tir → on ne bouge pas (ou léger strafe si tu veux)
+        // pas de tourelle → on continue vers la droite comme un ennemi classique
+        moveTowards(getPosition() + sf::Vector2f(1.f, 0.f), step);
     }
-    } else {
-        moveTowards(getPosition() + sf::Vector2f(1.f, 0.f), getSpeed());
+
+    // 3) Vérifier si on a atteint la "fin" de la map (bord droit)
+    if (!cells.empty()) {
+        int   maxCol = -1;
+        float goalX  = 0.f;
+
+        for (const auto& c : cells) {
+            if (c.col > maxCol) {
+                maxCol = c.col;
+                goalX  = c.center.x;
+            }
+        }
+
+        goalX += Render::Cell::cellSize * 0.5f;
+
+        if (getPosition().x >= goalX) {
+            reachedGoal = true;
+        }
     }
 }
+
 
 bool TargetEnemy::tryShoot(float dt, std::vector<Projectile>& out)
 {

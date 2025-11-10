@@ -177,6 +177,7 @@ void Game::update(PathFinding_AStar& pathfinder,
         }
     }
 
+
     // ---------------------------------------------------------
     // 2) Mise à jour des ennemis + gestion arrivée / mort
     // ---------------------------------------------------------
