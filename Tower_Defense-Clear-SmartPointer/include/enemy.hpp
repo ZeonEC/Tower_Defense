@@ -9,6 +9,7 @@
 #include <string>
 #include "Astar.hpp"
 #include "render.hpp"
+#include "projectile.hpp"
 
 
 //------------------------ INCLUDE prog ----------------------//
@@ -141,6 +142,28 @@ public:
     TargetEnemy();
     ~TargetEnemy();
     EnemyKind getKind() const override { return EnemyKind::Target; }
+
+    void update(PathFinding_AStar& /*pathfinder*/, const std::vector<Render::Cell>& /*cells*/) override;
+
+    // injecté par Game avant l’update
+    void setTowerList(const std::vector<Tourelle*>* list) { towers = list; } 
+    bool tryShoot(float dt, std::vector<Projectile>& outProjectiles);
+
+    private:
+
+    const std::vector<Tourelle*>* towers = nullptr;
+    Tourelle* target = nullptr;
+
+    // paramètres d’attaque
+    float shootRange   = 50.f;
+    float projSpeed    = 520.f;
+    int   projDamage   = 6;
+    float fireRate     = 1.5f;   // tirs/s
+    float fireCooldown = 0.f;
+
+    void acquireTarget();                 // pick la tourelle la plus proche
+    void moveTowards(const sf::Vector2f& dest, float step);
+
 };
 
 //----------------------------------------------------------
@@ -152,6 +175,28 @@ public:
     FlyEnemy();
     ~FlyEnemy();
     EnemyKind getKind() const override { return EnemyKind::Fly; }
+
+    // on garde la même signature que Enemy::update (virtuel)
+    void update(PathFinding_AStar& /*pathfinder*/, const std::vector<Render::Cell>& /*cells*/) override;
+
+    // injecté par Game avant l’update
+    void setTowerList(const std::vector<Tourelle*>* list) { towers = list; } 
+    bool tryShoot(float dt, std::vector<Projectile>& outProjectiles);
+
+private:
+    // contexte
+    const std::vector<Tourelle*>* towers = nullptr;
+    Tourelle* target = nullptr;
+
+    // paramètres d’attaque
+    float shootRange   = 50.f;
+    float projSpeed    = 520.f;
+    int   projDamage   = 6;
+    float fireRate     = 1.5f;   // tirs/s
+    float fireCooldown = 0.f;
+
+    void acquireTarget();                 // pick la tourelle la plus proche
+    void moveTowards(const sf::Vector2f& dest, float step);
 };
 
 

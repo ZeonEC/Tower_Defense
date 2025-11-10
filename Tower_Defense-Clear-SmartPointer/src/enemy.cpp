@@ -1,5 +1,5 @@
 #include "enemy.hpp"
-
+#include "tower.hpp" 
 
 
 #include <iostream>
@@ -211,6 +211,169 @@ BasicEnemy::BasicEnemy()
 
     FlyEnemy::~FlyEnemy() { --FlyEnemy::counter; }
 
+
+// ===================== FlyEnemy : ciblage / tir sur tourelles =====================
+
+void FlyEnemy::acquireTarget()
+{
+    target = nullptr;
+    if (!towers) return;
+
+    float bestD2 = std::numeric_limits<float>::max();
+    const sf::Vector2f pos = getPosition();
+
+    for (auto* t : *towers) {
+        if (!t || t->isDestroyed()) continue; 
+        sf::Vector2f d = t->getPosition() - pos;
+        float d2 = d.x*d.x + d.y*d.y;
+        if (d2 < bestD2) { bestD2 = d2; target = t; }
+    }
+}
+
+
+void FlyEnemy::moveTowards(const sf::Vector2f& dest, float step)
+{
+    sf::Vector2f p = getPosition();
+    sf::Vector2f v = dest - p;
+    const float L = std::sqrt(v.x*v.x + v.y*v.y);
+    if (L < 1e-4f) return;
+    v.x /= L; v.y /= L;
+    p += v * step;              // ⬅️ plus de dt ici
+    setPosition(p.x, p.y);
+}
+
+void FlyEnemy::update(PathFinding_AStar&, const std::vector<Render::Cell>&)
+{
+    if (dead) return;
+
+    const float step = getSpeed();   // ⬅️ identique aux autres ennemis
+
+    if (!target || target->isDestroyed()) acquireTarget();
+
+    if (target) {
+    sf::Vector2f pos = getPosition();
+    sf::Vector2f tpos = target->getPosition();
+    sf::Vector2f d = tpos - pos;
+    float d2 = d.x*d.x + d.y*d.y;
+
+    if (d2 > shootRange*shootRange) {
+        moveTowards(tpos, /*step*/ getSpeed());  // version "par frame" si tu as appliqué l'Option A
+    } else {
+        // à portée de tir → on ne bouge pas (ou léger strafe si tu veux)
+    }
+    } else {
+        moveTowards(getPosition() + sf::Vector2f(1.f, 0.f), getSpeed());
+    }
+}
+
+bool FlyEnemy::tryShoot(float dt, std::vector<Projectile>& out)
+{
+    if (!target || target->isDestroyed()) return false;
+
+    const sf::Vector2f pos  = getPosition();
+    const sf::Vector2f tpos = target->getPosition();
+    sf::Vector2f d = tpos - pos;
+    float d2 = d.x*d.x + d.y*d.y;
+    if (d2 > shootRange*shootRange) return false;   // trop loin
+
+    fireCooldown -= dt;
+    if (fireCooldown > 0.f) return false;
+
+    // Créer un projectile "vers tour"
+    out.emplace_back(
+        pos, tpos,
+        projSpeed,
+        projDamage,
+        /*radius*/ 4.f,
+        /*allowedMask*/ 0u,   // inutile pour les tours
+        Projectile::TargetType::Towers   // ✅ clé
+    );
+
+    fireCooldown = 1.f / fireRate;
+    return true;
+}
+
+
+// ===================== TargetEnemy : ciblage / tir sur tourelles =====================
+
+void TargetEnemy::acquireTarget()
+{
+    target = nullptr;
+    if (!towers) return;
+
+    float bestD2 = std::numeric_limits<float>::max();
+    const sf::Vector2f pos = getPosition();
+
+    for (auto* t : *towers) {
+        if (!t || t->isDestroyed()) continue; 
+        sf::Vector2f d = t->getPosition() - pos;
+        float d2 = d.x*d.x + d.y*d.y;
+        if (d2 < bestD2) { bestD2 = d2; target = t; }
+    }
+}
+
+
+void TargetEnemy::moveTowards(const sf::Vector2f& dest, float step)
+{
+    sf::Vector2f p = getPosition();
+    sf::Vector2f v = dest - p;
+    const float L = std::sqrt(v.x*v.x + v.y*v.y);
+    if (L < 1e-4f) return;
+    v.x /= L; v.y /= L;
+    p += v * step;              // ⬅️ plus de dt ici
+    setPosition(p.x, p.y);
+}
+
+void TargetEnemy::update(PathFinding_AStar&, const std::vector<Render::Cell>&)
+{
+    if (dead) return;
+
+    const float step = getSpeed();   // ⬅️ identique aux autres ennemis
+
+    if (!target || target->isDestroyed()) acquireTarget();
+
+    if (target) {
+    sf::Vector2f pos = getPosition();
+    sf::Vector2f tpos = target->getPosition();
+    sf::Vector2f d = tpos - pos;
+    float d2 = d.x*d.x + d.y*d.y;
+
+    if (d2 > shootRange*shootRange) {
+        moveTowards(tpos, /*step*/ getSpeed());  // version "par frame" si tu as appliqué l'Option A
+    } else {
+        // à portée de tir → on ne bouge pas (ou léger strafe si tu veux)
+    }
+    } else {
+        moveTowards(getPosition() + sf::Vector2f(1.f, 0.f), getSpeed());
+    }
+}
+
+bool TargetEnemy::tryShoot(float dt, std::vector<Projectile>& out)
+{
+    if (!target || target->isDestroyed()) return false;
+
+    const sf::Vector2f pos  = getPosition();
+    const sf::Vector2f tpos = target->getPosition();
+    sf::Vector2f d = tpos - pos;
+    float d2 = d.x*d.x + d.y*d.y;
+    if (d2 > shootRange*shootRange) return false;   // trop loin
+
+    fireCooldown -= dt;
+    if (fireCooldown > 0.f) return false;
+
+    // Créer un projectile "vers tour"
+    out.emplace_back(
+        pos, tpos,
+        projSpeed,
+        projDamage,
+        /*radius*/ 4.f,
+        /*allowedMask*/ 0u,   // inutile pour les tours
+        Projectile::TargetType::Towers   // ✅ clé
+    );
+
+    fireCooldown = 1.f / fireRate;
+    return true;
+}
 
   /*  void Enemy::generateEnemy ()
     {

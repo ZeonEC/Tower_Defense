@@ -1,4 +1,5 @@
 #include "projectile.hpp"
+#include "enemy.hpp"   // ici c’est OK, on est dans le .cpp
 #include <cmath>
 
 static sf::Vector2f normalized(const sf::Vector2f& v) {
@@ -11,7 +12,12 @@ Projectile::Projectile(const sf::Vector2f& start,
                        float speed,
                        int   damage,
                        float radius,
-                       EnemyMask allowedMask) : dmg(damage), allowedMask_(allowedMask)
+                       EnemyMask allowedMask,
+                       TargetType targetType)
+    : dmg(damage),
+      alive(true),
+      allowedMask_(allowedMask),
+      targetType_(targetType)
 {
     shape.setRadius(radius);
     shape.setOrigin(radius, radius);

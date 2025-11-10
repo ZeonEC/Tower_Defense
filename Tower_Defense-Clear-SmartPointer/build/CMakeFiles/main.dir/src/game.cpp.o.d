@@ -283,8 +283,8 @@ CMakeFiles/main.dir/src/game.cpp.o: \
  /home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include/Player.hpp \
  /home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include/enemy.hpp \
  /home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include/Astar.hpp \
- /home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include/tower.hpp \
  /home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include/projectile.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include/tower.hpp \
  /home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include/enemy.hpp \
  /home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include/tower.hpp \
  /home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include/projectile.hpp

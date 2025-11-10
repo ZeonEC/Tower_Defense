@@ -353,6 +353,7 @@ CMakeFiles/main.dir/src/enemy.cpp.o: /home/enzoec/Documents/GitHub/TowerDefense/
   /home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include/Astar.hpp \
   /home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include/Player.hpp \
   /home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include/enemy.hpp \
+  /home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include/projectile.hpp \
   /home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include/render.hpp \
   /usr/include/SFML/Config.hpp \
   /usr/include/SFML/Graphics.hpp \

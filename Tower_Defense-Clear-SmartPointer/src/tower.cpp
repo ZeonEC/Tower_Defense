@@ -41,7 +41,8 @@ Tourelle::Tourelle(int damage,
   fireRate(fireRate),
   cooldown(0.f),
   projectileSpeed(projectileSpeed),
-  cost(cost)
+  cost(cost),
+  hp(50 + cost * 2)   // petit scaling simple : base 50 + 2 PV par point de coût
 {
     shape.setRadius(radius);
     shape.setPointCount(4); 
@@ -49,6 +50,7 @@ Tourelle::Tourelle(int damage,
     shape.setFillColor(color);
     shape.setRotation(45);
 }
+
 
 Tourelle::~Tourelle() = default;
 
@@ -61,6 +63,7 @@ sf::Vector2f Tourelle::getPosition() const {
 }
 
 void Tourelle::draw(sf::RenderTarget& win) const {
+    if (isDestroyed()) return;
     win.draw(shape);
 
     // (Optionnel) Un petit indicateur de portée en transparence :
@@ -74,6 +77,7 @@ void Tourelle::draw(sf::RenderTarget& win) const {
 }
 
 void Tourelle::update(float dt) {
+    if (isDestroyed()) return;
     cooldown = std::max(0.f, cooldown - dt);
 }
 
@@ -123,6 +127,8 @@ bool Tourelle::tryShoot(float dt,
                         const std::vector<Enemy*>& enemies,
                         std::vector<Projectile>& outProjectiles)
 {
+    if (isDestroyed()) return false;
+
     // 1) mettre à jour le cooldown local (et tout état interne)
     update(dt);
     if (cooldown > 0.f) return false;
@@ -131,16 +137,15 @@ bool Tourelle::tryShoot(float dt,
     Enemy* target = acquireTarget(enemies);
     if (!target) return false;
 
-    // 3) créer un projectile
-    // La direction précise/anticipation est gérée dans Projectile (direction vers la cible actuelle).
+    // 3) créer un projectile (vers ENNEMIS → TargetType par défaut)
     outProjectiles.emplace_back(
-    getPosition(),
-    target->getPosition(),
-    projectileSpeed,
-    damage,
-    /*radius*/ 4.f,
-    /*allowedMask*/ allowedMask
-);
+        getPosition(),
+        target->getPosition(),
+        projectileSpeed,
+        damage,
+        /*radius*/ 4.f,
+        /*allowedMask*/ allowedMask
+    );
 
     // 4) reset cooldown
     cooldown = (fireRate > 0.f) ? (1.f / fireRate) : 0.25f;
@@ -162,6 +167,9 @@ bool shotgunTourelle::tryShoot(float dt,
                                const std::vector<Enemy*>& enemies,
                                std::vector<Projectile>& outProjectiles)
 {
+     if (isDestroyed()) return false;
+
+
     cooldown = std::max(0.f, cooldown - dt);
     if (cooldown > 0.f) return false;
 

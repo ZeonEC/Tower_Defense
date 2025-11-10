@@ -155,76 +155,145 @@ void Game::destroyTourelles(std::vector<Tourelle*>& tourelles) {
 }
 
 
-    void Game::update(PathFinding_AStar& pathfinder, const std::vector<Render::Cell>& cells, float dt, std::vector<Enemy*>& enemies, std::vector<Tourelle*>& tourelles, Player* player)
-    {
-
-        // INTEGRER LE A* DANS UPDATE ENEMY 
-        // Mettre a jour les ennemies dans la frame
-for (auto it = enemies.begin(); it != enemies.end(); )
+void Game::update(PathFinding_AStar& pathfinder,
+                  const std::vector<Render::Cell>& cells,
+                  float dt,
+                  std::vector<Enemy*>& enemies,
+                  std::vector<Tourelle*>& tourelles,
+                  Player* player)
 {
-    Enemy* e = *it;
-    if (!e) {
-        ++it;
-        continue;
+    // ---------------------------------------------------------
+    // 1) Donner la liste des tourelles aux ennemis spéciaux
+    //    (FlyEnemy / TargetEnemy tirent sur les tourelles)
+    // ---------------------------------------------------------
+    for (auto* e : enemies) {
+        if (!e) continue;
+
+        if (auto* f = dynamic_cast<FlyEnemy*>(e)) {
+            f->setTowerList(&tourelles);
+        } 
+        else if (auto* t = dynamic_cast<TargetEnemy*>(e)) {
+            t->setTowerList(&tourelles);
+        }
     }
 
-    e->update(pathfinder, cells);
-
-    if (e->reachedGoal) {
-        // L'ennemi a atteint la fin : réduit la vie du joueur
-        player->reduceHealth(e->getDamage());
-        delete e;
-        it = enemies.erase(it);
-        std::cout << "Un ennemi a atteint la fin ! Vie du joueur : " << player->getHealth() << "\n";
-    } 
-    else if (e->isDead()) {
-        // L'ennemi est mort avant d'atteindre la fin : donne des ressources
-        player->AddRessources(e->ressourceValue);
-        delete e;
-        it = enemies.erase(it);
-        std::cout << "Ennemi tué ! Ressources gagnées : " << e->ressourceValue 
-                  << " | Total : " << player->getRessources() << "\n";
-    } 
-    else {
-        ++it;
-    }
-}
-
-        // les tourelles tentent de tirer (création éventuelle de projectiles)
-        for (auto t : tourelles) {
-            if (!t) continue;
-            t->tryShoot(dt, enemies, projectiles);
+    // ---------------------------------------------------------
+    // 2) Mise à jour des ennemis + gestion arrivée / mort
+    // ---------------------------------------------------------
+    for (auto it = enemies.begin(); it != enemies.end(); )
+    {
+        Enemy* e = *it;
+        if (!e) {
+            it = enemies.erase(it);
+            continue;
         }
 
-        // avancer les projectiles
-        for (auto& p : projectiles) p.update(dt);
+        e->update(pathfinder, cells);
 
-        // collisions projectile/ennemi
-        for (auto& p : projectiles) {
-            if (!p.isAlive()) continue;
-            for (auto e : enemies) {
-                if (!e || e->isDead()) continue;
+        if (e->reachedGoal) {
+            // L'ennemi a atteint la fin : réduit la vie du joueur
+            player->reduceHealth(e->getDamage());
+            delete e;
+            it = enemies.erase(it);
+            std::cout << "Un ennemi a atteint la fin ! Vie du joueur : "
+                      << player->getHealth() << "\n";
+        } 
+        else if (e->isDead()) {
+            // L'ennemi est mort avant d'atteindre la fin : donne des ressources
+            player->AddRessources(e->ressourceValue);
+            delete e;
+            it = enemies.erase(it);
+            std::cout << "Ennemi tué ! Ressources gagnées : " << e->ressourceValue 
+                      << " | Total : " << player->getRessources() << "\n";
+        } 
+        else {
+            ++it;
+        }
+    }
 
-                // ignorer les ennemis non autorisés par le projectile
-                if (!p.accepts(e)) continue;
+    // ---------------------------------------------------------
+    // 3a) Les tourelles tirent sur les ennemis
+    // ---------------------------------------------------------
+    for (auto* t : tourelles) {
+        if (!t || t->isDestroyed()) continue;
+        t->tryShoot(dt, enemies, projectiles);
+    }
 
-                const float enemyRadius = e->getRadius(); // idéalement : rayon réel (ex: e->getRadius())
-                if (p.collidesWith(e->getPosition(), enemyRadius)) 
-                {
-                    e->takeDamage(p.getDamage());
-                    p.kill();
-                    break;
-                }
+    // ---------------------------------------------------------
+    // 3b) Les ennemis spéciaux tirent sur les tourelles
+    // ---------------------------------------------------------
+    for (auto* e : enemies) {
+        if (!e || e->isDead()) continue;
+
+        if (auto* f = dynamic_cast<FlyEnemy*>(e)) {
+            f->tryShoot(dt, projectiles);
+        } 
+        else if (auto* t = dynamic_cast<TargetEnemy*>(e)) {
+            t->tryShoot(dt, projectiles);
+        }
+    }
+
+    // ---------------------------------------------------------
+    // 4) Avancer tous les projectiles
+    // ---------------------------------------------------------
+    for (auto& p : projectiles) {
+        p.update(dt);
+    }
+
+    // ---------------------------------------------------------
+    // 5) Collisions projectile / ennemi
+    //    (projectiles tirés par les tourelles)
+    // ---------------------------------------------------------
+    for (auto& p : projectiles) {
+        if (!p.isAlive()) continue;
+
+        for (auto* e : enemies) {
+            if (!e || e->isDead()) continue;
+
+            // ignorer les ennemis non autorisés par le projectile
+            if (!p.accepts(e)) continue;
+
+            const float enemyRadius = e->getRadius();
+            if (p.collidesWith(e->getPosition(), enemyRadius)) {
+                e->takeDamage(p.getDamage());
+                p.kill();
+                break;
             }
         }
-
-        // 4) nettoyage
-        projectiles.erase(
-            std::remove_if(projectiles.begin(), projectiles.end(),
-                        [](const Projectile& pr){ return !pr.isAlive(); }),
-            projectiles.end()
-        );
     }
+
+    // ---------------------------------------------------------
+    // 6) Collisions projectile / tourelle
+    //    (projectiles tirés par les ennemis)
+    // ---------------------------------------------------------
+    for (auto& p : projectiles) {
+        if (!p.isAlive()) continue;
+
+        if (p.getTargetType() != Projectile::TargetType::Towers)
+            continue;
+
+        for (auto* t : tourelles) {
+            if (!t || t->isDestroyed()) continue;
+
+            const float towerRadius = t->getRadius();
+            if (p.collidesWith(t->getPosition(), towerRadius)) {
+                t->takeDamage(p.getDamage());
+                p.kill();
+                break;
+            }
+        }
+    }
+
+    // ---------------------------------------------------------
+    // 7) Nettoyage des projectiles morts
+    // ---------------------------------------------------------
+    projectiles.erase(
+        std::remove_if(projectiles.begin(), projectiles.end(),
+                       [](const Projectile& pr){ return !pr.isAlive(); }),
+        projectiles.end()
+    );
+}
+
 
     void Game::upgradeTourelle(std::vector<Tourelle*>& tourelles, Player* player, float mouseX, float mouseY)
 {

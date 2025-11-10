@@ -87,6 +87,18 @@ class Tourelle {
         float getProjectileSpeed() const { return projectileSpeed; }
         void  setProjectileSpeed(float s) { projectileSpeed = s; }
 
+        // ===================== GESTION DES PV ===================== //
+
+        // Retourne les PV actuels de la tourelle
+        int getHP() const { return hp; }
+
+        // Applique des dégâts à la tourelle
+        void takeDamage(int amount) {
+            hp -= amount;
+            if (hp < 0) hp = 0;
+        }
+         bool isDestroyed() const { return hp <= 0; }
+
     // Permet de gérer la 'recharge' des tourelles (ex : fireRate = 2.0f; // 2 tirs par seconde = un tir toutes les 0.5s) (pour pas que ça mitraille a chaque tic) 
         virtual void update(float dt);
 
@@ -123,6 +135,7 @@ class Tourelle {
         float projectileSpeed;
         int cost;
         std::string name;
+        int hp;
 
         // ------------- FONCTIONS ------------- //
 

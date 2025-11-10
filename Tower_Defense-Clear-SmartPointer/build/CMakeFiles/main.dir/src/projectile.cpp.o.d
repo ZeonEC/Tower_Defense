@@ -280,4 +280,5 @@ CMakeFiles/main.dir/src/projectile.cpp.o: \
  /usr/include/c++/13/bits/atomic_lockfree_defines.h \
  /usr/include/c++/13/backward/auto_ptr.h \
  /usr/include/c++/13/pstl/glue_memory_defs.h \
- /home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include/Player.hpp
+ /home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include/Player.hpp \
+ /home/enzoec/Documents/GitHub/TowerDefense/Tower_Defense-Clear-SmartPointer/include/projectile.hpp
