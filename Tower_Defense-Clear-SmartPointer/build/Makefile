@@ -201,6 +201,30 @@ src/game.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/game.cpp.s
 .PHONY : src/game.cpp.s
 
+src/gameEvent.o: src/gameEvent.cpp.o
+.PHONY : src/gameEvent.o
+
+# target to build an object file
+src/gameEvent.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/gameEvent.cpp.o
+.PHONY : src/gameEvent.cpp.o
+
+src/gameEvent.i: src/gameEvent.cpp.i
+.PHONY : src/gameEvent.i
+
+# target to preprocess a source file
+src/gameEvent.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/gameEvent.cpp.i
+.PHONY : src/gameEvent.cpp.i
+
+src/gameEvent.s: src/gameEvent.cpp.s
+.PHONY : src/gameEvent.s
+
+# target to generate assembly for a file
+src/gameEvent.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/gameEvent.cpp.s
+.PHONY : src/gameEvent.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -315,6 +339,9 @@ help:
 	@echo "... src/game.o"
 	@echo "... src/game.i"
 	@echo "... src/game.s"
+	@echo "... src/gameEvent.o"
+	@echo "... src/gameEvent.i"
+	@echo "... src/gameEvent.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

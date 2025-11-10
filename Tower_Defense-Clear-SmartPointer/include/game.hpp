@@ -60,7 +60,7 @@ public:
     struct Wave { int count; float interval; }; // nombre d’ennemis, intervalle de spawn (s)
     
     // LES VAGUES :
-    std::vector<Wave> waves = { {100,0.1f}, {12,0.5f}, {18,0.4f}, {18,0.4f}, {18,0.4f}  };
+    std::vector<Wave> waves = { {10,0.6f}, {12,0.5f}, {18,0.4f}, {18,0.4f}, {18,0.4f}  };
 
     int   waveIndex = -1;         // -1 = pas commencé
     int   toSpawn   = 0;          // restants à spawner dans la vague courante

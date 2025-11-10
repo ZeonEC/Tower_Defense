@@ -292,6 +292,12 @@ void Game::update(PathFinding_AStar& pathfinder,
                        [](const Projectile& pr){ return !pr.isAlive(); }),
         projectiles.end()
     );
+
+    if (player->getHealth() <= 0) {
+            player->reduceHealth(0); // s'assure que c'est exactement 0
+            gameOver = true;
+            std::cout << "GAME OVER !" << std::endl;
+        }
 }
 
 

@@ -29,6 +29,7 @@ add_executable(main
   src/enemy.cpp
   src/tower.cpp
   src/game.cpp
+  src/gameEvent.cpp
   src/Astar.cpp
 )
 

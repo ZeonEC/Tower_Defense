@@ -1,9 +1,3 @@
-////////////////////////////////////////////////////////
-//          Programmes de Enzo CHADEVILLE             //
-//                                                    //
-//                                                    //
-//                                                    //
-////////////////////////////////////////////////////////
 
 //--------Inclusion des librairies--------//
 #include <iostream>
@@ -84,11 +78,11 @@ int main() {
     std::cerr << "Erreur chargement musique !" << std::endl;
     }
 
-    MainMenuMusic.setVolume(10.f);  // entre 0 et 100
+    MainMenuMusic.setVolume(0.2f);  // entre 0 et 100
     MainMenuMusic.setLoop(true);
     MainMenuMusic.play();
 
-    backgroundMusic.setVolume(10.f);  // entre 0 et 100
+    backgroundMusic.setVolume(0.2f);  // entre 0 et 100
     backgroundMusic.setLoop(true);
     
 

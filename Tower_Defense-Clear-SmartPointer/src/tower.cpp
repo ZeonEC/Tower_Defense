@@ -180,7 +180,7 @@ bool shotgunTourelle::tryShoot(float dt,
     sf::Vector2f toTarget = target->getPosition() - getPosition();
 
     // liste des angles pour le cône de tir
-    std::vector<float> angles = { 0.f, 22.5f, -22.5f, 45.f, -45.f, 67.5f };
+    std::vector<float> angles = { 0.f, 15.f, -15.f, 30.f, -30.f };
 
     for (float a : angles)
     {
