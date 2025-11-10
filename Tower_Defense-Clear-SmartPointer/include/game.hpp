@@ -28,7 +28,7 @@
 
 class Game {
 public:
-    Game() = default;
+    Game() : gameOver(false) {};
     ~Game() = default;
 
     Player player;  // ajout du joueur
@@ -71,10 +71,14 @@ public:
     float interDelay = 3.f;       // 3 secondes entre vagues
     bool  wavesFinished = false;  // toutes les vagues terminées
 
+    bool isGameOver() const { return gameOver; }
+
 private:
     size_t enemyRepathIndex = 0;      // Index rotatif
     int maxRepathPerFrame = 2;        // Nb d'ennemis recalculant par frame
     std::vector<Projectile> projectiles;
+
+    bool gameOver = false;
 };
 
 #endif
