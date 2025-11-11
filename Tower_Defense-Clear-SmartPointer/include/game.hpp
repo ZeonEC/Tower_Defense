@@ -59,7 +59,7 @@ public:
 
     struct Wave { int count; float interval; }; // nombre d’ennemis, intervalle de spawn (s)
     
-    // LES VAGUES :
+    // Vecteur de créations de vagues avec gestions du nombre d'ennemis et les intervalle
     std::vector<Wave> waves = { {10,0.6f}, {12,0.5f}, {18,0.4f}, {18,0.4f}, {18,0.4f}  };
 
     int   waveIndex = -1;         // -1 = pas commencé

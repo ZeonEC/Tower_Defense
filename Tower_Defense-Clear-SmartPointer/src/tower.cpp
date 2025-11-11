@@ -1,13 +1,20 @@
+//------------------------ INCLUDE libs ----------------------//
+#include <algorithm>
+#include <cmath>
+
+//------------------------ INCLUDE prog ----------------------//
 #include "tower.hpp"
 #include "projectile.hpp"
 #include "enemy.hpp"
 
-#include <algorithm>
-#include <cmath>
 
-// --------- Utilitaires internes ---------
+// PETITES FONCTIONS UTILITAIRES EN INTERNE
+// sqr(x)  : renvoie x² (évite de répéter x * x partout)
+// dist2() : renvoie la distance² entre deux points 2D (sans sqrt)
+//           → utile pour comparer des distances sans payer la racine carrée.
 namespace 
 {
+    // on fait des inline pour demander au compilateur de "refaire le prog" plustot que de faire un appele de la fonction (on lui demande de faire un ctrl c v dans son code)
     inline float sqr(float x) { return x * x; }
 
     inline float dist2(const sf::Vector2f& a, const sf::Vector2f& b) {
@@ -15,20 +22,26 @@ namespace
     }
 }
 
-int FlyTourelle::counter = 0;
-int BasicTourelle::counter = 0;
-int PoisonTourelle::counter = 0;
+
+// COMPTEURS STATIQUES DES TOURELLES
+int FlyTourelle::counter     = 0;
+int BasicTourelle::counter   = 0;
+int PoisonTourelle::counter  = 0;
 int shotgunTourelle::counter = 0;
-int TargetTourelle::counter = 0;
+int TargetTourelle::counter  = 0;
 
 
 // ========================================================================== //
-
 //                         FONCTIONS STANDARDS TOURELLES                      // 
-
+// ========================================================================== //
+//
+// Tout ce qui suit est lié à la classe de base Tourelle (constructeur,
+// update, ciblage, tir simple). Les variantes se contentent de changer
+// les paramètres ou de override certaines fonctions.
 // ========================================================================== //
 
 
+// ------------------------ Constructeur de base ------------------------ //
 Tourelle::Tourelle(int damage,
                    float range,
                    float fireRate,
@@ -42,262 +55,203 @@ Tourelle::Tourelle(int damage,
   cooldown(0.f),
   projectileSpeed(projectileSpeed),
   cost(cost),
-  hp(50 + cost * 2)   // petit scaling simple : base 50 + 2 PV par point de coût
+  hp(50 + cost * 2)   // base 50 PV + 2 PV par point de coût
 {
-    shape.setRadius(radius);
-    shape.setPointCount(4); 
-    shape.setOrigin(radius, radius);
-    shape.setFillColor(color);
-    shape.setRotation(45);
+    // Représentation graphique de la tourelle
+    shape.setRadius(radius);            // rayon visuel (lié à la taille de la cellule)
+    shape.setPointCount(4);            // 4 points → carré
+    shape.setOrigin(radius, radius);   // origine au centre
+    shape.setFillColor(color);         // couleur selon le type
+    shape.setRotation(45);             // rotation de 45° → donne un losange
 }
-
 
 Tourelle::~Tourelle() = default;
 
+
+// ------------------------ Position / Rendu ------------------------ //
+
+// Change la position de la tourelle dans le monde (centre de la forme)
 void Tourelle::setPosition(float x, float y) {
     shape.setPosition(x, y);
 }
 
+// Retourne la position actuelle de la tourelle
 sf::Vector2f Tourelle::getPosition() const {
     return shape.getPosition();
 }
 
+// Dessin de la tourelle dans la fenêtre SFML
 void Tourelle::draw(sf::RenderTarget& win) const {
-    if (isDestroyed()) return;
+    if (isDestroyed()) return;  // si la tourelle est détruite, on ne l’affiche plus
     win.draw(shape);
 
-    // (Optionnel) Un petit indicateur de portée en transparence :
-     //sf::CircleShape rangeCircle(range);
-     //rangeCircle.setOrigin(range, range);
-     //rangeCircle.setPosition(shape.getPosition());
-     //rangeCircle.setFillColor(sf::Color(255,255,255,20));
-     //rangeCircle.setOutlineColor(sf::Color(255,255,255,60));
-     //rangeCircle.setOutlineThickness(1.f);
-     //win.draw(rangeCircle);
+    // (Optionnel) cercle de portée, pour debug :
+    /*
+     sf::CircleShape rangeCircle(range);
+     rangeCircle.setOrigin(range, range);
+     rangeCircle.setPosition(shape.getPosition());
+     rangeCircle.setFillColor(sf::Color(255,255,255,20));
+     rangeCircle.setOutlineColor(sf::Color(255,255,255,60));
+     rangeCircle.setOutlineThickness(1.f);
+     win.draw(rangeCircle);
+    */
 }
 
+
+// ------------------------ Update générique ------------------------ //
+//
+// Gestion du cooldown de tir :
+//  - dt : temps écoulé depuis la dernière frame
+//  - cooldown diminue jusqu’à 0
+//
 void Tourelle::update(float dt) {
     if (isDestroyed()) return;
     cooldown = std::max(0.f, cooldown - dt);
 }
 
+
+// ------------------------ Ciblage : acquireTarget ------------------------ //
+//
+// Cherche une cible dans la liste des ennemis :
+//  - uniquement ceux encore en vie
+//  - uniquement les types autorisés par le EnemyMask
+//  - et dans la portée de la tourelle
+// On retourne l’ennemi le plus proche, ou nullptr si aucun.
+// On retourne un pointeur vers un enemy
 Enemy* Tourelle::acquireTarget(const std::vector<Enemy*>& enemies) const {
 
-    // r2 = portée² → tout ennemi avec d² > r2 est hors de portée.
+    // r2 = portée² → on travaille en distance² pour éviter sqrt
     const float r2 = range * range;
 
-    // INITIALISATION VAR DE TARGET
-    
-    Enemy* best   = nullptr; // meilleur candidat trouvé jusque-là (nullptr = aucun pour l'instant)
-    float  bestD2 = r2;      // distance² du meilleur candidat (initialisé à la portée max)
-    auto   p      = getPosition(); // position de la tourelle dans le monde
+    Enemy* best   = nullptr;           // meilleur candidat
+    float  bestD2 = r2;                // meilleure distance² trouvée (init = max portée)
+    auto   p      = getPosition();     // position de la tourelle
 
-    // Parcours de tous les ennemis actuellement présents dans la vague
     for (auto e : enemies) {
-        if (!e || e->isDead()) 
-            continue; // On ignore les pointeurs nuls et les ennemis déjà morts
+        if (!e || e->isDead())
+            continue;                  // on ignore les null et les morts
 
-        // Vérifie si la tourelle a le droit de tirer sur ce type d'ennemi
-        // (gestion via le masque allowedMask : Basic seulement, Fly uniquement, etc.)
-        if (!accepts(e)) 
+        // Vérifie si le masque de la tourelle autorise ce type d’ennemi
+        if (!accepts(e))
             continue;
 
-        // Calcul de la distance AU CARRÉ entre la tourelle et l'ennemi.
-        // d² = (dx² + dy²) où dx = delta x, dy = delta y
+        // Distance² à l’ennemi (Pythagore sans racine)
         float dx = e->getPosition().x - p.x;
         float dy = e->getPosition().y - p.y;
         float d2 = dx * dx + dy * dy;
 
-        // Si l'ennemi est plus proche que le meilleur candidat actuel (et dans la portée),
-        // on met à jour "best" et "bestD2".
+        // On garde la cible la plus proche dans la portée
         if (d2 <= bestD2) {
             bestD2 = d2;
             best   = e;
         }
     }
 
-    // À la fin de la boucle :
-    //  - best pointe vers l'ennemi le plus proche (dans la portée et autorisé)
-    //  - ou reste nullptr si aucune cible n'était valide
-    return best;
+    return best; // peut être nullptr si aucune cible valide
 }
 
 
+// ------------------------ Tir standard : Tourelle::tryShoot ------------------------ //
+//
+// - Met à jour le cooldown
+// - Cherche une cible
+// - Si tout est ok → crée un projectile simple vers l’ennemi
+//
 bool Tourelle::tryShoot(float dt,
                         const std::vector<Enemy*>& enemies,
                         std::vector<Projectile>& outProjectiles)
 {
     if (isDestroyed()) return false;
 
-    // 1) mettre à jour le cooldown local (et tout état interne)
+    // gestion du cooldown
     update(dt);
-    if (cooldown > 0.f) return false;
+    if (cooldown > 0.f) return false; // encore en recharge -> pas de tir
 
-    // 2) choisir une cible
+    // ciblage
     Enemy* target = acquireTarget(enemies);
-    if (!target) return false;
+    if (!target) return false;        // aucune cible -> rien à faire
 
-    // 3) créer un projectile (vers ENNEMIS → TargetType par défaut)
+    // 3) création du projectile (tir standard vers ENNEMIS)
     outProjectiles.emplace_back(
-        getPosition(),
-        target->getPosition(),
-        projectileSpeed,
-        damage,
-        /*radius*/ 4.f,
-        /*allowedMask*/ allowedMask
+        getPosition(),                // point de départ = centre tourelle
+        target->getPosition(),        // cible = centre ennemi
+        projectileSpeed,              // vitesse
+        damage,                       // dégâts
+        /*radius*/      4.f,
+        /*allowedMask*/ allowedMask   // quels types d’ennemis ce projectile touche
+        // TargetType par défaut = Enemies (constructeur projectile)
     );
 
-    // 4) reset cooldown
+    // reset du cooldown en fonction de la cadence de tir
     cooldown = (fireRate > 0.f) ? (1.f / fireRate) : 0.25f;
     return true;
 }
 
-// --------- Utilitaire local pour rotation de vecteur ---------
+
+// ============================================================================
+//                  Rotation d’un vecteur 2D (pour le shotgun)
+// ============================================================================
+//
+// rotateVector(v, degrees)
+// -> retourne le vecteur v tourné d’un certain angle (en degrés).
+//
+// Utilisé pour créer les différents projectiles du shotgun autour de la
+// direction principale.
+// ============================================================================ //
 static sf::Vector2f rotateVector(const sf::Vector2f& v, float degrees)
 {
-    float rad = degrees * 3.14159265f / 180.f;
+    float rad = degrees * 3.14159265f / 180.f;  // conversion degrés -> radians
     float cs = std::cos(rad);
     float sn = std::sin(rad);
-    return sf::Vector2f(v.x * cs - v.y * sn, v.x * sn + v.y * cs);
+
+    // Formule standard de rotation 2D :
+    // x' = x*cos - y*sin
+    // y' = x*sin + y*cos
+    return sf::Vector2f(v.x * cs - v.y * sn,
+                        v.x * sn + v.y * cs);
 }
 
-// ===================== shotgunTourelle tir multiple =====================
 
+// override de tryShoot :
+//  - au lieu d’un seul projectile, la tourelle en envoie plusieurs
+//    en éventail autour de la direction principale.
 bool shotgunTourelle::tryShoot(float dt,
                                const std::vector<Enemy*>& enemies,
                                std::vector<Projectile>& outProjectiles)
 {
-     if (isDestroyed()) return false;
+    if (isDestroyed()) return false;
 
-
+    // Gestion locale du cooldown (ici on n’appelle pas Tourelle::update)
     cooldown = std::max(0.f, cooldown - dt);
     if (cooldown > 0.f) return false;
 
+    // On prend une cible comme pour la tourelle standard
     Enemy* target = acquireTarget(enemies);
     if (!target) return false;
 
-    // direction principale
+    // direction centrale vers la cible
     sf::Vector2f toTarget = target->getPosition() - getPosition();
 
-    // liste des angles pour le cône de tir
+    // liste des angles de déviation autour de cette direction
     std::vector<float> angles = { 0.f, 15.f, -15.f, 30.f, -30.f };
 
+    // Pour chaque angle, on crée un projectile légèrement décalé
     for (float a : angles)
     {
-        sf::Vector2f dir = rotateVector(toTarget, a);
-        sf::Vector2f targetPos = getPosition() + dir; // point visé légèrement décalé
-        
+        sf::Vector2f dir = rotateVector(toTarget, a);      // direction tournée
+        sf::Vector2f targetPos = getPosition() + dir;      // point visé un peu plus loin
+
         outProjectiles.emplace_back(
-            getPosition(),
-            targetPos,
+            getPosition(),   // départ
+            targetPos,    // ça tir dans la direction de la cible mais ça garde l'écart angle donné pour partir un peu n'importe ou (SHOTGUN)
             projectileSpeed,
             damage,
-            /*radius*/ 4.f,
+            /*radius*/      4.f,
             /*allowedMask*/ allowedMask
         );
     }
 
+    // On remet un cooldown classique basé sur fireRate
     cooldown = (fireRate > 0.f) ? (1.f / fireRate) : 0.25f;
     return true;
 }
-
-// FONCTION DE CIBLAGE SUR UNE CLASSE UNIQUE (plutot que d'utiliser les mask mais je trouve que c'est plus long car c'est une fonction par type d'ennemie ici)
-
-/*Enemy* FlyTourelle::acquireTarget(const std::vector<Enemy*>& enemies) const {
-    const float r2 = range * range;
-    Enemy* best = nullptr;
-    float bestD2 = r2;
-    auto  p = getPosition();
-
-    for (auto e : enemies) {
-        if (!e || e->isDead()) continue;
-
-        // On ne vise que les ennemis volants
-        if (dynamic_cast<FlyEnemy*>(e) == nullptr)
-            continue;
-
-        float d2 = (e->getPosition().x - p.x) * (e->getPosition().x - p.x)
-                 + (e->getPosition().y - p.y) * (e->getPosition().y - p.y);
-
-        if (d2 <= bestD2) {
-            bestD2 = d2;
-            best = e;
-        }
-    }
-    return best;
-}*/
-
-
-// ===================== Variantes =====================
-
-//BasicTourelle::BasicTourelle(float radius)
-//: Tourelle(
-//    /*damage*/          1000,
-//    /*range*/           220.f,
-//    /*fireRate*/        1.0f,   // 1 tir / s
-//    /*projectileSpeed*/ 450.f,
-//    /*radius*/          radius,
-//    /*color*/           sf::Color(60, 180, 255)
-//) {
-//    // Autoriser tout SAUF les volants :
-//   forbid(EnemyKind::Fly);
-//}
-
-// Poison : dégâts faibles + cadence correcte + portée moyenne
-//PoisonTourelle::PoisonTourelle(float radius)
-//: Tourelle(
-//    /*damage*/          600,
-//   /*range*/           200.f,
-//    /*fireRate*/        1.2f,
-//    /*projectileSpeed*/ 420.f,
-//    /*radius*/          radius,
-//    /*color*/           sf::Color(150, 255, 150)
-//) {
-//    // Autoriser tout SAUF les volants :
-//    forbid(EnemyKind::Fly);
-//}
-
-// Shotgun : cadence élevée, dégâts faibles, faible portée
-//shotgunTourelle::shotgunTourelle(float radius)
-//: Tourelle(
-//    /*damage*/          100,
-//    /*range*/           160.f,
-//    /*fireRate*/        3.0f,
-//    /*projectileSpeed*/ 680.f,
-//    /*radius*/          radius,
-//    /*color*/           sf::Color(200, 200, 255)
-//) 
-//{
-//    // Autoriser tout SAUF les volants :
-//   forbid(EnemyKind::Fly);
-//}
-
-//int FlyTourelle::counter = 0;
-
-// Fly : stats équilibrées, couleur violette (et compteur si tu l’utilises)
-//FlyTourelle::FlyTourelle(float radius)
-//: Tourelle(
- //   /*damage*/          800,
-//    /*range*/           220.f,
-//    /*fireRate*/        1.2f,
-//    /*projectileSpeed*/ 520.f,
-//    /*radius*/          radius,
-//    /*color*/           sf::Color(200, 0, 0)
-//) { ++counter; }
-
-//FlyTourelle::~FlyTourelle() { --counter; }
-
-// Target : portée un peu plus grande, dégâts moyens
-//TargetTourelle::TargetTourelle(float radius)
-//: Tourelle(
-//    /*damage*/          1000,
-//    /*range*/           240.f,
-//    /*fireRate*/        1.0f,
-//    /*projectileSpeed*/ 450.f,
-//    /*radius*/          radius,
-//    /*color*/           sf::Color(255, 200, 140)
-//
-//) {
-    // Autoriser tout SAUF les volants :
-//    forbid(EnemyKind::Fly);
-//}
