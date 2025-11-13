@@ -17,6 +17,7 @@ class Tourelle;
 // ============================================================================
 class Render {
 public:
+    //Définition d'une cellule
     struct Cell {
         int id;
         int col, row;
@@ -82,23 +83,21 @@ private:
             label.setPosition(pos);
         }
 
-        bool contains(sf::Vector2f p) const { return box.getGlobalBounds().contains(p); }
-        void draw(sf::RenderTarget& rt) const { rt.draw(box); rt.draw(label); }
+        bool contains(sf::Vector2f p) const { return box.getGlobalBounds().contains(p); }   //Retourne si colision
+        void draw(sf::RenderTarget& rt) const { rt.draw(box); rt.draw(label); }             //Dessine le bouton
     };
 
-    Button startButton;
-    Button quitButton;
-    Button settingsButton;
+    Button startButton; //Bouton Start
+    Button quitButton;  //Bouton Quit
 
 public:
-    explicit RenderMainMenu(const sf::Vector2u& windowSize);
+    explicit RenderMainMenu(const sf::Vector2u& windowSize); //Constructeur du RenderMainMenu / explicit empêche les conversions implicite | ne change pas le type de windowSize
 
-    void setupButtons();
-    void drawMenu();
-    void clear();
-    const Button& getStartButton() const { return startButton; };
-    const Button& getQuitButton() const { return quitButton; };
-    const Button& getSettingButton() const { return settingsButton; };
+    void setupButtons();                                            //Création des boutons
+    void drawMenu();                                                //Dessine le MainMenu
+    void clear();                                                   //Vide le RenderMainMenu
+    const Button& getStartButton() const { return startButton; };   //Getter du bouton Start
+    const Button& getQuitButton() const { return quitButton; };     //Getter du bouton Quit
 
     
 };
@@ -113,12 +112,12 @@ private :
     sf::Sprite background;
     sf::Texture backgroundTexture; 
 public:
-    explicit RenderMap(const sf::Vector2u& windowSize);
-    void clear() override;
-    void drawBackground();
-    void drawGridLines();
-    void setWaveText(std::string text) {waveText.setString(text);};
-    sf::Text getWaveText() const {return waveText;};
+    explicit RenderMap(const sf::Vector2u& windowSize); //Constructeur du RenderMainMenu / explicit empêche les conversions implicite | ne change pas le type de windowSize
+    void clear() override;                                          //Nouvelle définition du clear
+    void drawBackground();                                          //Dessine le fond
+    void drawGridLines();                                           //Dessine la grille
+    void setWaveText(std::string text) {waveText.setString(text);}; //Ecrit le texte des vagues d'ennemi
+    sf::Text getWaveText() const {return waveText;};                //Getter pour le texte des vagues d'ennemi
 };
 
 // ============================================================================
@@ -205,13 +204,12 @@ public:
 
     explicit RenderInfo(const sf::Vector2u& windowSize);
     void clearPreview();
-    void setTowerInfo(const std::string& name);
     void setPlayer(Player* p) { player = p; }
     void setSelectedTower(Tourelle* t);
     void setPreviewTowerType(int towerType);
-    std::unique_ptr<sf::Shape> cloneShape(const sf::Shape* shape);
+    std::unique_ptr<sf::Shape> cloneShape(const sf::Shape* shape);  //Pointe la forme de la tourelle
 
-    void updateTowerPreview(Tourelle* t, int towerType = -1);
+    void updateTowerPreview(Tourelle* t, int towerType = -1);       //Met à jour le texte en fontion de la tourelle sélectionnée. towerType E [0,5] => =-1 => vide
     void drawInfo();
     void clear() override;
 };
@@ -244,5 +242,5 @@ public:
 };
 
 
-#endif
+#endif // RENDER_HPP
 

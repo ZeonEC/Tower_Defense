@@ -22,6 +22,7 @@ void Render::display() { texture.display(); }
 void Render::update(float) {}
 void Render::drawTo(sf::RenderWindow& target) { target.draw(sprite); }
 
+//======================== DESSINE LA GRILLE =======================
 void Render::drawGrid(sf::RenderTarget& window, sf::Color color) {
     sf::Vector2u size = window.getSize();
     for (float x = 0; x < size.x; x += Cell::cellSize) {
@@ -40,6 +41,7 @@ void Render::drawGrid(sf::RenderTarget& window, sf::Color color) {
     }
 }
 
+//======================== CREER LES CELLULES =======================
 std::vector<Render::Cell> Render::buildCells(sf::RenderTarget& window) {
     std::vector<Cell> cells;
     sf::Vector2u size = window.getSize();
@@ -61,6 +63,7 @@ std::vector<Render::Cell> Render::buildCells(sf::RenderTarget& window) {
     return cells;
 }
 
+
 // ============================================================================
 // RenderMainMenu
 // ============================================================================
@@ -80,11 +83,13 @@ RenderMainMenu::RenderMainMenu(const sf::Vector2u& windowSize) {
     setupButtons();
 }
 
+//======================= CREATION DES BOUTONS =======================
 void RenderMainMenu::setupButtons() {
     startButton.set(font, "DEMARRER", {260.f, 64.f}, {400.f, 420.f});
     quitButton.set(font, "QUITTER", {260.f, 64.f}, {400.f, 490.f});
 }
 
+//==================== DESSINE LE MAINMENU ===================
 void RenderMainMenu::drawMenu() {
     clear();
     texture.clear(sf::Color(20, 20, 30));
@@ -95,8 +100,9 @@ void RenderMainMenu::drawMenu() {
 }
 
 void RenderMainMenu::clear() {
-    texture.clear(sf::Color(20, 20, 30)); // ou une couleur de fond que tu veux
+    texture.clear(sf::Color(20, 20, 30));
 }
+
 
 // ============================================================================
 // RenderMap
@@ -126,19 +132,22 @@ void RenderMap::clear() {
     texture.clear(sf::Color::Black);
 }
 
+//============ DESSINE LE FOND ===========
 void RenderMap::drawBackground() {
     texture.draw(background);
 }
 
+//============== DESSINE LA GRILLE =================
 void RenderMap::drawGridLines() {
-    Render::drawGrid(texture, sf::Color(80, 80, 80));
+    Render::drawGrid(texture, sf::Color(80, 80, 80));   //Dessine avec la fonction de la classe Render
 }
+
 
 // ============================================================================
 // RenderControl
 // ============================================================================
 RenderControl::RenderControl(const sf::Vector2u& windowSize)
-    : activeTab(0) {
+    : activeTab(0) {    //Position initiale de l'index à 0
     size = { static_cast<unsigned>(windowSize.x * 0.3f), static_cast<unsigned>(windowSize.y * 0.4f) };
     texture.create(size.x, size.y);
     sprite.setTexture(texture.getTexture());
@@ -174,6 +183,7 @@ void RenderControl::clear() {
     texture.clear(sf::Color(50, 50, 50));
 }
 
+//=================== DESSINE LES ONGLETS =====================
 void RenderControl::drawTabs() {
     float x = 10.f;
     for (std::size_t i = 0; i < tabs.size(); ++i) {
@@ -190,12 +200,13 @@ void RenderControl::drawTabs() {
     }
 }
 
+//================== DESSINE LE CONTENU DES ONGLETS ====================
 void RenderControl::drawContent(Player* player) {
     switch (activeTab) {
         case 0: { // --- Onglet Tourelles ---
             contentText.setString("Gestion des Tourelles :\n");
 
-            // Liste des tourelles et coûts
+            //Liste des tourelles et coûts
             struct TourelleInfo {
                 std::string name;
                 int cost;
@@ -209,20 +220,20 @@ void RenderControl::drawContent(Player* player) {
                 {"[T] Fly",     FlyTourelle(0.f).getCost()}
             };
 
-            // Met à jour chaque ligne de coût
+            //Met à jour chaque ligne de coût
             for (std::size_t i = 0; i < tourelles.size(); ++i) {
                 std::ostringstream oss;
                 oss << tourelles[i].name << " : " << tourelles[i].cost << " or";
                 towerCostTexts[i].setString(oss.str());
 
-                // 🔸 Couleur rouge si le joueur n’a pas assez de ressources pour CE coût
+                //Couleur rouge si le joueur n’a pas assez de ressources pour CE coût
                 if (player->getRessources() < tourelles[i].cost)
                     towerCostTexts[i].setFillColor(sf::Color::Red);
                 else
                     towerCostTexts[i].setFillColor(sf::Color::White);
             }
 
-            // Dessin
+            //Dessine
             texture.draw(contentText);
             for (auto& t : towerCostTexts)
                 texture.draw(t);
@@ -230,41 +241,42 @@ void RenderControl::drawContent(Player* player) {
         }
 
         case 1:
-            contentText.setString("Ennemis :\n- Basic\n- Fast\n- Tank\n- Fly\n- Target");
+            contentText.setString("Ennemis :\n- Basic\n- Fast\n- Tank\n- Fly\n- Target");   //Affiche le nom des ennemis
             texture.draw(contentText);
             break;
 
         case 2:
-            contentText.setString(" ");
+            contentText.setString(" "); //N'affiche rien pour l'onglet MENU (tout apparaît sur le renu RenderMenu)
             texture.draw(contentText);
             break;
     }
 }
 
+//================= GESTION DES CLICS SUR LES ONGLETS ==================
 void RenderControl::handleClick(int mouseX, int mouseY,RenderMenu& menu) {
     float x = 10.f;
     for (std::size_t i = 0; i < tabs.size(); ++i) {
-        if (mouseX >= x && mouseX <= x + 70.f && mouseY >= 10.f && mouseY <= 40.f) {
+        if (mouseX >= x && mouseX <= x + 70.f && mouseY >= 10.f && mouseY <= 40.f) {    //Si on clique sur la forme de l'onglet, alors changement d'onglet
             activeTab = static_cast<int>(i);
             std::cout << "Changement d'onglet : " << tabs[i] << std::endl;
             if (tabs[i] == "Menu") {
-                menu.isSelected();      // 👉 Ouvre le menu
+                menu.isSelected();      //Ouvre le menu
             } else {
-                menu.isNotSelected();   // 👉 Cache le menu sinon
+                menu.isNotSelected();   //Cache le menu sinon
             }
         }
-
-
         x += 80.f;
     }
 }
 
+//================== AFFICHE TOUT =====================
 void RenderControl::displayFull(Player* player) {
     clear();
     drawTabs();
     drawContent(player);
     display();
 }
+
 
 // ============================================================================
 // RenderInfo
@@ -321,6 +333,7 @@ RenderInfo::RenderInfo(const sf::Vector2u& windowSize) {
     
 }
 
+//====================== MET A JOUR LE RENDER INFO EN FONCTION DE LA TOURELLE =====================
 void RenderInfo::updateTowerPreview(Tourelle* t, int towerType) {
     towerShapePreview.reset();
     selectedTower = t;
@@ -367,6 +380,7 @@ void RenderInfo::setPreviewTowerType(int towerType) {
 std::unique_ptr<sf::Shape> RenderInfo::cloneShape(const sf::Shape* shape) {
     if (!shape) return nullptr;
 
+    //Cercle
     if (auto* circle = dynamic_cast<const sf::CircleShape*>(shape)) {
         auto copy = std::make_unique<sf::CircleShape>(circle->getRadius(), circle->getPointCount());
         copy->setFillColor(circle->getFillColor());
@@ -378,6 +392,7 @@ std::unique_ptr<sf::Shape> RenderInfo::cloneShape(const sf::Shape* shape) {
         return copy;
     }
 
+    //Rectangle
     if (auto* rect = dynamic_cast<const sf::RectangleShape*>(shape)) {
         auto copy = std::make_unique<sf::RectangleShape>(rect->getSize());
         copy->setFillColor(rect->getFillColor());
@@ -389,6 +404,7 @@ std::unique_ptr<sf::Shape> RenderInfo::cloneShape(const sf::Shape* shape) {
         return copy;
     }
 
+    //Forme quelconque
     if (auto* convex = dynamic_cast<const sf::ConvexShape*>(shape)) {
         auto copy = std::make_unique<sf::ConvexShape>();
         copy->setPointCount(convex->getPointCount());
@@ -461,6 +477,7 @@ void RenderInfo::clearPreview() {
 void RenderInfo::clear() {
     texture.clear(sf::Color(30, 30, 35));
 }
+
 
 // ============================================================================
 // RenderGameOver
@@ -539,6 +556,7 @@ void RenderGameOver::drawOverlay() {
     display();
 }
 
+
 // ============================================================================
 // RenderMenu
 // ============================================================================
@@ -555,7 +573,7 @@ RenderMenu::RenderMenu(const sf::Vector2u& windowSize) {
     titleText.setFont(font);
     titleText.setCharacterSize(48);
     titleText.setFillColor(sf::Color::White);
-    titleText.setString("MAIN MENU");
+    titleText.setString("MENU");
     sf::FloatRect textRect = titleText.getLocalBounds();
     titleText.setOrigin(textRect.left + textRect.width / 2.f,
                         textRect.top + textRect.height / 2.f);

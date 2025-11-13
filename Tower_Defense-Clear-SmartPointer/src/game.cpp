@@ -1,7 +1,7 @@
 #include "game.hpp"
 #include "enemy.hpp"
 #include "tower.hpp"
-#include "projectile.hpp"  // ⬅️ AJOUT
+#include "projectile.hpp"  
 #include "Astar.hpp"
 
 
@@ -10,8 +10,9 @@
 
 // ------------ FONCTIONS DES ENNEMIES ------------ //
 
-void Game::generateEnemy(std::vector<Enemy*>& enemies, const std::vector<Render::Cell> cells) { //Faire spawn les ennemies au centre de certaines cellules ///A FAIRE///
+void Game::generateEnemy(std::vector<Enemy*>& enemies, const std::vector<Render::Cell> cells) { //Faire spawn les ennemies au centre de certaines cellules 
     int r = std::rand() % 5; // 0..4
+    // Apparition des ennemies en fonction de la valeur de rand
     switch (r) {
         case 0: enemies.push_back(new BasicEnemy());  break;
         case 1: enemies.push_back(new FastEnemy());   break;
@@ -19,16 +20,19 @@ void Game::generateEnemy(std::vector<Enemy*>& enemies, const std::vector<Render:
         case 3: enemies.push_back(new FlyEnemy());    break;
         case 4: enemies.push_back(new TargetEnemy()); break;
     }
+
+    // On crée une matrice de cellules et on masque les cellules avec un numéro de colonne supérieur à 3
 std::vector<const Render::Cell*> spawnCells;
     for (const auto& c : cells) {
         if (c.col < 3) // colonnes 0, 1, 2
             spawnCells.push_back(&c);
     }
 
+    // Si la cellule existe pas alors on supprime l'ennemie qu'on essaye de crée
     if (spawnCells.empty()) {
         std::cout << "Erreur : aucune cellule de spawn disponible !" << std::endl;
         delete enemies.back();
-        enemies.pop_back();
+        enemies.pop_back(); // supprime le contenu de l'ennemie
         return;
     }
 
@@ -44,9 +48,11 @@ std::vector<const Render::Cell*> spawnCells;
               << ", row=" << spawnCell->row << ")\n";
 }
 
+// ====================== Game destrcuteur d'ennemies ======================
+
 void Game::destroyEnemy(std::vector<Enemy*>& enemies) {
     for (auto*& e : enemies) {
-        delete e;    // appelle le destructeur virtuel de Enemy (voir note ci-dessous)
+        delete e;    // appelle le destructeur virtuel de Enemy
         e = nullptr;
     }
     enemies.clear();
@@ -54,6 +60,7 @@ void Game::destroyEnemy(std::vector<Enemy*>& enemies) {
 
 
 // ====================== Game::generateTourelle ======================
+
 void Game::generateTourelle(
     std::vector<Tourelle*>& tourelles,
     std::vector<Render::Cell>& cells,
@@ -66,10 +73,13 @@ void Game::generateTourelle(
     if (cells.empty()) return;
 
     // Trouver la cellule cliquée
+    // On cherche parmis toutes les cellules (éligible au spawn ou non) laquel correspond au coordonées X,Y du clic de souris, on selectionne ensuite cette cellule
+    // pour faire apparaitre une nouvelle tourelle
     auto it = std::find_if(cells.begin(), cells.end(),
         [x, y](Render::Cell& c){ return c.bounds.contains(x, y); });
     if (it == cells.end()) return; // clic hors grille
 
+    // Empeche le joueur de positionné des tourelles dans la zone d'apparition des ennemies et dans les zones déja occupées par les tourelles
     if (it->col < 3 || it->col == pathfinder.gridCols - 1) {
         std::cout << "Impossible de placer une tourelle dans les 3 premières colonnes !\n";
         return;
@@ -80,7 +90,7 @@ void Game::generateTourelle(
         return;
     }
 
-        // 🔹 Vérification si un ennemi est sur cette cellule
+        // Vérification si un ennemi est sur cette cellule
     for (auto* e : enemies) {
         if (!e || e->isDead()) continue;
 
@@ -95,7 +105,7 @@ void Game::generateTourelle(
     int index = it->row * pathfinder.gridCols + it->col;
         pathfinder.Nodes[index].turreted = true;
 
-    // ⚡ Vérifie si le chemin reste possible
+    // Vérifie si le chemin reste possible
     sf::Vector2f entryPos = cells.front().center; // point d'entrée des ennemis
     if (!pathfinder.IsPathStillPossible(entryPos)) {
         std::cout << "Placement refusé : cela bloquerait le chemin !\n";
@@ -103,7 +113,7 @@ void Game::generateTourelle(
         return;
     }
 
-    // 🔹 Crée une tourelle temporaire pour vérifier le coût
+    // Détermine le coût de la tourelle selon son type (0...4)
 int towerCost = 0;
 switch (type) {
     case 0: towerCost = 10; break;
@@ -113,7 +123,7 @@ switch (type) {
     case 4: towerCost = 50; break;
 }
 
-// 🔹 Vérifie si le joueur a assez de ressources
+// Vérifie si le joueur a assez de ressources
 if (player->getRessources() < towerCost) {
     std::cout << "Pas assez de ressources ! Il faut " << towerCost 
               << " mais tu as " << player->getRessources() << ".\n";
@@ -121,7 +131,7 @@ if (player->getRessources() < towerCost) {
     return;
 }
 
-// 🔹 Si oui, retire le coût
+//  Si oui, retire le coût
 player->reduceRessources(towerCost);
 
     // Crée la tourelle
@@ -140,7 +150,7 @@ player->reduceRessources(towerCost);
 
     std::cout << "Tourelle placée en cellule " << it->id << "\n";
 
-    // ⚡ Indique à tous les ennemis de recalculer leur chemin au prochain update
+    // Indique à tous les ennemis de recalculer leur chemin au prochain update
     for (auto* e : enemies) {
         if (!e->isDead()) e->needRepath = true;
     }
@@ -166,6 +176,7 @@ void Game::update(PathFinding_AStar& pathfinder,
     // 1) Donner la liste des tourelles aux ennemis spéciaux
     //    (FlyEnemy / TargetEnemy tirent sur les tourelles)
     // ---------------------------------------------------------
+    // On utilse un dynamic_cast pour vérifier le type d'ennemi ( que le pointeur Enemy* (e) pointe bien vers un FlyEnemy ou TargetEnemy )
     for (auto* e : enemies) {
         if (!e) continue;
 
@@ -191,6 +202,7 @@ void Game::update(PathFinding_AStar& pathfinder,
 
         e->update(pathfinder, cells);
 
+        // Traitement de la fin ou de la mort de l'ennemi
         if (e->reachedGoal) {
             // L'ennemi a atteint la fin : réduit la vie du joueur
             player->reduceHealth(e->getDamage());
@@ -226,9 +238,11 @@ void Game::update(PathFinding_AStar& pathfinder,
     for (auto* e : enemies) {
         if (!e || e->isDead()) continue;
 
+        // On effectue le try shoot pour spécifiquement les FlyEnemy
         if (auto* f = dynamic_cast<FlyEnemy*>(e)) {
             f->tryShoot(dt, projectiles);
         } 
+        // On effectue le try shoot pour spécifiquement les TargetEnemy
         else if (auto* t = dynamic_cast<TargetEnemy*>(e)) {
             t->tryShoot(dt, projectiles);
         }
@@ -288,6 +302,9 @@ void Game::update(PathFinding_AStar& pathfinder,
     // ---------------------------------------------------------
     // 7) Nettoyage des projectiles morts
     // ---------------------------------------------------------
+
+    // On utilise la fonction remove_if pour supprimer du tableau les projectiles morts, et on le réorganise pour n'avoir que les vivants 
+    // ( Evite d'avoir un tableau gigantesque de projectiles morts )
     projectiles.erase(
         std::remove_if(projectiles.begin(), projectiles.end(),
                        [](const Projectile& pr){ return !pr.isAlive(); }),
@@ -304,6 +321,8 @@ void Game::update(PathFinding_AStar& pathfinder,
 
     void Game::upgradeTourelle(std::vector<Tourelle*>& tourelles, Player* player, float mouseX, float mouseY)
 {
+    // Au clic de la moulette de souris, on vérifie si le clic correspond à la position d'une tourelle (sa hitbox) puis on compare les ressources 
+    // pour savoir si le joueur peut l'améliorer, si oui alors on fait l'amélioration et on déduit le coût des ressources du joueur.
     sf::Vector2f mousePos(mouseX, mouseY);
     for (auto* t : tourelles) {
         if (!t) continue;
@@ -325,7 +344,8 @@ void Game::update(PathFinding_AStar& pathfinder,
 
     std::cout << "Aucune tourelle sélectionnée pour upgrade.\n";
 }
-
+// ====================== Game::startWaves ======================
+// Initialise les variables pour démarrer les vagues d'ennemis
 void Game::startWaves() {
     waveIndex = 0;
     toSpawn   = waves[0].count;
@@ -336,10 +356,13 @@ void Game::startWaves() {
     wavesFinished = false;
 }
 
+// ====================== Game::updateWaves ======================
+// Gère le timing et le spawn des vagues d'ennemis
 void Game::updateWaves(float dt,
                        std::vector<Enemy*>& enemies,
                        const std::vector<Render::Cell>& cells)
 {
+    // si les vagues sont terminées ou pas encore commencées, ne fait pas d'update 
     if (wavesFinished || waveIndex < 0) return;
 
     // Phase inter-vague (petit délai avant la suivante)
@@ -356,7 +379,9 @@ void Game::updateWaves(float dt,
                 std::cout << "Toutes les vagues sont terminées !\n";
                 return;
             }
+            // regarde combien il reste d'ennemis à spawn dans la nouvelle vague
             toSpawn = waves[waveIndex].count;
+            // réinitialise le timer de spawn
             spawnIv = waves[waveIndex].interval;
             spawnT  = 0.f;
             std::cout << "Vague " << (waveIndex+1) << " !\n";
@@ -368,7 +393,7 @@ void Game::updateWaves(float dt,
     if (toSpawn > 0) {
         spawnT += dt;
         while (toSpawn > 0 && spawnT >= spawnIv) {
-            generateEnemy(enemies, cells); // ← ta fonction existante
+            generateEnemy(enemies, cells); // ta fonction existante
             --toSpawn;
             spawnT -= spawnIv;
         }

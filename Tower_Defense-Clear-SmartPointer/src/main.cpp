@@ -23,42 +23,6 @@ sf::Music backgroundMusic;
 
 // Pour les paramètres de base, possible de faire des constantes globales dans un fichier de config !!!!!
 
-// -------------------- MainMENU --------------------
-
-struct Button {
-    sf::RectangleShape box;
-    sf::Text label;
-
-    void set(const sf::Font& font, const std::string& txt, sf::Vector2f size, sf::Vector2f pos) {
-        box.setSize(size);
-        box.setFillColor(sf::Color(60, 60, 120));
-        box.setOutlineColor(sf::Color::White);
-        box.setOutlineThickness(2.f);
-        box.setOrigin(size.x * 0.5f, size.y * 0.5f);
-        box.setPosition(pos);
-
-        label.setFont(font);
-        label.setCharacterSize(28);
-        label.setString(txt);
-        label.setFillColor(sf::Color::White);
-
-        // centrer le texte dans le bouton
-        auto r = label.getLocalBounds();
-        label.setOrigin(r.left + r.width / 2.f, r.top + r.height / 2.f);
-        label.setPosition(pos);
-
-        
-    }
-
-    bool contains(sf::Vector2f p) const {
-        return box.getGlobalBounds().contains(p);
-    }
-
-    void draw(sf::RenderTarget& rt) const {
-        rt.draw(box);
-        rt.draw(label);
-    }
-};
 
 
 

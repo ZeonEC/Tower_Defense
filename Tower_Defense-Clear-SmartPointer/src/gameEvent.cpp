@@ -50,6 +50,7 @@ AppState GameEvent::processEvents(AppState currentState, int& currentTowerType) 
         if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
             window.close();
 
+        //Etat du jeu
         switch (currentState) {
             case AppState::MainMenu:
                 currentState = handleMainMenuEvents(event,window);
@@ -74,18 +75,6 @@ AppState GameEvent::processEvents(AppState currentState, int& currentTowerType) 
     return currentState;
 }
 
-// ---------------------------------------------------------------------------
-// Gestion du MENU PRINCIPAL
-// ---------------------------------------------------------------------------
-AppState GameEvent::handleMainMenu(const sf::Event& event) {
-    if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter) {
-        game.startWaves();
-        if (mainMenuMusic.getStatus() == sf::Music::Playing) mainMenuMusic.stop();
-        if (backgroundMusic.getStatus() != sf::Music::Playing) backgroundMusic.play();
-        return AppState::Playing;
-    }
-    return AppState::MainMenu;
-}
 
 // ---------------------------------------------------------------------------
 // Gestion de l'état PLAYING (jeu actif)
@@ -95,15 +84,12 @@ AppState GameEvent::handlePlaying(const sf::Event& event, int& currentTowerType)
     // Changement du type de tourelle
     if (event.type == sf::Event::KeyPressed) {
         switch (event.key.code) {
-            case sf::Keyboard::A: currentTowerType = 0; renderInfo.setPreviewTowerType(0); break;
+            case sf::Keyboard::A: currentTowerType = 0; renderInfo.setPreviewTowerType(0); break;   //Si A, affiche les infos dans renderInfo
             case sf::Keyboard::Z: currentTowerType = 1; renderInfo.setPreviewTowerType(1); break;
             case sf::Keyboard::E: currentTowerType = 2; renderInfo.setPreviewTowerType(2); break;
             case sf::Keyboard::R: currentTowerType = 3; renderInfo.setPreviewTowerType(3); break;
             case sf::Keyboard::T: currentTowerType = 4; renderInfo.setPreviewTowerType(4); break;
 
-            case sf::Keyboard::Q:
-                renderMenu.show();
-                return AppState::Menu;
             default: break;
         }
     }
@@ -157,11 +143,13 @@ AppState GameEvent::handleMenu(const sf::Event& event) {
     {
         sf::Vector2f mp(static_cast<float>(event.mouseButton.x), static_cast<float>(event.mouseButton.y));
 
+        //Si PLAY => retour au jeu
         if (renderMenu.getPlayButton().getGlobalBounds().contains(mp)) {
             renderMenu.hide();
             renderMenu.isNotSelected();
             return AppState::Playing;
         }
+        //SI RESTART => relance le jeu (avec réinitialisation)
         else if (renderMenu.getRestartButton().getGlobalBounds().contains(mp)) {
             resetGame();
             backgroundMusic.stop();
@@ -171,6 +159,7 @@ AppState GameEvent::handleMenu(const sf::Event& event) {
             backgroundMusic.play();
             return AppState::Playing;
         }
+        //Si QUIT => quitte le jeu et retourne au menu principal
         else if (renderMenu.getQuitButton().getGlobalBounds().contains(mp)) {
             resetGame();
             backgroundMusic.stop();
@@ -214,7 +203,7 @@ AppState GameEvent::handleGameOver(const sf::Event& event) {
 
 
 // ---------------------------------------------------------------------------
-// Gestion du MainMenu
+// Gestion du MENU PRINCIPAL
 // ---------------------------------------------------------------------------
 AppState GameEvent::handleMainMenuEvents(const sf::Event& event,sf::RenderWindow& window) {
     // Touche Entrée : démarre le jeu
@@ -238,10 +227,6 @@ AppState GameEvent::handleMainMenuEvents(const sf::Event& event,sf::RenderWindow
         if (renderMainMenu.getQuitButton().box.getGlobalBounds().contains(mp)) {
             window.close();
         }
-
-
-
-        // Si tu veux ajouter d'autres boutons : options, quitter...
     }
 
     return AppState::MainMenu;
@@ -252,9 +237,9 @@ AppState GameEvent::handleMainMenuEvents(const sf::Event& event,sf::RenderWindow
 // Fonction utilitaire : réinitialiser la partie
 // ---------------------------------------------------------------------------
 void GameEvent::resetGame() {
-    std::cout << "🔄 Réinitialisation du jeu...\n";
+    std::cout << "Réinitialisation du jeu...\n";
 
-    // 1️⃣ Détruire tous les ennemis et tourelles existants
+    //Détruire tous les ennemis, tourelles et cellules existants
     game.destroyEnemy(enemies);
     game.destroyTourelles(tourelles);
     enemies.clear();
@@ -262,20 +247,20 @@ void GameEvent::resetGame() {
     cells.clear();
 
 
-    // 2️⃣ Réinitialiser le joueur
+    //Réinitialiser le joueur
     player = Player();
 
-    // 3️⃣ Réinitialiser le jeu
+    //Réinitialiser le jeu
     game = Game();
-    cells = Render::buildCells(renderMap.getTexture());
+    cells = Render::buildCells(renderMap.getTexture());     //Reconstruction des cellules
     pathfinder = PathFinding_AStar();
-    pathfinder.CreateNodes(cells);
+    pathfinder.CreateNodes(cells);                          //Reconstruction des noeuds
 
-    // 4️⃣ Reconnecter le joueur à renderInfo
+    //Reconnecter le joueur à renderInfo
     renderInfo.setPlayer(&player);
     renderInfo.clearPreview();
     renderInfo.clear();
 
-    // 5️⃣ Recréer les vagues
+    //Recréer les vagues
     game.startWaves();
 }

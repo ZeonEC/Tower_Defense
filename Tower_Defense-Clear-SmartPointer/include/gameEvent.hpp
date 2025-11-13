@@ -11,13 +11,20 @@
 #include "enemy.hpp"
 #include "Astar.hpp"
 
-enum class AppState {
-    MainMenu,
-    Playing,
-    Menu,
-    GameOver
+// ============================================================================
+// ENUM CLASSE AppState
+// ============================================================================
+enum class AppState {   //Ensemble des nom de AppState (enum class réduit la portée)
+    MainMenu,           //Menu Principal
+    Playing,            //Jeu lancé
+    Menu,               //Menu en jeu
+    GameOver            //Fin de partie
 };
 
+
+// ============================================================================
+// CLASSE : GameEvent
+// ============================================================================
 class GameEvent {
 public:
     GameEvent(
