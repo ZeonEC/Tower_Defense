@@ -75,7 +75,7 @@ RenderMainMenu::RenderMainMenu(const sf::Vector2u& windowSize) {
         std::cerr << "Erreur : impossible de charger la police AGENCYB.TTF !" << std::endl;
     }
 
-    if (!backgroundTexture.loadFromFile("../src/assets/maps/menu_bg.png")) {
+    if (!backgroundTexture.loadFromFile("../src/assets/maps/menu_bg.jpeg")) {
         std::cerr << "Erreur : impossible de charger le background\n";
     }
     background.setTexture(backgroundTexture);
