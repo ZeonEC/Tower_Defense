@@ -31,7 +31,7 @@ int main() {
 //---------------------------- INITIALISATION ------------------------------//
 
     // Initialisation de la fenêtre SFML
-    sf::RenderWindow game_window(sf::VideoMode(800, 600), " SHIN MEGAMI TENSEI VI");
+    sf::RenderWindow game_window(sf::VideoMode(800, 600), " TOWER DEFENSE - TECHER - CHADEVILLE");
     game_window.setFramerateLimit(60);
 
     //---------------------------- MUSIQUE ------------------------------//
